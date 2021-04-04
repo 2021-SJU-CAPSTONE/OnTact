@@ -6,21 +6,16 @@ import Icon from '@ant-design/icons';
 import axios from 'axios';
 import logo from './Sections/onTact.png'
 import {UserOutlined} from '@ant-design/icons';
+import {Link} from 'react-router-dom';
 function NavBar() {
-  const [visible, setVisible] = useState(false)
-
-  const showDrawer = () => {
-    setVisible(true)
-  };
-
-  const onClose = () => {
-    setVisible(false)
-  };
+  
 
   return (
     <nav className="menu" style={{ position: 'fixed', zIndex: 5, width: '100%',height:'60px' }}>
-      <div className="menu__logo">
-        <img src={logo} href="/" style= {{marginTop: '15px',marginLeft :'50px',width: '100px', height : '30px'}}/>
+      <div  className="menu__logo">
+        <Link to ="/" >
+          <img src={logo}  style= {{marginTop: '-10px',marginLeft :'50px',width: '100px', height : '30px'}}/>
+        </Link>
       </div>
       <div style={{float :' right '}}>
         <h6 style={{marginTop:'20px',marginRight :'50px'}}>logout</h6>
