@@ -29,7 +29,7 @@ export default class LoginPage extends Component {
                                 <input type="checkbox" className="custom-control-input" id="customCheck1"/>
                                 <label className="custom-control-label" >Remember password</label>
                                 </div>
-                                <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                                <button className="btn btn-lg btn-block text-uppercase" type="submit" style={{backgroundColor: '#D65E2A',color:'white' }}>Sign in</button>
                                 <hr className="my-4" />
                                 <button className="btn btn-lg btn-google btn-block text-uppercase" type="submit"><i className="fa fa-registered mr-2"></i> Register</button>
                                 <button className="btn btn-lg btn-facebook btn-block text-uppercase" type="submit"><i className="fas fa-key mr-2"></i> Find ID/PASSWORD</button>
