@@ -8,19 +8,19 @@ import ProfessorPage from "./views/ProfessorPage/ProfessorPage";
 import AdimnLecture from "./views/ProfessorPage/AdminLecture";
 import LoginPage from "./views/LoginPage/LoginPage";
 import CheckAttendence from "./views/StudentPage/CheckAttendence/CheckAttendence"
-
+import addlecture from "./views/ProfessorPage/addlecture";
 function App() {
     return (
         <Suspense fallback ={(<div>Loading...</div>)}>
             <NavBar/>
             <div style ={{paddingTop : '75px', minHeight: 'calc(100vh - 80px'}}>
                 <Switch>
-                    
                     <Route exact path = "/" component = {(LoginPage)}/>
                     <Route exact path = "/studentpage" component = {(StudentPage)}/>
                     <Route exact path = "/professorpage" component ={(ProfessorPage)} />
                     <Route exact path = "/professorpage/adminlecture" component ={(AdimnLecture)} />
                     <Route exact path = "/studentpage/checkattendence" component = {(CheckAttendence)}/>
+                    <Route exact path = "/professorpage/addlecture" component = {(addlecture)}/>
                 </Switch>
 
             </div>

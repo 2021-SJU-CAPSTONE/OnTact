@@ -3,7 +3,7 @@ import {UserOutlined} from '@ant-design/icons';
 import './Sections/AdminLecture.css'
 import StudentList from './Sections/StudentList';
 import Addstudent from './Sections/Addstudent';
-
+import {Link} from 'react-router-dom';
 //import Lecturelist from './Sections/Lecturelist';
 function AdimnLecture() {
 
@@ -22,7 +22,9 @@ function AdimnLecture() {
                 <div >
                     <Addstudent />
                 </div>
-                <span className="badge  mt-4"  style={{width : "100px", display : 'block', marginBottom : '20px',fontSize : '1rem',backgroundColor: '#D65E2A',color:'white'}}>저정하기</span> 
+                <Link to ="/professorpage">
+                <span className="badge  mt-4"  style={{width : "100px", display : 'block', marginBottom : '20px',fontSize : '1rem',backgroundColor: '#D65E2A',color:'white'}}>저장하기</span> 
+                </Link>
             </div>
         </div>
     )
