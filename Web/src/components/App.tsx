@@ -9,6 +9,7 @@ import AdimnLecture from "./views/ProfessorPage/AdminLecture";
 import LoginPage from "./views/LoginPage/LoginPage";
 import CheckAttendence from "./views/StudentPage/CheckAttendence/CheckAttendence";
 import addlecture from "./views/ProfessorPage/addlecture";
+import LiveLecture from "./views/LiveLecture/LiveLecture";
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -33,6 +34,7 @@ function App() {
             path="/professorpage/addlecture"
             component={addlecture}
           />
+          <Route exact path="/livelecture" component={LiveLecture} />
         </Switch>
       </div>
     </Suspense>
