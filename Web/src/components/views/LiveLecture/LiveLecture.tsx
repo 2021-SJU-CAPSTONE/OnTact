@@ -27,9 +27,6 @@ function LiveLecture() {
             backgroundColor: "gray",
           }}
         ></div>
-        <div>
-          <ChatWrite />
-        </div>
       </div>
     </div>
   );

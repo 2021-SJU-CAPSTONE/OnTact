@@ -6,10 +6,21 @@ function ChatWrite() {
       style={{
         marginLeft: "20px",
         width: "30vw",
-        height: "13vh",
+        height: "16vh",
         backgroundColor: "pink",
       }}
-    ></div>
+    >
+      <div style={{ paddingTop: "2vh", height: "4vh" }}>
+        <input
+          type="email"
+          id="inputEmail"
+          className="form-control"
+          placeholder="채팅을 입력하세요"
+          required
+          style={{ height: "9vh" }}
+        />
+      </div>
+    </div>
   );
 }
 
