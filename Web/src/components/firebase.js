@@ -1,7 +1,7 @@
 import firebase from "firebase/app";
-import "firebase/firestore";
+import "firebase/auth";
 
-const firebaseConfig = {
+const firebaseApps = {
   apiKey: "AIzaSyDQHhhn10jil_D37VuP21Ty72GQGLK-qbw",
   authDomain: "capstone-925e4.firebaseapp.com",
   projectId: "capstone-925e4",
@@ -11,8 +11,6 @@ const firebaseConfig = {
   measurementId: "G-R8EEX7K1WZ",
 };
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseApps);
 
-const firestore = new firebase.firestore();
-
-export { firestore };
+export default firebaseApps;
