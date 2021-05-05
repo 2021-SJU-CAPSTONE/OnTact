@@ -1,37 +1,65 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
-import LiveVideo from '../LiveVideo/LiveVideo'
-import {socket} from './socket'
-
+import LiveVideo from "../LiveVideo/LiveVideo";
+import Peer from "peerjs";
 function LiveLecture() {
-  const [clientId,setClientId] = useState("");
-
-  useEffect(()=>{
-    socket.on("init", (data:any) => setClientId(data.id)).emit("init"); 
-  },[]);
-  // function을 인자로 넘김으로 useState 변수를 넘길 수 있다.
-  const startCall = (isCaller:boolean, friendIf:string, confing:any) => {
-    socket.on("init",(data:any)=> {
-      console.log(data);
-      setClientId(data.id);
-    })
+  const [clientId, setClientId] = React.useState("");
+  const [friendId, setFriendId] = React.useState("");
+  const [camOn, setCamOn] = React.useState(false);
+  let myStream;
+  // React.useEffect(() => {
+  //   socket.on("init", (data: any) => setClientId(data.id)).emit("init");
+  // }, []);
+  // // function을 인자로 넘김으로 useState 변수를 넘길 수 있다.
+  // const startCall = (isCaller: boolean, friendId: string, confing: any) => {
+  // socket.on("init", (data: any) => {
+  //   console.log(data);
+  //   setClientId(data.id);
+  // });
+  // };
+  const camOnClick = async () => {
+    if (camOn === true) {
+      setCamOn(false);
+    } else {
+      myStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      setCamOn(true);
+    }
   };
-
+  const changeClientId = (event) => {
+    const result = event.target.value;
+    setClientId(result);
+  };
+  const changeFriendId = (event) => {
+    const result = event.target.value;
+    setFriendId(result);
+  };
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
+      <h3>
+        ClientId
+        <input onChange={changeClientId}></input>
+      </h3>
+      <h3>
+        FriendId
+        <input onChange={changeFriendId}></input>
+      </h3>
+      <button onClick={camOnClick}>CamOn</button>
       <div className="row d-flex ">
         <div
           style={{
             width: "60%",
             height: "60vh",
-            border : 'solid',
+            border: "solid",
             // backgroundColor: "black",
             float: "left",
             marginLeft: "50px",
           }}
         >
-          <LiveVideo clientId={clientId} startCall={startCall}/>
+          <LiveVideo stream={myStream} />
         </div>
         <div>
           <Chatting />
@@ -43,7 +71,7 @@ function LiveLecture() {
             marginLeft: "50px",
             width: "60%",
             height: "13vh",
-            border : 'solid',
+            border: "solid",
             // backgroundColor: "gray",
           }}
         ></div>
