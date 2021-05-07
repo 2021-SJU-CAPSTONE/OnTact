@@ -3,56 +3,38 @@ import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import LiveVideo from "../LiveVideo/LiveVideo";
 import Peer from "peerjs";
+//Todo
+//peer js
+//professor, student page
 const LiveLecture = () => {
-  const [clientId, setClientId] = React.useState("");
-  const [friendId, setFriendId] = React.useState("");
-  const [camOn, setCamOn] = React.useState(false);
-
-  // React.useEffect(() => {
-  //   socket.on("init", (data: any) => setClientId(data.id)).emit("init");
-  // }, []);
-  // // function을 인자로 넘김으로 useState 변수를 넘길 수 있다.
-  // const startCall = (isCaller: boolean, friendId: string, confing: any) => {
-  // socket.on("init", (data: any) => {
-  //   console.log(data);
-  //   setClientId(data.id);
-  // });
-  // };
-
-  // const camOnClick = async () => {
-  //   if (camOn === true) {
-  //     setCamOn(false);
-  //     // await navigator.mediaDevices.getUserMedia({
-  //     //   video: false,
-  //     //   audio: false,
-  //     // });
-  //   } else {
-  //     myStream = await navigator.mediaDevices.getUserMedia({
-  //       video: true,
-  //       audio: true,
-  //     });
-  //     setCamOn(true);
-  //   }
-  // };
-  const changeClientId = (event) => {
+  const [localID, setLocalID] = React.useState("");
+  const [remoteID, setRemoteID] = React.useState("");
+  let peer;
+  const changelocalID = event => {
     const result = event.target.value;
-    setClientId(result);
+    setLocalID(result);
   };
-  const changeFriendId = (event) => {
+  const changeremoteID = event => {
     const result = event.target.value;
-    setFriendId(result);
+    setRemoteID(result);
+  };
+  const onConnect = () => {
+    peer = new Peer(localID);
+    const connection = peer.connect;
+    console.log(localID);
+    console.log(remoteID);
   };
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
       <h3>
-        ClientId
-        <input onChange={changeClientId}></input>
+        localID
+        <input onChange={changelocalID}></input>
       </h3>
       <h3>
-        FriendId
-        <input onChange={changeFriendId}></input>
+        remoteID
+        <input onChange={changeremoteID}></input>
       </h3>
-      {/* <button onClick={camOnClick}>CamOn</button> */}
+      <button onClick={onConnect}>CONNECT</button>
       <div className="row d-flex ">
         <div
           style={{
@@ -64,6 +46,7 @@ const LiveLecture = () => {
             marginLeft: "50px",
           }}
         >
+          <LiveVideo />
           <LiveVideo />
         </div>
         <div>
