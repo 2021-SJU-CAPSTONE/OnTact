@@ -28,7 +28,11 @@ export default function SignUp() {
         name.current.value
       );
 
-      history.push("/studentpage");
+      if (currentUser.isProfessor === "on") {
+        history.push("/professorpage");
+      } else {
+        history.push("/studentpage");
+      }
     } catch {
       setError("Failed to create an account");
     }

@@ -18,7 +18,11 @@ const LoginPage = () => {
       setError("");
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
-      history.push("/studentpage");
+      if (currentUser.isProfessor === "on") {
+        history.push("/professorpage");
+      } else {
+        history.push("/studentpage");
+      }
     } catch {
       setError("Failed to sign in");
     }
