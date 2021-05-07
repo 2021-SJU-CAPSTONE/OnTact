@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-
 import { Drawer, Button } from "antd";
 import "./Sections/Navbar.css";
-import Icon from "@ant-design/icons";
-import axios from "axios";
 import logo from "./Sections/onTact.png";
 import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import Logout from "../Logout/Logout";
+import { useAuth } from "../../hoc/AuthContext";
 function NavBar() {
-  const userName: string = "김국문";
+  const { currentUser } = useAuth();
   return (
     <nav
       className="menu"
@@ -33,7 +30,8 @@ function NavBar() {
       </div>
       <div style={{ float: "right", marginTop: "20px" }}>
         <h6 style={{ marginRight: "50px", fontWeight: "bold" }}>
-          <UserOutlined style={{ verticalAlign: "top" }} /> {userName}{" "}
+          <UserOutlined style={{ verticalAlign: "top", marginRight: "5px" }} />
+          {currentUser && currentUser.Name} 님
         </h6>
       </div>
     </nav>

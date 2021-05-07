@@ -10,24 +10,17 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
-  async function signup(email, password, isProfessor) {
+  async function signup(email, password, isProfessor, name) {
     const idRes = await auth.createUserWithEmailAndPassword(email, password);
 
-    if (isProfessor === "on") {
-      const Ref = store.collection("Educator").doc(idRes.user.uid);
-      Ref.set({
-        Dept: "Software",
-        Name: "이주혁",
-        isProfessor: isProfessor,
-      });
-    } else {
-      const Ref = store.collection("Educatee").doc(idRes.user.uid);
-      Ref.set({
-        Dept: "Software",
-        Name: "장재호",
-        isProfessor: isProfessor,
-      });
-    }
+    const Ref = store.collection("User").doc(idRes.user.uid);
+    Ref.set({
+      Dept: "Software",
+      Name: name,
+      isProfessor: isProfessor,
+      email: email,
+      password: password,
+    });
 
     return;
   }
@@ -37,7 +30,10 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const ussubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
+      const ref = store.collection("User").doc(user.uid);
+      ref.get().then((item) => {
+        setCurrentUser(item.data());
+      });
       setLoading(false);
     });
     return ussubscribe;

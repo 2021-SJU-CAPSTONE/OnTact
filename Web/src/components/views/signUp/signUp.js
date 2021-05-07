@@ -7,6 +7,7 @@ export default function SignUp() {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const isprofessor = useRef();
+  const name = useRef();
   const { signup, currentUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,7 +24,8 @@ export default function SignUp() {
       await signup(
         emailRef.current.value,
         passwordRef.current.value,
-        isprofessor.current.value
+        isprofessor.current.value,
+        name.current.value
       );
 
       history.push("/studentpage");
@@ -38,7 +40,7 @@ export default function SignUp() {
         <Card style={{ justifyContent: "center", alignItems: "center" }}>
           <Card.Body>
             <h2 className="text-center mb4">Sign Up</h2>
-            {currentUser && currentUser.email}
+
             {error && <Alert variant="danger">{error}</Alert>}
             <Form
               style={{ alignItems: "center", maxWidth: "400px" }}
@@ -59,6 +61,10 @@ export default function SignUp() {
                   ref={passwordConfirmRef}
                   required
                 />
+              </Form.Group>
+              <Form.Group id="name">
+                <Form.Label>Name</Form.Label>
+                <Form.Control type="text" ref={name} required />
               </Form.Group>
               <Form.Group id="isprofessor">
                 <Form.Label>교수님?</Form.Label>
