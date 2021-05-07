@@ -1,13 +1,13 @@
-import React from "react";
+import React, { RefObject } from "react";
 import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import LiveVideo from "../LiveVideo/LiveVideo";
 import Peer from "peerjs";
-function LiveLecture() {
+const LiveLecture = () => {
   const [clientId, setClientId] = React.useState("");
   const [friendId, setFriendId] = React.useState("");
   const [camOn, setCamOn] = React.useState(false);
-  let myStream;
+
   // React.useEffect(() => {
   //   socket.on("init", (data: any) => setClientId(data.id)).emit("init");
   // }, []);
@@ -18,17 +18,22 @@ function LiveLecture() {
   //   setClientId(data.id);
   // });
   // };
-  const camOnClick = async () => {
-    if (camOn === true) {
-      setCamOn(false);
-    } else {
-      myStream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      });
-      setCamOn(true);
-    }
-  };
+
+  // const camOnClick = async () => {
+  //   if (camOn === true) {
+  //     setCamOn(false);
+  //     // await navigator.mediaDevices.getUserMedia({
+  //     //   video: false,
+  //     //   audio: false,
+  //     // });
+  //   } else {
+  //     myStream = await navigator.mediaDevices.getUserMedia({
+  //       video: true,
+  //       audio: true,
+  //     });
+  //     setCamOn(true);
+  //   }
+  // };
   const changeClientId = (event) => {
     const result = event.target.value;
     setClientId(result);
@@ -47,7 +52,7 @@ function LiveLecture() {
         FriendId
         <input onChange={changeFriendId}></input>
       </h3>
-      <button onClick={camOnClick}>CamOn</button>
+      {/* <button onClick={camOnClick}>CamOn</button> */}
       <div className="row d-flex ">
         <div
           style={{
@@ -59,7 +64,7 @@ function LiveLecture() {
             marginLeft: "50px",
           }}
         >
-          <LiveVideo stream={myStream} />
+          <LiveVideo />
         </div>
         <div>
           <Chatting />
@@ -78,6 +83,6 @@ function LiveLecture() {
       </div>
     </div>
   );
-}
+};
 
 export default LiveLecture;

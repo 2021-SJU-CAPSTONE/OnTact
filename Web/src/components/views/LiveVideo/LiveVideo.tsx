@@ -1,17 +1,19 @@
 import React from "react";
 
-const LiveVideo = ({ stream }) => {
-  const viewRef = React.useRef<HTMLVideoElement>(null);
-
+const LiveVideo = () => {
+  let localVideo = React.createRef<HTMLVideoElement>();
   React.useEffect(() => {
-    if (!viewRef.current) {
-      return;
-    }
-    viewRef.current.srcObject = stream ? stream : null;
-  }, [stream]);
+    navigator.mediaDevices
+      .getUserMedia({ video: true, audio: true })
+      .then((stream) => {
+        if (localVideo.current) {
+          localVideo.current.srcObject = stream;
+        }
+      });
+  }, [localVideo]);
   return (
     <div className="video">
-      <video ref={viewRef} autoPlay playsInline></video>
+      <video ref={localVideo} autoPlay playsInline></video>
     </div>
   );
 };
