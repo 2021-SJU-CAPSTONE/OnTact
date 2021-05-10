@@ -6,6 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 const LoginPage = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const isProfessorRef = useRef();
   const { signup, currentUser } = useAuth();
   const { login } = useAuth();
   const [error, setError] = useState("");

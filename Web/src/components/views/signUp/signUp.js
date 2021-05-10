@@ -72,7 +72,18 @@ export default function SignUp() {
               </Form.Group>
               <Form.Group id="isprofessor">
                 <Form.Label>교수님?</Form.Label>
-                <Form.Control type="checkbox" ref={isprofessor} required />
+                <Form.Control
+                  type="hidden"
+                  ref={isprofessor}
+                  name="checkbox1"
+                  value="off"
+                />
+                <Form.Control
+                  type="checkbox"
+                  ref={isprofessor}
+                  name="on"
+                  value="on"
+                />
               </Form.Group>
               <Button className="w-100" type="submit" disabled={loading}>
                 Sign Up
