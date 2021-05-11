@@ -6,6 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 const LoginPage = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
+  const isProfessorRef = useRef();
   const { signup, currentUser } = useAuth();
   const { login } = useAuth();
   const [error, setError] = useState("");
@@ -18,7 +19,11 @@ const LoginPage = () => {
       setError("");
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
-      history.push("/studentpage");
+      if (currentUser.isProfessor === "on") {
+        history.push("/professorpage");
+      } else {
+        history.push("/studentpage");
+      }
     } catch {
       setError("Failed to sign in");
     }
@@ -29,7 +34,6 @@ const LoginPage = () => {
       <Card>
         <Card.Body>
           <h2 className="text-center mb4">Log In</h2>
-          {currentUser && currentUser.email}
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
