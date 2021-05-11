@@ -10,17 +10,18 @@ const LiveLecture = () => {
   const [localID, setLocalID] = React.useState("");
   const [remoteID, setRemoteID] = React.useState("");
   let peer;
-  const changelocalID = event => {
+  const changelocalID = (event) => {
     const result = event.target.value;
     setLocalID(result);
   };
-  const changeremoteID = event => {
+  const changeremoteID = (event) => {
     const result = event.target.value;
     setRemoteID(result);
   };
   const onConnect = () => {
-    peer = new Peer(localID);
-    const connection = peer.connect;
+    const peer = new Peer(localID);
+    const connection = peer.connect(remoteID);
+    connection.on("open", () => {});
     console.log(localID);
     console.log(remoteID);
   };
