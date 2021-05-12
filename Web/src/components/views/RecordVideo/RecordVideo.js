@@ -11,6 +11,7 @@ export default function RecordVideo() {
       <div>
         <ReactPlayer url="https://www.youtube.com/watch?v=ysz5S6PUM-U" />
       </div>
+      <div></div>
     </div>
   );
 }
