@@ -1,19 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { RefObject } from "react";
 import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
-function LiveLecture() {
+import LiveVideo from "../LiveVideo/LiveVideo";
+import Peer from "peerjs";
+//Todo
+//peer js
+//professor, student page
+const LiveLecture = () => {
+  const [localID, setLocalID] = React.useState("");
+  const [remoteID, setRemoteID] = React.useState("");
+  let peer;
+  const changelocalID = (event) => {
+    const result = event.target.value;
+    setLocalID(result);
+  };
+  const changeremoteID = (event) => {
+    const result = event.target.value;
+    setRemoteID(result);
+  };
+  const onConnect = () => {
+    const peer = new Peer(localID);
+    const connection = peer.connect(remoteID);
+    connection.on("open", () => {});
+    console.log(localID);
+    console.log(remoteID);
+  };
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
+      <h3>
+        localID
+        <input onChange={changelocalID}></input>
+      </h3>
+      <h3>
+        remoteID
+        <input onChange={changeremoteID}></input>
+      </h3>
+      <button onClick={onConnect}>CONNECT</button>
       <div className="row d-flex ">
         <div
           style={{
             width: "60%",
             height: "60vh",
-            backgroundColor: "black",
+            border: "solid",
+            // backgroundColor: "black",
             float: "left",
             marginLeft: "50px",
           }}
-        ></div>
+        >
+          <LiveVideo />
+          <LiveVideo />
+        </div>
         <div>
           <Chatting />
         </div>
@@ -24,12 +60,13 @@ function LiveLecture() {
             marginLeft: "50px",
             width: "60%",
             height: "13vh",
-            backgroundColor: "gray",
+            border: "solid",
+            // backgroundColor: "gray",
           }}
         ></div>
       </div>
     </div>
   );
-}
+};
 
 export default LiveLecture;
