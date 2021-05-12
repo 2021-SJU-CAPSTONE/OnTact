@@ -15,17 +15,25 @@ const LoginPage = () => {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    try {
-      setError("");
-      setLoading(true);
-      await login(emailRef.current.value, passwordRef.current.value);
-      if (currentUser.isProfessor === "on") {
-        history.push("/professorpage");
-      } else {
-        history.push("/studentpage");
-      }
-    } catch {
-      setError("Failed to sign in");
+    // try {
+    //   setError("");
+    //   setLoading(true);
+    //   await login(emailRef.current.value, passwordRef.current.value);
+    //   if (currentUser.isProfessor === "on") {
+    //     history.push("/professorpage");
+    //   } else {
+    //     history.push("/studentpage");
+    //   }
+    // } catch {
+    //   setError("Failed to sign in");
+    // }
+    setError("");
+    setLoading(true);
+    await login(emailRef.current.value, passwordRef.current.value);
+    if (currentUser.isProfessor === "on") {
+      history.push("/professorpage");
+    } else {
+      history.push("/studentpage");
     }
   }
 
