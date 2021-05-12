@@ -10,6 +10,8 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState();
   const [loading, setLoading] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
+  const [rerender, setrerender] = useState(false);
   async function signup(email, password, isProfessor, name) {
     const idRes = await auth.createUserWithEmailAndPassword(email, password);
 
@@ -21,22 +23,27 @@ export function AuthProvider({ children }) {
       email: email,
       password: password,
     });
-
+    setIsLogin(true);
+    setrerender((o) => !o);
     return;
   }
   function login(email, password) {
+    setIsLogin(true);
+    setrerender((o) => !o);
     return auth.signInWithEmailAndPassword(email, password);
   }
 
   useEffect(() => {
-    const ussubscribe = auth.onAuthStateChanged((user) => {
-      const ref = store.collection("User").doc(user.uid);
-      ref.get().then((item) => {
-        setCurrentUser(item.data());
+    if (isLogin) {
+      const ussubscribe = auth.onAuthStateChanged((user) => {
+        const ref = store.collection("User").doc(user.uid);
+        ref.get().then((item) => {
+          setCurrentUser(item.data());
+        });
       });
-      setLoading(false);
-    });
-    return ussubscribe;
+      return ussubscribe;
+    }
+    setLoading(false);
   });
   const value = {
     currentUser,
