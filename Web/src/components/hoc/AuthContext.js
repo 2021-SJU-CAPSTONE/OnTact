@@ -36,10 +36,12 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     if (isLogin) {
       const ussubscribe = auth.onAuthStateChanged(user => {
-        const ref = store.collection("User").doc(user.uid);
-        ref.get().then(item => {
-          setCurrentUser(item.data());
-        });
+        if (user) {
+          const ref = store.collection("User").doc(user.uid);
+          ref.get().then(item => {
+            setCurrentUser(item.data());
+          });
+        }
       });
       return ussubscribe;
     }
