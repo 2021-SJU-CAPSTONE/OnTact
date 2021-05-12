@@ -29,9 +29,9 @@ export function AuthProvider({ children }) {
   }
 
   useEffect(() => {
-    const ussubscribe = auth.onAuthStateChanged((user) => {
+    const ussubscribe = auth.onAuthStateChanged(user => {
       const ref = store.collection("User").doc(user.uid);
-      ref.get().then((item) => {
+      ref.get().then(item => {
         setCurrentUser(item.data());
       });
       setLoading(false);
@@ -43,9 +43,5 @@ export function AuthProvider({ children }) {
     signup,
     login,
   };
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }
