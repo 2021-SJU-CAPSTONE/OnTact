@@ -11,7 +11,8 @@ import CheckAttendence from "./views/StudentPage/CheckAttendence/CheckAttendence
 import addlecture from "./views/ProfessorPage/addlecture";
 import LiveLecture from "./views/LiveLecture/LiveLecture";
 import signUp from "./views/signUp/signUp";
-
+import reacordvideo from "./views/RecordVideo/RecordVideo";
+import RecordVideo from "./views/RecordVideo/RecordVideo";
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
@@ -39,6 +40,7 @@ function App() {
               component={addlecture}
             />
             <Route exact path="/livelecture" component={LiveLecture} />
+            <Route path="/recordvideo" component={RecordVideo} />
           </Switch>
         </div>
       </AuthProvider>
