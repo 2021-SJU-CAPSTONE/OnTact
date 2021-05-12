@@ -11,7 +11,7 @@ const LocalVideo = (prop: Prop) => {
 
   React.useEffect(() => {
     const peer = prop.peer;
-    if (peer !== null) {
+    if (peer) {
       console.log(prop.localID);
       navigator.mediaDevices
         .getUserMedia({ video: true, audio: true })

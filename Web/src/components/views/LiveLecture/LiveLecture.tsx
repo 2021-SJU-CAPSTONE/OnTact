@@ -5,12 +5,16 @@ import LocalVideo from "../Video/LocalVideo";
 import Peer from "peerjs";
 //Todo
 //peer js
+//https://jinhyukoo.github.io/js/2020/12/13/peerJS%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html
+//https://velog.io/@mgm-dev/PeerJS%EB%A1%9C-WebRTC-%EC%89%BD%EA%B2%8C-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0#2-peerjs%EB%8A%94-%EB%98%90-%EB%AC%B4%EC%97%87
 //professor, student page
+const roomId = 1000;
+
 const LiveLecture = () => {
   const [localID, setLocalID] = React.useState("");
   const [remoteID, setRemoteID] = React.useState("");
   const [isConnect, setIsConnect] = React.useState(false);
-  let peer: Peer | null = null;
+  const [peer, setPeer] = React.useState<Peer | null>(null);
   const changelocalID = (event) => {
     const result = event.target.value;
     setLocalID(result);
@@ -33,8 +37,8 @@ const LiveLecture = () => {
       <button
         onClick={() => {
           setIsConnect((o) => !o);
-          peer = new Peer(localID);
-          console.log(localID);
+          setPeer(new Peer(localID));
+          console.log(isConnect, peer);
         }}
       >
         CONNECT
@@ -50,7 +54,7 @@ const LiveLecture = () => {
             marginLeft: "50px",
           }}
         >
-          {isConnect ? (
+          {isConnect && peer ? (
             <LocalVideo remoteID={remoteID} localID={localID} peer={peer} />
           ) : null}
         </div>
