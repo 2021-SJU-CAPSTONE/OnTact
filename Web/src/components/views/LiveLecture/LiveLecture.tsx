@@ -1,8 +1,9 @@
-import React, { RefObject } from "react";
+import React from "react";
 import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import LocalVideo from "../Video/LocalVideo";
 import Peer from "peerjs";
+import io from "socket.io-client";
 //Todo
 //peer js
 //https://jinhyukoo.github.io/js/2020/12/13/peerJS%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html
@@ -15,6 +16,7 @@ const LiveLecture = () => {
   const [remoteID, setRemoteID] = React.useState("");
   const [isConnect, setIsConnect] = React.useState(false);
   const [peer, setPeer] = React.useState<Peer | null>(null);
+  let socket;
   const changelocalID = (event) => {
     const result = event.target.value;
     setLocalID(result);
@@ -36,9 +38,9 @@ const LiveLecture = () => {
       </h3>
       <button
         onClick={() => {
-          setIsConnect((o) => !o);
           setPeer(new Peer(localID));
-          console.log(isConnect, peer);
+          socket = io("http://localhost:5000");
+          setIsConnect(true);
         }}
       >
         CONNECT
@@ -55,7 +57,12 @@ const LiveLecture = () => {
           }}
         >
           {isConnect && peer ? (
-            <LocalVideo remoteID={remoteID} localID={localID} peer={peer} />
+            <LocalVideo
+              remoteID={remoteID}
+              localID={localID}
+              socket={socket}
+              peer={peer}
+            />
           ) : null}
         </div>
         <div>
