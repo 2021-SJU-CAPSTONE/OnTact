@@ -1,14 +1,25 @@
 import express from "express";
-import { createServer } from "http";
-import { socket } from "./socket";
+import cors from "cors";
+import server from "http";
 
 const app = express();
-const server = createServer(app);
+const serve = server.createServer(app);
+const port = 5000;
 
-app.use("/", express.static(`${process.cwd()}/../client/build`));
+//Middle ware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-export const run = (port: number) => {
-  server.listen(port);
-  socket(server);
-  console.log(`server is listening at :${port}`);
-};
+app.post("/join", (req, res) => {
+  const localID = req.body.localID;
+  res.send({ some: "asdf" });
+});
+
+serve
+  .listen(5000, () => {
+    console.log(`listen in ${port}`);
+  })
+  .on("error", e => {
+    console.error(e);
+  });

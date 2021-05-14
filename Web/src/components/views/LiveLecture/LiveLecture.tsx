@@ -3,11 +3,15 @@ import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import LocalVideo from "../Video/LocalVideo";
 import Peer from "peerjs";
+import axios from "axios";
 //Todo
 //peer js
 //https://jinhyukoo.github.io/js/2020/12/13/peerJS%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html
 //https://velog.io/@mgm-dev/PeerJS%EB%A1%9C-WebRTC-%EC%89%BD%EA%B2%8C-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0#2-peerjs%EB%8A%94-%EB%98%90-%EB%AC%B4%EC%97%87
+//https://dev.to/arjhun777/video-chatting-and-screen-sharing-with-react-node-webrtc-peerjs-18fg
+//https://www.toptal.com/webrtc/taming-webrtc-with-peerjs
 //professor, student page
+
 const roomId = 1000;
 
 const LiveLecture = () => {
@@ -15,11 +19,11 @@ const LiveLecture = () => {
   const [remoteID, setRemoteID] = React.useState("");
   const [isConnect, setIsConnect] = React.useState(false);
   const [peer, setPeer] = React.useState<Peer | null>(null);
-  const changelocalID = (event) => {
+  const changelocalID = event => {
     const result = event.target.value;
     setLocalID(result);
   };
-  const changeremoteID = (event) => {
+  const changeremoteID = event => {
     const result = event.target.value;
     setRemoteID(result);
   };
@@ -36,9 +40,15 @@ const LiveLecture = () => {
       </h3>
       <button
         onClick={() => {
-          setIsConnect((o) => !o);
+          setIsConnect(o => !o);
           setPeer(new Peer(localID));
-          console.log(isConnect, peer);
+          axios({
+            method: "POST",
+            url: "http://192.168.1.142:5000/join",
+            data: {
+              name: "dd",
+            },
+          }).then(res => console.log(res.data));
         }}
       >
         CONNECT
@@ -54,6 +64,7 @@ const LiveLecture = () => {
             marginLeft: "50px",
           }}
         >
+          {console.log(isConnect, peer)}
           {isConnect && peer ? (
             <LocalVideo remoteID={remoteID} localID={localID} peer={peer} />
           ) : null}

@@ -12,18 +12,17 @@ const LocalVideo = (prop: Prop) => {
   React.useEffect(() => {
     const peer = prop.peer;
     if (peer) {
-      console.log(prop.localID);
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((stream) => {
-          if (localVideo.current) {
-            localVideo.current.srcObject = stream;
-          }
-          const call = peer.call(prop.remoteID, stream);
-          peer.on("call", (call) => {
-            call.answer(stream);
-          });
+      console.log(peer);
+      navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
+        if (localVideo.current) {
+          localVideo.current.srcObject = stream;
+        }
+        peer.call(prop.remoteID, stream);
+        peer.on("call", call => {
+          console.log(call);
+          call.answer(stream);
         });
+      });
     }
   });
 
