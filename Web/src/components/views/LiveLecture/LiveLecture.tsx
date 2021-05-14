@@ -2,8 +2,6 @@ import React from "react";
 import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import LocalVideo from "../Video/LocalVideo";
-import Peer from "peerjs";
-import io from "socket.io-client";
 //Todo
 //peer js
 //https://jinhyukoo.github.io/js/2020/12/13/peerJS%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html
@@ -12,14 +10,10 @@ import io from "socket.io-client";
 //https://www.toptal.com/webrtc/taming-webrtc-with-peerjs
 //professor, student page
 
-const roomId = 1000;
-
 const LiveLecture = () => {
   const [localID, setLocalID] = React.useState("");
   const [remoteID, setRemoteID] = React.useState("");
   const [isConnect, setIsConnect] = React.useState(false);
-  const [peer, setPeer] = React.useState<Peer | null>(null);
-  let socket;
   const changelocalID = event => {
     const result = event.target.value;
     setLocalID(result);
@@ -41,8 +35,6 @@ const LiveLecture = () => {
       </h3>
       <button
         onClick={() => {
-          setPeer(new Peer(localID));
-          socket = io("http://localhost:5000");
           setIsConnect(true);
         }}
       >
@@ -59,10 +51,7 @@ const LiveLecture = () => {
             marginLeft: "50px",
           }}
         >
-          {console.log(isConnect, peer)}
-          {isConnect && peer ? (
-            <LocalVideo remoteID={remoteID} localID={localID} socket={socket} peer={peer} />
-          ) : null}
+          {isConnect ? <LocalVideo remoteId={remoteID} localId={localID} /> : null}
         </div>
         <div>
           <Chatting />
