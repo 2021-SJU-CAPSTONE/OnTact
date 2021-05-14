@@ -2,8 +2,9 @@ import React, { Component, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import "./Sections/AdminLecture.css";
 import StudentList from "./Sections/StudentList";
-import Addstudent from "./Sections/Addstudent";
+
 import { Link } from "react-router-dom";
+import AttendBoard from "./Sections/AttendBoard";
 //import Lecturelist from './Sections/Lecturelist';
 function AdimnLecture() {
   const [state, setstate] = useState("");
@@ -67,7 +68,7 @@ function AdimnLecture() {
           금요일 13:30 ~ 19:00
         </span>
         <div>
-          <Addstudent />
+          <AttendBoard />
         </div>
         <Link to="/professorpage">
           <span

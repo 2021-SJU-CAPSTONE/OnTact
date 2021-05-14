@@ -41,13 +41,15 @@ function Lecturelist() {
                       출석확인
                     </button>
                   </Link>
-                  <button
-                    className="btn btn-warning mr-2 font-weight-bold"
-                    style={{ fontSize: "1rem" }}
-                  >
-                    {" "}
-                    녹화강의
-                  </button>
+                  <Link to="/recordvideo">
+                    <button
+                      className="btn btn-warning mr-2 font-weight-bold"
+                      style={{ fontSize: "1rem" }}
+                    >
+                      {" "}
+                      녹화강의
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
