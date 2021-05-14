@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../hoc/AuthContext";
+import { auth, store } from "../../firebase";
 import logo from "../Navbar/Sections/onTact.png";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
@@ -30,7 +31,13 @@ const LoginPage = () => {
     setError("");
     setLoading(true);
     await login(emailRef.current.value, passwordRef.current.value);
-    if (currentUser.isProfessor === "on") {
+
+    const ref = store.collection("User").doc(auth.currentUser.uid);
+    ref.get().then((item) => {
+      auth.currentUser.isProfessor = item.data().isProfessor;
+      console.log(auth.currentUser.isProfessor);
+    });
+    if (auth.currentUser.isProfessor === "on") {
       history.push("/professorpage");
     } else {
       history.push("/studentpage");

@@ -43,12 +43,14 @@ function Lecturelist() {
                   </div>
                 </div>
                 <div className="d-flex flex-row">
-                  <button
-                    className="btn btn-success mr-2 font-weight-bold"
-                    style={{ fontSize: "1rem" }}
-                  >
-                    강의시작
-                  </button>
+                  <Link to="/livelecture">
+                    <button
+                      className="btn btn-success mr-2 font-weight-bold"
+                      style={{ fontSize: "1rem" }}
+                    >
+                      강의시작
+                    </button>
+                  </Link>
                   <Link to="/professorpage/adminlecture">
                     <button
                       className="btn btn-danger mr-2 font-weight-bold"

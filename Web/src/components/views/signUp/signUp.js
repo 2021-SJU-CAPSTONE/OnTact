@@ -18,23 +18,20 @@ export default function SignUp() {
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
       return setError("Passwords do not match");
     }
-    try {
-      setError("");
-      setLoading(true);
-      await signup(
-        emailRef.current.value,
-        passwordRef.current.value,
-        isprofessor.current.value,
-        name.current.value
-      );
 
-      if (currentUser.isProfessor === "on") {
-        history.push("/professorpage");
-      } else {
-        history.push("/studentpage");
-      }
-    } catch {
-      setError("Failed to create an account");
+    setError("");
+    setLoading(true);
+    await signup(
+      emailRef.current.value,
+      passwordRef.current.value,
+      isprofessor.current.value,
+      name.current.value
+    );
+
+    if (currentUser === "on") {
+      history.push("/professorpage");
+    } else {
+      history.push("/studentpage");
     }
   }
 
