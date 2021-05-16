@@ -41,7 +41,7 @@ function Lecturelist() {
                       출석확인
                     </button>
                   </Link>
-                  <Link to="/recordvideo">
+                  <Link to="/studentpage/recordlecturelist">
                     <button
                       className="btn btn-warning mr-2 font-weight-bold"
                       style={{ fontSize: "1rem" }}
