@@ -21,7 +21,6 @@ const getSocket = () => {
     console.log("get socket", socket);
   }
 };
-
 const educatorConnect = (
   localId: string,
   localStream: MediaStream,
