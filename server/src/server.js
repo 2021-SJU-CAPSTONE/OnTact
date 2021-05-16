@@ -20,10 +20,7 @@ const io = require("socket.io")(server, {
 });
 io.on("connection", socket => {
   // console.log("[connected]", socket.id, new Date());
-  socket.emit("test", socket.id);
   socket.on("join-room", (roomId, userId) => {
-    //roomid 가 안받아짐
-
     console.log(roomId, userId);
     socket.join(roomId);
     socket.to(roomId).emit("user-connected", userId);
@@ -31,6 +28,9 @@ io.on("connection", socket => {
     socket.on("disconnect", () => {
       socket.to(roomId).emit("user-disconnected", userId);
     });
+  });
+  socket.on("send-stream", (roomId, stream) => {
+    socket.to(roomId).emit("get-stream", stream);
   });
 });
 

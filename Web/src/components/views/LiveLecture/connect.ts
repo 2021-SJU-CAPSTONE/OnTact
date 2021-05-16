@@ -1,15 +1,7 @@
 import io from "socket.io-client";
 import Peer from "peerjs";
 
-// export default const
 let peers = {};
-type Params = {
-  localId: string;
-  localStream: MediaStream;
-  localVideoRef: React.RefObject<HTMLVideoElement>;
-  remoteVideoRef: React.RefObject<HTMLVideoElement>;
-  isProf: boolean;
-};
 // const socket = io("http://localhost:5001", { transports: ["polling"] });
 let socket;
 const roomId = "test_room";
@@ -21,39 +13,40 @@ const getSocket = () => {
     console.log("get socket", socket);
   }
 };
-const educatorConnect = (
+export const educateeConnect = (
   localId: string,
-  localStream: MediaStream,
-  localVideoRef: React.RefObject<HTMLVideoElement>,
+  stream: MediaStream,
   remoteVideoRef: React.RefObject<HTMLVideoElement>
 ) => {
   getSocket();
   const peer = new Peer(localId);
-  if (localVideoRef.current) {
-    localVideoRef.current.srcObject = localStream;
-  }
+  // if (localVideoRef.current) {
+  //   localVideoRef.current.srcObject = localStream;
+  // }
   peer.on("open", id => {
     // id : localid
     console.log(`open peer by ${id}`);
     socket.emit("join-room", roomId, id);
   });
   peer.on("call", call => {
-    console.log("call peer");
-    call.answer(localStream);
+    // call.answer(localStream);
     call.on("stream", remoteStream => {
       if (remoteVideoRef.current) {
         remoteVideoRef.current.srcObject = remoteStream;
       }
     });
   });
-  socket.on("test", socketId => {
-    console.log(socketId);
+  socket.on("get-stream", (stream: MediaStream) => {
+    if (remoteVideoRef.current) {
+      remoteVideoRef.current.srcObject = stream;
+    }
   });
   socket.on("user-connected", userId => {
     //steam 수신 peer 연결
     // userid : 상대방 아이디
+
     console.log("connected with :", userId);
-    const call = peer.call(userId, localStream);
+    const call = peer.call(userId, stream);
     call.on("stream", remoteStream => {
       if (remoteVideoRef.current) {
         remoteVideoRef.current.srcObject = remoteStream;
@@ -68,5 +61,47 @@ const educatorConnect = (
     peers[userId] = call;
   });
 };
+export const educatorConnect = (
+  localId: string,
+  localStream: MediaStream,
+  localVideoRef: React.RefObject<HTMLVideoElement>
+) => {
+  getSocket();
+  const peer = new Peer(localId);
+  if (localVideoRef.current) {
+    localVideoRef.current.srcObject = localStream;
+  }
+  peer.on("open", id => {
+    // id : localid
+    console.log(`open peer by ${id}`);
+    socket.emit("join-room", roomId, id);
+    socket.emit("send-stream", roomId, localStream);
+  });
+  peer.on("call", call => {
+    call.answer(localStream);
+    // call.on("stream", remoteStream => {
+    //   if (remoteVideoRef.current) {
+    //     remoteVideoRef.current.srcObject = remoteStream;
+    //   }
+    // });
+  });
 
-export default educatorConnect;
+  socket.on("user-connected", userId => {
+    //steam 수신 peer 연결
+    // userid : 상대방 아이디
+    console.log("connected with :", userId);
+    const call = peer.call(userId, localStream);
+    // call.on("stream", remoteStream => {
+    //   if (remoteVideoRef.current) {
+    //     remoteVideoRef.current.srcObject = remoteStream;
+    //   }
+    // });
+    // call.on("close", () => {
+    //   if (remoteVideoRef.current) {
+    //     remoteVideoRef.current.remove();
+    //   }
+    // });
+    console.log(peers);
+    peers[userId] = call;
+  });
+};
