@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { useAuth } from "../../hoc/AuthContext";
 import { Link, useHistory } from "react-router-dom";
+import { auth, store } from "../../firebase";
 export default function SignUp() {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -27,8 +28,12 @@ export default function SignUp() {
       isprofessor.current.value,
       name.current.value
     );
-
-    if (currentUser === "on") {
+    const ref = store.collection("User").doc(auth.currentUser.uid);
+    ref.get().then((item) => {
+      auth.currentUser.isProfessor = item.data().isProfessor;
+    });
+    console.log(isprofessor);
+    if (isprofessor === "on") {
       history.push("/professorpage");
     } else {
       history.push("/studentpage");
