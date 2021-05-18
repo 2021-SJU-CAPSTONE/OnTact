@@ -19,7 +19,7 @@ const io = require("socket.io")(server, {
   },
 });
 io.on("connection", socket => {
-  // console.log("[connected]", socket.id, new Date());
+  console.log("[connected from]", socket.id, new Date());
   socket.on("join-room", (roomId, userId) => {
     console.log(roomId, userId);
     socket.join(roomId);
@@ -35,3 +35,4 @@ io.on("connection", socket => {
 });
 
 server.listen(port);
+console.log(`listen in ${port} port`);
