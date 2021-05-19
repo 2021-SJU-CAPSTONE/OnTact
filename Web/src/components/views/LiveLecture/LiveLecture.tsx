@@ -2,7 +2,7 @@ import React from "react";
 import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import { educatorConnect, educateeConnect } from "./connect";
-import { auth } from "../../firebase";
+import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 
 //Todo
 // isProf 대신 Auth 에서 직접 계정 정보를 가져온다. currentUser
@@ -19,25 +19,31 @@ const LiveLecture = () => {
   const [v, reload] = React.useState(false);
   const localIdRef = React.createRef<HTMLInputElement>();
   const videoRef = React.createRef<HTMLVideoElement>();
-  const isProf = auth.currentUser;
-
+  const currentUid = getCurrentUserUid();
   React.useEffect(() => {
-    console.log(auth.currentUser);
-    if (isConnect) {
-      if (isProf) {
-        navigator.mediaDevices
-          .getUserMedia({ video: true, audio: false })
-          .then((stream) => {
-            educatorConnect(localId, stream, videoRef);
-          });
-      } else {
-        navigator.mediaDevices
-          .getUserMedia({ video: true, audio: false })
-          .then((stream) => {
-            educateeConnect(localId, stream, videoRef);
-          });
+    getUserInfo(currentUid).then((currentUserInfo) => {
+      if (currentUserInfo !== undefined) {
+        console.log(
+          "[currentUserInfo.isProfessor] : ",
+          currentUserInfo.isProfessor
+        );
+        if (isConnect) {
+          if (currentUserInfo.isProf === "on") {
+            navigator.mediaDevices
+              .getUserMedia({ video: true, audio: false })
+              .then((stream) => {
+                educatorConnect(localId, stream, videoRef);
+              });
+          } else {
+            navigator.mediaDevices
+              .getUserMedia({ video: true, audio: false })
+              .then((stream) => {
+                educateeConnect(localId, stream, videoRef);
+              });
+          }
+        }
       }
-    }
+    });
   });
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>

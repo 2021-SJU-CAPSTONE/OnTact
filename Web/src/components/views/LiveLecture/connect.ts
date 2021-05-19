@@ -12,7 +12,12 @@ const roomId = "test_room";
 const profId = "p";
 const getSocket = () => {
   if (!socket) {
-    socket = io("http://localhost:5001", { transports: ["polling"] });
+    // socket = io("https://115.91.214.5:5000", {
+    //   transports: ["polling"],
+    // });
+    socket = io("https://capstone-ontact.herokuapp.com", {
+      transports: ["polling"],
+    });
     console.log("get socket", socket);
   }
 };
