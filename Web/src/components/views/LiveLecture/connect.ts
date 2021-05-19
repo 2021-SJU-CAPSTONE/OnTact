@@ -23,14 +23,14 @@ export const educateeConnect = (
   // if (localVideoRef.current) {
   //   localVideoRef.current.srcObject = localStream;
   // }
-  peer.on("open", id => {
+  peer.on("open", (id) => {
     // id : localid
     console.log(`open peer by ${id}`);
     socket.emit("join-room", roomId, id);
   });
-  peer.on("call", call => {
+  peer.on("call", (call) => {
     // call.answer(localStream);
-    call.on("stream", remoteStream => {
+    call.on("stream", (remoteStream) => {
       if (remoteVideoRef.current) {
         remoteVideoRef.current.srcObject = remoteStream;
       }
@@ -41,13 +41,13 @@ export const educateeConnect = (
       remoteVideoRef.current.srcObject = stream;
     }
   });
-  socket.on("user-connected", userId => {
+  socket.on("user-connected", (userId) => {
     //steam 수신 peer 연결
     // userid : 상대방 아이디
 
     console.log("connected with :", userId);
     const call = peer.call(userId, stream);
-    call.on("stream", remoteStream => {
+    call.on("stream", (remoteStream) => {
       if (remoteVideoRef.current) {
         remoteVideoRef.current.srcObject = remoteStream;
       }
@@ -71,13 +71,13 @@ export const educatorConnect = (
   if (localVideoRef.current) {
     localVideoRef.current.srcObject = localStream;
   }
-  peer.on("open", id => {
+  peer.on("open", (id) => {
     // id : localid
     console.log(`open peer by ${id}`);
     socket.emit("join-room", roomId, id);
     socket.emit("send-stream", roomId, localStream);
   });
-  peer.on("call", call => {
+  peer.on("call", (call) => {
     call.answer(localStream);
     // call.on("stream", remoteStream => {
     //   if (remoteVideoRef.current) {
@@ -86,7 +86,7 @@ export const educatorConnect = (
     // });
   });
 
-  socket.on("user-connected", userId => {
+  socket.on("user-connected", (userId) => {
     //steam 수신 peer 연결
     // userid : 상대방 아이디
     console.log("connected with :", userId);

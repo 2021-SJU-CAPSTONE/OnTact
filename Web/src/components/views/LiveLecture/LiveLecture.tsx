@@ -19,13 +19,17 @@ const LiveLecture = () => {
   React.useEffect(() => {
     if (isConnect) {
       if (isProf) {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-          educatorConnect(localId, stream, videoRef);
-        });
+        navigator.mediaDevices
+          .getUserMedia({ video: true, audio: false })
+          .then((stream) => {
+            educatorConnect(localId, stream, videoRef);
+          });
       } else {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-          educateeConnect(localId, stream, videoRef);
-        });
+        navigator.mediaDevices
+          .getUserMedia({ video: true, audio: false })
+          .then((stream) => {
+            educateeConnect(localId, stream, videoRef);
+          });
       }
     }
   });
@@ -56,7 +60,9 @@ const LiveLecture = () => {
             marginLeft: "50px",
           }}
         >
-          {isConnect ? <video ref={videoRef} autoPlay playsInline></video> : null}
+          {isConnect ? (
+            <video ref={videoRef} autoPlay playsInline></video>
+          ) : null}
         </div>
         <div>
           <Chatting />
