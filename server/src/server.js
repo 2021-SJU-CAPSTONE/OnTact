@@ -18,7 +18,7 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   console.log("[connected from]", socket.id, new Date());
   socket.on("join-room", (roomId, userId) => {
     console.log(roomId, userId);
@@ -28,9 +28,6 @@ io.on("connection", socket => {
     socket.on("disconnect", () => {
       socket.to(roomId).emit("user-disconnected", userId);
     });
-  });
-  socket.on("send-stream", (roomId, stream) => {
-    socket.to(roomId).emit("get-stream", stream);
   });
 });
 
