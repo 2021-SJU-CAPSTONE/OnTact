@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { useAuth } from "../../hoc/AuthContext";
 import Lecturelist from "./Sections/Lecturelist";
+import { Link } from "react-router-dom";
 //import Lecturelist from './Sections/Lecturelist';
 function StudentPage() {
   const { currentUser } = useAuth();
@@ -18,6 +19,11 @@ function StudentPage() {
       </div>
       <div style={{ textAlign: "center" }}>
         <Lecturelist />
+      </div>
+      <div>
+        <Link to="/livelecture">
+          <button>backdoor</button>
+        </Link>
       </div>
     </div>
   );
