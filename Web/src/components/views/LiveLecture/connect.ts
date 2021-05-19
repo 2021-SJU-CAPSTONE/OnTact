@@ -2,6 +2,7 @@ import io from "socket.io-client";
 import Peer from "peerjs";
 
 let peers = {};
+let a = 0;
 // const socket = io("http://localhost:5001", { transports: ["polling"] });
 let socket;
 const roomId = "test_room";
@@ -19,6 +20,8 @@ export const educateeConnect = (
   remoteVideoRef: React.RefObject<HTMLVideoElement>
 ) => {
   getSocket();
+  a = a + 1;
+  console.log(a);
   const peer = new Peer(localId);
   // if (localVideoRef.current) {
   //   localVideoRef.current.srcObject = localStream;
@@ -67,6 +70,8 @@ export const educatorConnect = (
   localVideoRef: React.RefObject<HTMLVideoElement>
 ) => {
   getSocket();
+  a = a + 1;
+  console.log(a);
   const peer = new Peer(localId);
   if (localVideoRef.current) {
     localVideoRef.current.srcObject = localStream;
@@ -79,11 +84,11 @@ export const educatorConnect = (
   });
   peer.on("call", (call) => {
     call.answer(localStream);
-    // call.on("stream", remoteStream => {
-    //   if (remoteVideoRef.current) {
-    //     remoteVideoRef.current.srcObject = remoteStream;
-    //   }
-    // });
+    call.on("stream", remoteStream => {
+      //   if (remoteVideoRef.current) {
+      //     remoteVideoRef.current.srcObject = remoteStream;
+      //   }
+    });
   });
 
   socket.on("user-connected", (userId) => {
@@ -91,16 +96,16 @@ export const educatorConnect = (
     // userid : 상대방 아이디
     console.log("connected with :", userId);
     const call = peer.call(userId, localStream);
-    // call.on("stream", remoteStream => {
-    //   if (remoteVideoRef.current) {
-    //     remoteVideoRef.current.srcObject = remoteStream;
-    //   }
-    // });
-    // call.on("close", () => {
-    //   if (remoteVideoRef.current) {
-    //     remoteVideoRef.current.remove();
-    //   }
-    // });
+    call.on("stream", remoteStream => {
+      // if (remoteVideoRef.current) {
+      //   remoteVideoRef.current.srcObject = remoteStream;
+      // }
+    });
+    call.on("close", () => {
+      // if (remoteVideoRef.current) {
+      //   remoteVideoRef.current.remove();
+      // }
+    });
     console.log(peers);
     peers[userId] = call;
   });

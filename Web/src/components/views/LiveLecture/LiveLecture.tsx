@@ -12,26 +12,29 @@ import { educatorConnect, educateeConnect } from "./connect";
 const LiveLecture = () => {
   const [localId, setlocalId] = React.useState("");
   const [isConnect, setIsConnect] = React.useState(false);
+  const [v, reload] = React.useState(false);
   const localIdRef = React.createRef<HTMLInputElement>();
   const videoRef = React.createRef<HTMLVideoElement>();
   const isProf = localId === "p" ? true : false;
 
   React.useEffect(() => {
-    if (isConnect) {
-      if (isProf) {
-        navigator.mediaDevices
-          .getUserMedia({ video: true, audio: false })
-          .then((stream) => {
-            educatorConnect(localId, stream, videoRef);
-          });
-      } else {
-        navigator.mediaDevices
-          .getUserMedia({ video: true, audio: false })
-          .then((stream) => {
-            educateeConnect(localId, stream, videoRef);
-          });
+    setInterval(() => {
+      if (isConnect) {
+        if (isProf) {
+          navigator.mediaDevices
+            .getUserMedia({ video: true, audio: false })
+            .then((stream) => {
+              educatorConnect(localId, stream, videoRef);
+            });
+        } else {
+          navigator.mediaDevices
+            .getUserMedia({ video: true, audio: false })
+            .then((stream) => {
+              educateeConnect(localId, stream, videoRef);
+            });
+        }
       }
-    }
+    }, 1000);
   });
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
@@ -42,6 +45,7 @@ const LiveLecture = () => {
       <button
         onClick={() => {
           setIsConnect(true);
+          reload((o) => !o);
           if (localIdRef.current) {
             setlocalId(localIdRef.current.value);
           }
