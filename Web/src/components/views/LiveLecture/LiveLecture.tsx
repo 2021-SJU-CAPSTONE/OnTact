@@ -2,8 +2,12 @@ import React from "react";
 import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import { educatorConnect, educateeConnect } from "./connect";
+import { auth } from "../../firebase";
+
 //Todo
 // isProf 대신 Auth 에서 직접 계정 정보를 가져온다. currentUser
+// socket 유지시간
+
 //https://jinhyukoo.github.io/js/2020/12/13/peerJS%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html
 //https://velog.io/@mgm-dev/PeerJS%EB%A1%9C-WebRTC-%EC%89%BD%EA%B2%8C-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0#2-peerjs%EB%8A%94-%EB%98%90-%EB%AC%B4%EC%97%87
 //https://dev.to/arjhun777/video-chatting-and-screen-sharing-with-react-node-webrtc-peerjs-18fg
@@ -15,9 +19,10 @@ const LiveLecture = () => {
   const [v, reload] = React.useState(false);
   const localIdRef = React.createRef<HTMLInputElement>();
   const videoRef = React.createRef<HTMLVideoElement>();
-  const isProf = localId === "p" ? true : false;
+  const isProf = auth.currentUser;
 
   React.useEffect(() => {
+    console.log(auth.currentUser);
     if (isConnect) {
       if (isProf) {
         navigator.mediaDevices

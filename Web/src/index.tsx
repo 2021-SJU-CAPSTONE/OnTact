@@ -10,7 +10,7 @@ import "mdbreact/dist/css/mdb.css";
 import LiveLecture from "../src/components/views/LiveLecture/LiveLecture";
 ReactDOM.render(
   <BrowserRouter>
-    <LiveLecture />
+    <App />
   </BrowserRouter>,
 
   document.getElementById("root")
