@@ -3,6 +3,7 @@ import Chatting from "./Chat/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import { educatorConnect, educateeConnect } from "./connect";
 import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
+import Subtitle from "./subtitles/Subtitle";
 
 const lectureId = "Sample"; // sample lecture db
 
@@ -59,7 +60,7 @@ const LiveLecture = () => {
             marginLeft: "50px",
           }}
         >
-          {isConnect ? <video ref={videoRef} autoPlay playsInline></video> : null}
+          {isConnect ? <video ref={videoRef} autoPlay playsInline muted></video> : null}
         </div>
         <div>
           <Chatting localId={localId} lectureId={lectureId} />
@@ -74,7 +75,11 @@ const LiveLecture = () => {
             border: "solid",
             // backgroundColor: "gray",
           }}
-        ></div>
+        >
+          <div>
+            <Subtitle />
+          </div>
+        </div>
       </div>
     </div>
   );
