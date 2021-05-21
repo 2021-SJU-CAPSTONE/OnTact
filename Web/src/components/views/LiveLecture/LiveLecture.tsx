@@ -1,17 +1,10 @@
 import React from "react";
-import Chatting from "./Chatting/Chatting";
+import Chatting from "./Chat/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import { educatorConnect, educateeConnect } from "./connect";
 import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 
-//Todo
-// isProf 대신 Auth 에서 직접 계정 정보를 가져온다. currentUser
-// socket 유지시간
-
-//https://jinhyukoo.github.io/js/2020/12/13/peerJS%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0.html
-//https://velog.io/@mgm-dev/PeerJS%EB%A1%9C-WebRTC-%EC%89%BD%EA%B2%8C-%EC%82%AC%EC%9A%A9%ED%95%B4%EB%B3%B4%EA%B8%B0#2-peerjs%EB%8A%94-%EB%98%90-%EB%AC%B4%EC%97%87
-//https://dev.to/arjhun777/video-chatting-and-screen-sharing-with-react-node-webrtc-peerjs-18fg
-//https://www.toptal.com/webrtc/taming-webrtc-with-peerjs
+const lectureId = "Sample"; // sample lecture db
 
 const LiveLecture = () => {
   const [localId, setlocalId] = React.useState("");
@@ -69,7 +62,7 @@ const LiveLecture = () => {
           {isConnect ? <video ref={videoRef} autoPlay playsInline></video> : null}
         </div>
         <div>
-          <Chatting />
+          <Chatting localId={localId} lectureId={lectureId} />
         </div>
       </div>
       <div className="row d-flex">

@@ -10,7 +10,7 @@ let peerIds: string[] = [];
 let socket;
 const roomId = "test_room";
 const profId = "p";
-const getSocket = () => {
+export const getSocket = () => {
   if (!socket) {
     // socket = io("https://115.91.214.5:5000", {
     //   transports: ["polling"],
@@ -20,6 +20,7 @@ const getSocket = () => {
     });
     console.log("get socket", socket);
   }
+  return socket;
 };
 export const educateeConnect = (
   localId: string,
@@ -28,14 +29,14 @@ export const educateeConnect = (
 ) => {
   getSocket();
   const peer = new Peer(localId);
-  peer.on("open", (id) => {
+  peer.on("open", id => {
     // id : localid
     console.log(`[PEER OPEN BY ${id}]`);
     socket.emit("join-room", roomId, id);
   });
-  peer.on("call", (call) => {
+  peer.on("call", call => {
     call.answer(stream);
-    call.on("stream", (remoteStream) => {
+    call.on("stream", remoteStream => {
       console.log("get stream !!!");
       if (remoteVideoRef.current) {
         remoteVideoRef.current.srcObject = remoteStream;
@@ -48,7 +49,7 @@ export const educateeConnect = (
 
     console.log("connected with :", userId);
     const call = peer.call(profId, stream);
-    call.on("stream", (remoteStream) => {
+    call.on("stream", remoteStream => {
       if (remoteVideoRef.current) {
         remoteVideoRef.current.srcObject = remoteStream;
       }
@@ -73,22 +74,22 @@ export const educatorConnect = (
   if (localVideoRef.current) {
     localVideoRef.current.srcObject = localStream;
   }
-  peer.on("open", (id) => {
+  peer.on("open", id => {
     // id : localid
     console.log(`open peer by ${id}`);
     socket.emit("join-room", roomId, id);
   });
-  peer.on("call", (call) => {
+  peer.on("call", call => {
     call.answer(localStream);
-    call.on("stream", (remoteStream) => {});
+    call.on("stream", remoteStream => {});
   });
 
-  socket.on("user-connected", (userId) => {
+  socket.on("user-connected", userId => {
     //steam 수신 peer 연결
     // userid : 상대방 아이디
     console.log("connected with :", userId);
     const call = peer.call(userId, localStream);
-    call.on("stream", (remoteStream) => {});
+    call.on("stream", remoteStream => {});
     call.on("close", () => {});
     peerList[userId] = call;
     peerIds.push(userId);
