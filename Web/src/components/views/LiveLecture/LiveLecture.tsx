@@ -3,6 +3,7 @@ import Chatting from "./Chatting/Chatting";
 import ChatWrite from "./Chatting/ChatWrite";
 import { educatorConnect, educateeConnect } from "./connect";
 import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
+import Subtitle from "./subtitles/Subtitle";
 
 //Todo
 // isProf 대신 Auth 에서 직접 계정 정보를 가져온다. currentUser
@@ -30,13 +31,13 @@ const LiveLecture = () => {
         if (isConnect) {
           if (currentUserInfo.isProf === "on") {
             navigator.mediaDevices
-              .getUserMedia({ video: true, audio: false })
+              .getUserMedia({ video: true, audio: true })
               .then((stream) => {
                 educatorConnect(localId, stream, videoRef);
               });
           } else {
             navigator.mediaDevices
-              .getUserMedia({ video: true, audio: false })
+              .getUserMedia({ video: true, audio: true })
               .then((stream) => {
                 educateeConnect(localId, stream, videoRef);
               });
@@ -74,7 +75,7 @@ const LiveLecture = () => {
           }}
         >
           {isConnect ? (
-            <video ref={videoRef} autoPlay playsInline></video>
+            <video ref={videoRef} autoPlay playsInline muted></video>
           ) : null}
         </div>
         <div>
@@ -90,7 +91,11 @@ const LiveLecture = () => {
             border: "solid",
             // backgroundColor: "gray",
           }}
-        ></div>
+        >
+          <div>
+            <Subtitle />
+          </div>
+        </div>
       </div>
     </div>
   );
