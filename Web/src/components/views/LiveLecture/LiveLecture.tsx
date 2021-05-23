@@ -5,27 +5,39 @@ import { educatorConnect, educateeConnect } from "./connect";
 import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 import Subtitle from "./subtitles/Subtitle";
 
+type UserInfo = {
+  Dept: string;
+  Name: string;
+  email: string;
+  isProfessor: string;
+  password: string;
+};
 const lectureId = "Sample"; // sample lecture db
 
 const LiveLecture = () => {
-  const [localId, setlocalId] = React.useState("");
   const [isConnect, setIsConnect] = React.useState(false);
   const [v, reload] = React.useState(false);
-  const localIdRef = React.createRef<HTMLInputElement>();
   const videoRef = React.createRef<HTMLVideoElement>();
   const currentUid = getCurrentUserUid();
+  const [userInfo, setUserInfo] = React.useState<UserInfo>();
   React.useEffect(() => {
     getUserInfo(currentUid).then(currentUserInfo => {
       if (currentUserInfo !== undefined) {
-        console.log("[currentUserInfo.isProfessor] : ", currentUserInfo.isProfessor);
+        setUserInfo({
+          Dept: currentUserInfo.Dept,
+          Name: currentUserInfo.Name,
+          email: currentUserInfo.email,
+          isProfessor: currentUserInfo.isProfessor,
+          password: currentUserInfo.password,
+        });
         if (isConnect) {
           if (currentUserInfo.isProfessor === "on") {
             navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-              educatorConnect(localId, stream, videoRef);
+              educatorConnect(currentUid, stream, videoRef);
             });
           } else {
             navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-              educateeConnect(localId, stream, videoRef);
+              educateeConnect(currentUid, stream, videoRef);
             });
           }
         }
@@ -34,17 +46,10 @@ const LiveLecture = () => {
   });
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
-      <h3>
-        localId
-        <input ref={localIdRef}></input>
-      </h3>
       <button
         onClick={() => {
           setIsConnect(true);
           reload(o => !o);
-          if (localIdRef.current) {
-            setlocalId(localIdRef.current.value);
-          }
         }}
       >
         CONNECT
@@ -63,7 +68,7 @@ const LiveLecture = () => {
           {isConnect ? <video ref={videoRef} autoPlay playsInline muted></video> : null}
         </div>
         <div>
-          <Chatting localId={localId} lectureId={lectureId} />
+          <Chatting name={userInfo?.Name} lectureId={lectureId} />
         </div>
       </div>
       <div className="row d-flex">
