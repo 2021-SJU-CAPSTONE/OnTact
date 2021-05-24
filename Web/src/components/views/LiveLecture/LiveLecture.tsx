@@ -20,6 +20,7 @@ const LiveLecture = () => {
   const videoRef = React.useRef<HTMLVideoElement>(null);
   const currentUid = getCurrentUserUid();
   const [userInfo, setUserInfo] = React.useState<UserInfo>();
+  const [localId, setLocalId] = React.useState("");
   React.useEffect(() => {
     if (currentUid === "not login") {
       console.log(currentUid);
@@ -35,16 +36,24 @@ const LiveLecture = () => {
           password: currentUserInfo.password,
         });
         if (isConnect) {
-          if (currentUserInfo.isProfessor === "on") {
+          if (currentUserInfo.isProfessor === "on" || localId === "prof") {
             navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-              if (userInfo !== undefined) {
-                educatorConnect(userInfo.Name, stream, videoRef);
+              if (localId === "prof") {
+                educatorConnect(localId, stream, videoRef);
+              } else {
+                if (userInfo !== undefined) {
+                  educatorConnect(userInfo.Name, stream, videoRef);
+                }
               }
             });
           } else {
             navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-              if (userInfo !== undefined) {
-                educateeConnect(userInfo.Name, stream, videoRef);
+              if (localId === "") {
+                if (userInfo !== undefined) {
+                  educateeConnect(userInfo.Name, stream, videoRef);
+                }
+              } else {
+                educateeConnect(localId, stream, videoRef);
               }
             });
           }
@@ -54,6 +63,11 @@ const LiveLecture = () => {
   }, [v]);
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
+      <input
+        onChange={e => {
+          setLocalId(e.currentTarget.value);
+        }}
+      ></input>
       <button
         onClick={() => {
           setIsConnect(true);

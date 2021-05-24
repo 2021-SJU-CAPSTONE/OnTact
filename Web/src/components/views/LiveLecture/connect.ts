@@ -3,7 +3,7 @@ import Peer from "peerjs";
 type PeerList = {
   [userId: string]: Peer.MediaConnection;
 };
-
+const serverURL = "https://capstone-ontact.herokuapp.com";
 let peerList: PeerList = {};
 let peerIds: string[] = [];
 // const socket = io("http://localhost:5001", { transports: ["polling"] });
@@ -15,7 +15,7 @@ export const getSocket = () => {
     // socket = io("https://115.91.214.5:5000", {
     //   transports: ["polling"],
     // });
-    socket = io("https://capstone-ontact.herokuapp.com", {
+    socket = io(serverURL, {
       transports: ["polling"],
     });
     console.log("get socket", socket);
@@ -28,7 +28,7 @@ export const educateeConnect = (
   remoteVideoRef: React.RefObject<HTMLVideoElement>
 ) => {
   getSocket();
-  const peer = new Peer(localId);
+  const peer = new Peer(localId, { host: "capstone-ontact.herokuapp.com", port: 8000, path: "/" });
   peer.on("open", id => {
     // id : localid
     console.log(`[PEER OPEN BY ${id}]`);
@@ -70,7 +70,7 @@ export const educatorConnect = (
   localVideoRef: React.RefObject<HTMLVideoElement>
 ) => {
   getSocket();
-  const peer = new Peer(localId);
+  const peer = new Peer(localId, { host: "localhost", port: 8000, path: "/" });
   if (localVideoRef.current) {
     localVideoRef.current.srcObject = localStream;
   }
