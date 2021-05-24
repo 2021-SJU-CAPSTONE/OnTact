@@ -2,6 +2,7 @@ import React from "react";
 import { store } from "../../../firebase";
 import firebase from "firebase";
 import Message from "./Message";
+import { ChatBox } from "react-chatbox-component";
 type MessageType = {
   username: string;
   message: string;
@@ -39,17 +40,37 @@ const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => 
   };
 
   return (
-    <div className="Chatting">
-      <div>
+    <div
+      style={{
+        height: "73vh",
+        width: "680px",
+        border: "solid",
+        marginLeft: "20px",
+        borderRadius: 10,
+      }}
+    >
+      <div style={{ paddingLeft: 50, marginTop: 20 }}>
         {messages.map(({ username, message }) => (
           <Message username={username} message={message} name={name} />
         ))}
       </div>
-      <form>
-        <label>메세지를 입력하세요...</label>
-        <input ref={inputRef} />
+      <form
+        style={{
+          paddingLeft: 5,
+          top: "82vh",
+          position: "absolute",
+          border: "solid",
+        }}
+      >
+        <input
+          style={{ width: "620px", height: "100px" }}
+          ref={inputRef}
+          placeholder="메세지를 입력하세요"
+        />
         <button
+          className="btn-warning"
           type="submit"
+          style={{ height: "105px" }}
           onClick={e => {
             sendMessage(e);
           }}
