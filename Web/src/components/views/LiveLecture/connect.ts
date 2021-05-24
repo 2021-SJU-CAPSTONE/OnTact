@@ -28,7 +28,17 @@ export const educateeConnect = (
   remoteVideoRef: React.RefObject<HTMLVideoElement>
 ) => {
   getSocket();
-  const peer = new Peer(localId, { host: "capstone-ontact.herokuapp.com", port: 8000, path: "/" });
+  let peer;
+  try {
+    // peer = new Peer(localId, {
+    //   host: "ontact-socket.herokuapp.com",
+    //   port: 8000,
+    //   path: "/",
+    // });
+    peer = new Peer(localId);
+  } catch (e) {
+    console.log(e);
+  }
   peer.on("open", id => {
     // id : localid
     console.log(`[PEER OPEN BY ${id}]`);
@@ -70,7 +80,17 @@ export const educatorConnect = (
   localVideoRef: React.RefObject<HTMLVideoElement>
 ) => {
   getSocket();
-  const peer = new Peer(localId, { host: "localhost", port: 8000, path: "/" });
+  let peer;
+  try {
+    // peer = new Peer(localId, {
+    //   host: "ontact-socket.herokuapp.com",
+    //   port: 8000,
+    //   path: "/",
+    // });
+    peer = new Peer(localId);
+  } catch (e) {
+    console.log(e);
+  }
   if (localVideoRef.current) {
     localVideoRef.current.srcObject = localStream;
   }

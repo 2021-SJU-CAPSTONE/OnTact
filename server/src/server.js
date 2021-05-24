@@ -18,6 +18,11 @@ app.get("/", (req, res) => {
 });
 
 //경원
+// ID : nXKrFtze25Ega3Hb2VHN
+// secret : d45U4kaKGG
+//형찬
+// ID : KWs9Ziq6kJKhiZRNbrW5
+// secret : SbPxW5FnuS
 app.post("/stt", async (req, res) => {
   try {
     const result = await axios({
@@ -29,14 +34,13 @@ app.post("/stt", async (req, res) => {
         text: req.body.text,
       },
       headers: {
-        "X-Naver-Client-Id": "nXKrFtze25Ega3Hb2VHN",
-        "X-Naver-Client-Secret": "d45U4kaKGG",
+        "X-Naver-Client-Id": "KWs9Ziq6kJKhiZRNbrW5",
+        "X-Naver-Client-Secret": "SbPxW5FnuS",
         Accept: "application/json",
       },
     });
 
     const resultText = result.data.message.result.translatedText;
-    console.log(resultText);
     res.send(resultText);
   } catch (err) {
     res.send(err);
@@ -53,7 +57,7 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
-io.on("connection", (socket) => {
+io.on("connection", socket => {
   console.log("[connected from]", socket.id, new Date());
   socket.on("join-room", (roomId, userId) => {
     console.log(roomId, userId);
@@ -65,5 +69,3 @@ io.on("connection", (socket) => {
     });
   });
 });
-
-setInterval(() => io.emit("time", new Date().toTimeString()), 1000);
