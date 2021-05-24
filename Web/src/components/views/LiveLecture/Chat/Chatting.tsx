@@ -2,20 +2,27 @@ import React from "react";
 import { store } from "../../../firebase";
 import firebase from "firebase";
 import Message from "./Message";
+import { ChatBox } from "react-chatbox-component";
 type MessageType = {
   username: string;
   message: string;
 };
-const Chatting = ({ localId, lectureId }: { localId: string; lectureId: string }) => {
+const Chatting = ({
+  localId,
+  lectureId,
+}: {
+  localId: string;
+  lectureId: string;
+}) => {
   const [messages, setMessages] = React.useState<MessageType[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
   React.useEffect(() => {
     store
       .collection(`Lecture/${lectureId}/Chatting`)
       .orderBy("timestamp", "asc")
-      .onSnapshot(collection => {
+      .onSnapshot((collection) => {
         setMessages(
-          collection.docs.map(doc => ({
+          collection.docs.map((doc) => ({
             username: doc.data().username,
             message: doc.data().message,
           }))
@@ -32,24 +39,47 @@ const Chatting = ({ localId, lectureId }: { localId: string; lectureId: string }
         username: localId,
         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
-      setMessages([...messages, { username: localId, message: inputRef.current.value }]);
+      setMessages([
+        ...messages,
+        { username: localId, message: inputRef.current.value },
+      ]);
       inputRef.current.value = "";
     }
   };
 
   return (
-    <div className="Chatting">
-      <div>
+    <div
+      style={{
+        height: "73vh",
+        width: "680px",
+        border: "solid",
+        marginLeft: "20px",
+        borderRadius: 10,
+      }}
+    >
+      <div style={{ paddingLeft: 50, marginTop: 20 }}>
         {messages.map(({ username, message }) => (
           <Message username={username} message={message} localId={localId} />
         ))}
       </div>
-      <form>
-        <label>메세지를 입력하세요...</label>
-        <input ref={inputRef} />
+      <form
+        style={{
+          paddingLeft: 5,
+          top: "82vh",
+          position: "absolute",
+          border: "solid",
+        }}
+      >
+        <input
+          style={{ width: "620px", height: "100px" }}
+          ref={inputRef}
+          placeholder="메세지를 입력하세요"
+        />
         <button
+          className="btn-warning"
           type="submit"
-          onClick={e => {
+          style={{ height: "105px" }}
+          onClick={(e) => {
             sendMessage(e);
           }}
         >

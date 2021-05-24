@@ -100,8 +100,19 @@ export default function Playcontrol({
   muted,
   onMute,
   onVolumeChange,
-  onVolumeSeekDown,
+  onVolumeSeekUp,
   volume,
+  onPlaybackRateChange,
+  playbackRate,
+  onToggleFullScreen,
+  played,
+  onSeek,
+  onSeekMouseDown,
+  onSeekMouseUp,
+  elapsedTime,
+  totalDuration,
+  onChangeDisplayFormat,
+  onBookmark,
 }) {
   const classes = useStyles();
 
@@ -131,6 +142,7 @@ export default function Playcontrol({
         </Grid>
         <Grid item>
           <Button
+            onClick={onBookmark}
             variant="contained"
             color="primary"
             startIcon={<BookmarkIcon />}
@@ -183,8 +195,13 @@ export default function Playcontrol({
           <PrettoSlider
             min={0}
             max={100}
-            defaultValue={20}
-            ValueLabelComponent={ValueLabelComponent}
+            value={played * 100}
+            ValueLabelComponent={(props) => (
+              <ValueLabelComponent {...props} value={elapsedTime} />
+            )}
+            onChange={onSeek}
+            onMouseDown={onSeekMouseDown}
+            onChangeCommitted={onSeekMouseUp}
           />
           <Grid container alignItems="center" direction="row">
             <IconButton onClick={onPlayPause} className={classes.bottomIcon}>
@@ -209,11 +226,15 @@ export default function Playcontrol({
               Value={volume * 10}
               className={classes.volumeSlider}
               onChange={onVolumeChange}
-              onChange={onVolumeSeekDown}
+              onChangeCommitted={onVolumeSeekUp}
             />
 
-            <Button variant="text" style={{ color: "#fff", marginLeft: 16 }}>
-              05:05
+            <Button
+              onClick={onChangeDisplayFormat}
+              variant="text"
+              style={{ color: "#fff", marginLeft: 16 }}
+            >
+              {elapsedTime} / {totalDuration}
             </Button>
             <Grid item>
               <Button
@@ -239,13 +260,23 @@ export default function Playcontrol({
               >
                 <Grid container direction="column-reverse">
                   {[0.5, 1, 1.5, 2].map((rate) => (
-                    <Button variant="text">
-                      <Typography color="secondary">{rate}</Typography>
+                    <Button
+                      onClick={() => onPlaybackRateChange(rate)}
+                      variant="text"
+                    >
+                      <Typography
+                        color={rate === playbackRate ? "secondary" : "default"}
+                      >
+                        {rate}
+                      </Typography>
                     </Button>
                   ))}
                 </Grid>
               </Popover>
-              <IconButton className={classes.bottomIcon}>
+              <IconButton
+                onClick={onToggleFullScreen}
+                className={classes.bottomIcon}
+              >
                 <FullScreenIcon fontSize="large" />
               </IconButton>
             </Grid>
