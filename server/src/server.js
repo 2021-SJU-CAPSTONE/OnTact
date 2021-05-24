@@ -18,6 +18,11 @@ app.get("/", (req, res) => {
 });
 
 //경원
+// ID : nXKrFtze25Ega3Hb2VHN
+// secret : d45U4kaKGG
+//형찬
+// ID : KWs9Ziq6kJKhiZRNbrW5
+// secret : SbPxW5FnuS
 app.post("/stt", async (req, res) => {
   try {
     const result = await axios({
