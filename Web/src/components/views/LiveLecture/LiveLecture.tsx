@@ -15,18 +15,25 @@ const LiveLecture = () => {
   const videoRef = React.createRef<HTMLVideoElement>();
   const currentUid = getCurrentUserUid();
   React.useEffect(() => {
-    getUserInfo(currentUid).then(currentUserInfo => {
+    getUserInfo(currentUid).then((currentUserInfo) => {
       if (currentUserInfo !== undefined) {
-        console.log("[currentUserInfo.isProfessor] : ", currentUserInfo.isProfessor);
+        console.log(
+          "[currentUserInfo.isProfessor] : ",
+          currentUserInfo.isProfessor
+        );
         if (isConnect) {
           if (currentUserInfo.isProfessor === "on") {
-            navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-              educatorConnect(localId, stream, videoRef);
-            });
+            navigator.mediaDevices
+              .getUserMedia({ video: true, audio: false })
+              .then((stream) => {
+                educatorConnect(localId, stream, videoRef);
+              });
           } else {
-            navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-              educateeConnect(localId, stream, videoRef);
-            });
+            navigator.mediaDevices
+              .getUserMedia({ video: true, audio: false })
+              .then((stream) => {
+                educateeConnect(localId, stream, videoRef);
+              });
           }
         }
       }
@@ -41,7 +48,7 @@ const LiveLecture = () => {
       <button
         onClick={() => {
           setIsConnect(true);
-          reload(o => !o);
+          reload((o) => !o);
           if (localIdRef.current) {
             setlocalId(localIdRef.current.value);
           }
@@ -60,7 +67,9 @@ const LiveLecture = () => {
             marginLeft: "50px",
           }}
         >
-          {isConnect ? <video ref={videoRef} autoPlay playsInline muted></video> : null}
+          {isConnect ? (
+            <video ref={videoRef} autoPlay playsInline muted></video>
+          ) : null}
         </div>
         <div>
           <Chatting localId={localId} lectureId={lectureId} />

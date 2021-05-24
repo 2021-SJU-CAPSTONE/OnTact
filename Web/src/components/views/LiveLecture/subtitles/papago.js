@@ -39,7 +39,7 @@ export class Translator {
       }
       const options = {
         method: "POST",
-        url: "http://localhost:5000/stt",
+        url: "https://capstone-ontact.herokuapp.com/stt",
         data: {
           source: source,
           target: target,
@@ -51,11 +51,10 @@ export class Translator {
       };
       axios(options)
         .then((res) => {
-          console.log(res.data);
           resolve(res);
         })
         .catch((err) => {
-          console.log(err);
+          console.log("error");
           reject(err);
         });
     });
