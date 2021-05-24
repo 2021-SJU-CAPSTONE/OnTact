@@ -51,11 +51,10 @@ export class Translator {
       };
       axios(options)
         .then((res) => {
-          console.log(res.data);
           resolve(res);
         })
         .catch((err) => {
-          console.log(err);
+          console.log("error");
           reject(err);
         });
     });

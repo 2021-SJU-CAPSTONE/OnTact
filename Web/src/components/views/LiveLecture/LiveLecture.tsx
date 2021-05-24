@@ -63,15 +63,13 @@ const LiveLecture = () => {
   }, [v]);
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
-      <input
-        onChange={e => {
-          setLocalId(e.currentTarget.value);
-        }}
-      ></input>
       <button
         onClick={() => {
           setIsConnect(true);
           reload(o => !o);
+          if (localIdRef.current) {
+            setlocalId(localIdRef.current.value);
+          }
         }}
       >
         CONNECT
