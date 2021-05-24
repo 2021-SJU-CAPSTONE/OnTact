@@ -1,5 +1,6 @@
 import React from "react";
 import { KotoEn } from "./papago.js";
+import { store } from "../../../firebase";
 
 const Subtitle = () => {
   const { webkitSpeechRecognition } = window as any;
@@ -10,6 +11,9 @@ const Subtitle = () => {
   const final_spanref = React.useRef<HTMLSpanElement>(null);
   const interim_spanref = React.useRef<HTMLSpanElement>(null);
   const papago_spanref = React.useRef<HTMLSpanElement>(null);
+  const lectureId = "Sample";
+
+  const Ref = store.collection(`Lecture/${lectureId}/Subtitle`).doc("caption");
 
   const FIRST_CHAR = /\S/;
   const TWO_LINE = /\n\n/g;
@@ -21,6 +25,9 @@ const Subtitle = () => {
   let firstText = "";
   let secondText = "";
 
+  let startTime = 0;
+  let curTime = 0;
+
   recognition.continuous = true;
   recognition.interimResults = true;
 
@@ -28,18 +35,20 @@ const Subtitle = () => {
    * 음성 인식 시작 처리
    */
   recognition.onstart = function () {
-    console.log("onstart", arguments);
+    //console.log("onstart", arguments);
     isRecognizing = true;
     if (btnMicref.current) {
       btnMicref.current.className = "on";
     }
+
+    startTime = arguments[0].timeStamp;
   };
 
   /**
    * 음성 인식 종료 처리
    */
   recognition.onend = function () {
-    console.log("onend", arguments);
+    //console.log("onend", arguments);
     isRecognizing = false;
 
     if (ignoreEndProcess) {
@@ -51,7 +60,7 @@ const Subtitle = () => {
       btnMicref.current.className = "off";
     }
     if (!finalTranscript) {
-      console.log("empty finalTranscript");
+      //console.log("empty finalTranscript");
       return false;
     }
   };
@@ -63,6 +72,8 @@ const Subtitle = () => {
     // console.log("onresult", event);
 
     let interimTranscript = "";
+    let fireTime = 0;
+
     if (typeof event.results === "undefined") {
       recognition.onend = null;
       recognition.stop();
@@ -80,8 +91,13 @@ const Subtitle = () => {
           firstText = secondText;
           secondText = "";
         }
+        fireTime = curTime;
+        curTime = 0;
       } else {
         interimTranscript += transcript;
+        if (curTime === 0) {
+          curTime = Math.round((event.timeStamp - startTime) / 1000);
+        }
       }
     }
 
@@ -96,17 +112,26 @@ const Subtitle = () => {
       );
       interim_spanref.current.innerHTML = linebreak(interimTranscript);
       KotoEn(final_spanref.current.innerHTML).then((resultText) => {
-        console.log("papago " + resultText);
+        //console.log("papago " + resultText);
 
         if (papago_spanref.current) {
           papago_spanref.current.innerHTML = resultText;
         }
       });
+      if (fireTime !== 0) {
+        Ref.set(
+          {
+            [fireTime]: linebreak(firstText),
+          },
+          { merge: true }
+        );
+        fireTime = 0;
+      }
     }
     // all_spanref.current.innerHTML = linebreak(finalTranscript);
 
-    console.log("finalTranscript", finalTranscript);
-    console.log("interimTranscript", interimTranscript);
+    //console.log("finalTranscript", finalTranscript);
+    //console.log("interimTranscript", interimTranscript);
   };
 
   /**

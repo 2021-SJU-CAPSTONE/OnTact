@@ -3,6 +3,7 @@ import ReactPlayer from "react-player/youtube";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Playercontrol from "./Playcontrol/Playcontrol";
+import Subtitle from "./Subtitle";
 
 const useStyles = makeStyles({
   playerWrapper: {
@@ -77,6 +78,7 @@ export default function RecordVideo() {
             volume={volume}
           />
         </div>
+        <Subtitle />
       </Container>
     </>
   );

@@ -31,13 +31,13 @@ const LiveLecture = () => {
         if (isConnect) {
           if (currentUserInfo.isProf === "on") {
             navigator.mediaDevices
-              .getUserMedia({ video: true, audio: true })
+              .getUserMedia({ video: false, audio: true })
               .then((stream) => {
                 educatorConnect(localId, stream, videoRef);
               });
           } else {
             navigator.mediaDevices
-              .getUserMedia({ video: true, audio: true })
+              .getUserMedia({ video: false, audio: true })
               .then((stream) => {
                 educateeConnect(localId, stream, videoRef);
               });
