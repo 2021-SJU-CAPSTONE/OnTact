@@ -11,7 +11,7 @@ let socket;
 const roomId = "test_room";
 const profId = "p";
 export const getSocket = () => {
-  if (!socket) {
+  if (socket === undefined) {
     // socket = io("https://115.91.214.5:5000", {
     //   transports: ["polling"],
     // });

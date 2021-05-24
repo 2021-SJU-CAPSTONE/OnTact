@@ -17,11 +17,15 @@ const lectureId = "Sample"; // sample lecture db
 const LiveLecture = () => {
   const [isConnect, setIsConnect] = React.useState(false);
   const [v, reload] = React.useState(false);
-  const videoRef = React.createRef<HTMLVideoElement>();
+  const videoRef = React.useRef<HTMLVideoElement>(null);
   const currentUid = getCurrentUserUid();
   const [userInfo, setUserInfo] = React.useState<UserInfo>();
   React.useEffect(() => {
+    if (currentUid === "not login") {
+      console.log(currentUid);
+    }
     getUserInfo(currentUid).then(currentUserInfo => {
+      console.log(currentUserInfo);
       if (currentUserInfo !== undefined) {
         setUserInfo({
           Dept: currentUserInfo.Dept,
@@ -33,17 +37,21 @@ const LiveLecture = () => {
         if (isConnect) {
           if (currentUserInfo.isProfessor === "on") {
             navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-              educatorConnect(currentUid, stream, videoRef);
+              if (userInfo !== undefined) {
+                educatorConnect(userInfo.Name, stream, videoRef);
+              }
             });
           } else {
             navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-              educateeConnect(currentUid, stream, videoRef);
+              if (userInfo !== undefined) {
+                educateeConnect(userInfo.Name, stream, videoRef);
+              }
             });
           }
         }
       }
     });
-  });
+  }, [v]);
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
       <button
@@ -65,7 +73,7 @@ const LiveLecture = () => {
             marginLeft: "50px",
           }}
         >
-          {isConnect ? <video ref={videoRef} autoPlay playsInline muted></video> : null}
+          <video ref={videoRef} autoPlay playsInline muted></video>
         </div>
         <div>
           <Chatting name={userInfo?.Name} lectureId={lectureId} />
