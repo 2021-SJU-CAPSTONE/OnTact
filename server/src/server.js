@@ -36,7 +36,6 @@ app.post("/stt", async (req, res) => {
     });
 
     const resultText = result.data.message.result.translatedText;
-    console.log(resultText);
     res.send(resultText);
   } catch (err) {
     res.send(err);

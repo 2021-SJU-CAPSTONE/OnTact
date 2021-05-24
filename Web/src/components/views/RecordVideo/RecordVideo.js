@@ -3,7 +3,7 @@ import ReactPlayer from "react-player/youtube";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Playercontrol from "./Playcontrol/Playcontrol";
-import Subtitle from "./Subtitle";
+//import Subtitle from "./Subtitle";
 import screenfull from "screenfull";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -206,7 +206,7 @@ export default function RecordVideo() {
             onBookmark={addBookmark}
           />
         </div>
-        <Subtitle />
+        {/* <Subtitle /> */}
       </Container>
       <div
         style={{
