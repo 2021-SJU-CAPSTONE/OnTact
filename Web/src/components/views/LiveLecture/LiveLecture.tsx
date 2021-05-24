@@ -21,6 +21,7 @@ const LiveLecture = () => {
   const currentUid = getCurrentUserUid();
   const [userInfo, setUserInfo] = React.useState<UserInfo>();
   const [localId, setLocalId] = React.useState("");
+  const localIdRef = React.useRef<HTMLInputElement>(null);
   React.useEffect(() => {
     if (currentUid === "not login") {
       console.log(currentUid);
@@ -63,12 +64,13 @@ const LiveLecture = () => {
   }, [v]);
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
+      <input ref={localIdRef}></input>
       <button
         onClick={() => {
           setIsConnect(true);
           reload(o => !o);
           if (localIdRef.current) {
-            setlocalId(localIdRef.current.value);
+            setLocalId(localIdRef.current.value);
           }
         }}
       >
