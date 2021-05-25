@@ -35,12 +35,12 @@ const LoginPage = () => {
     const ref = store.collection("User").doc(auth.currentUser.uid);
     ref.get().then(item => {
       auth.currentUser.isProfessor = item.data().isProfessor;
+      if (auth.currentUser.isProfessor === "on") {
+        history.push("/professorpage");
+      } else {
+        history.push("/studentpage");
+      }
     });
-    if (auth.currentUser.isProfessor === "on") {
-      history.push("/professorpage");
-    } else {
-      history.push("/studentpage");
-    }
   }
 
   return (
