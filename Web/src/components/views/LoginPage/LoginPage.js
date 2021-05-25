@@ -33,15 +33,14 @@ const LoginPage = () => {
     await login(emailRef.current.value, passwordRef.current.value);
 
     const ref = store.collection("User").doc(auth.currentUser.uid);
-    ref.get().then((item) => {
+    ref.get().then(item => {
       auth.currentUser.isProfessor = item.data().isProfessor;
-      console.log(auth.currentUser.isProfessor);
+      if (auth.currentUser.isProfessor === "on") {
+        history.push("/professorpage");
+      } else {
+        history.push("/studentpage");
+      }
     });
-    if (auth.currentUser.isProfessor === "on") {
-      history.push("/professorpage");
-    } else {
-      history.push("/studentpage");
-    }
   }
 
   return (

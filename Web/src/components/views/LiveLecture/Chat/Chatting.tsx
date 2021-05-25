@@ -7,22 +7,16 @@ type MessageType = {
   username: string;
   message: string;
 };
-const Chatting = ({
-  localId,
-  lectureId,
-}: {
-  localId: string;
-  lectureId: string;
-}) => {
+const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => {
   const [messages, setMessages] = React.useState<MessageType[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
   React.useEffect(() => {
     store
       .collection(`Lecture/${lectureId}/Chatting`)
       .orderBy("timestamp", "asc")
-      .onSnapshot((collection) => {
+      .onSnapshot(collection => {
         setMessages(
-          collection.docs.map((doc) => ({
+          collection.docs.map(doc => ({
             username: doc.data().username,
             message: doc.data().message,
           }))
@@ -32,18 +26,16 @@ const Chatting = ({
 
   const sendMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (inputRef.current) {
-      console.log("[localId]", localId);
-      store.collection(`Lecture/${lectureId}/Chatting`).add({
-        message: inputRef.current.value,
-        username: localId,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-      setMessages([
-        ...messages,
-        { username: localId, message: inputRef.current.value },
-      ]);
-      inputRef.current.value = "";
+    if (name !== undefined) {
+      if (inputRef.current) {
+        store.collection(`Lecture/${lectureId}/Chatting`).add({
+          message: inputRef.current.value,
+          username: name,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        setMessages([...messages, { username: name, message: inputRef.current.value }]);
+        inputRef.current.value = "";
+      }
     }
   };
 
@@ -59,7 +51,7 @@ const Chatting = ({
     >
       <div style={{ paddingLeft: 50, marginTop: 20 }}>
         {messages.map(({ username, message }) => (
-          <Message username={username} message={message} localId={localId} />
+          <Message username={username} message={message} name={name} />
         ))}
       </div>
       <form
@@ -79,7 +71,7 @@ const Chatting = ({
           className="btn-warning"
           type="submit"
           style={{ height: "105px" }}
-          onClick={(e) => {
+          onClick={e => {
             sendMessage(e);
           }}
         >

@@ -5,52 +5,72 @@ import { educatorConnect, educateeConnect } from "./connect";
 import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 import Subtitle from "./subtitles/Subtitle";
 
+type UserInfo = {
+  Dept: string;
+  Name: string;
+  email: string;
+  isProfessor: string;
+  password: string;
+};
 const lectureId = "Sample"; // sample lecture db
 
 const LiveLecture = () => {
-  const [localId, setlocalId] = React.useState("");
   const [isConnect, setIsConnect] = React.useState(false);
   const [v, reload] = React.useState(false);
-  const localIdRef = React.createRef<HTMLInputElement>();
-  const videoRef = React.createRef<HTMLVideoElement>();
+  const videoRef = React.useRef<HTMLVideoElement>(null);
   const currentUid = getCurrentUserUid();
+  const [userInfo, setUserInfo] = React.useState<UserInfo>();
+  const [localId, setLocalId] = React.useState("");
+  const localIdRef = React.useRef<HTMLInputElement>(null);
   React.useEffect(() => {
-    getUserInfo(currentUid).then((currentUserInfo) => {
+    if (currentUid === "not login") {
+      console.log(currentUid);
+    }
+    getUserInfo(currentUid).then(currentUserInfo => {
+      console.log(currentUserInfo);
       if (currentUserInfo !== undefined) {
-        console.log(
-          "[currentUserInfo.isProfessor] : ",
-          currentUserInfo.isProfessor
-        );
+        setUserInfo({
+          Dept: currentUserInfo.Dept,
+          Name: currentUserInfo.Name,
+          email: currentUserInfo.email,
+          isProfessor: currentUserInfo.isProfessor,
+          password: currentUserInfo.password,
+        });
         if (isConnect) {
-          if (currentUserInfo.isProfessor === "on") {
-            navigator.mediaDevices
-              .getUserMedia({ video: true, audio: false })
-              .then((stream) => {
+          if (currentUserInfo.isProfessor === "on" || localId === "prof") {
+            navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
+              if (localId === "prof") {
                 educatorConnect(localId, stream, videoRef);
-              });
+              } else {
+                if (userInfo !== undefined) {
+                  educatorConnect(userInfo.Name, stream, videoRef);
+                }
+              }
+            });
           } else {
-            navigator.mediaDevices
-              .getUserMedia({ video: true, audio: false })
-              .then((stream) => {
+            navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
+              if (localId === "") {
+                if (userInfo !== undefined) {
+                  educateeConnect(userInfo.Name, stream, videoRef);
+                }
+              } else {
                 educateeConnect(localId, stream, videoRef);
-              });
+              }
+            });
           }
         }
       }
     });
-  });
+  }, [v]);
   return (
     <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
-      <h3>
-        localId
-        <input ref={localIdRef}></input>
-      </h3>
+      <input ref={localIdRef}></input>
       <button
         onClick={() => {
           setIsConnect(true);
-          reload((o) => !o);
+          reload(o => !o);
           if (localIdRef.current) {
-            setlocalId(localIdRef.current.value);
+            setLocalId(localIdRef.current.value);
           }
         }}
       >
@@ -67,12 +87,10 @@ const LiveLecture = () => {
             marginLeft: "50px",
           }}
         >
-          {isConnect ? (
-            <video ref={videoRef} autoPlay playsInline muted></video>
-          ) : null}
+          <video ref={videoRef} autoPlay playsInline muted></video>
         </div>
         <div>
-          <Chatting localId={localId} lectureId={lectureId} />
+          <Chatting name={userInfo?.Name} lectureId={lectureId} />
         </div>
       </div>
       <div className="row d-flex">
