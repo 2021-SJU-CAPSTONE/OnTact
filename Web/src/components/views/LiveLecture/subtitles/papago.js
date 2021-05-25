@@ -39,7 +39,7 @@ export class Translator {
       }
       const options = {
         method: "POST",
-        url: "http://localhost:5000/stt",
+        url: "https://capstone-ontact.herokuapp.com/stt",
         data: {
           source: source,
           target: target,

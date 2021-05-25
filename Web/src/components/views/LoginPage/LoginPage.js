@@ -33,7 +33,7 @@ const LoginPage = () => {
     await login(emailRef.current.value, passwordRef.current.value);
 
     const ref = store.collection("User").doc(auth.currentUser.uid);
-    ref.get().then(item => {
+    ref.get().then((item) => {
       auth.currentUser.isProfessor = item.data().isProfessor;
       if (auth.currentUser.isProfessor === "on") {
         history.push("/professorpage");
@@ -45,7 +45,16 @@ const LoginPage = () => {
 
   return (
     <>
-      <Card>
+      <Card
+        style={{
+          position: "absolute",
+          top: "20%",
+          left: "50%",
+          transform: "translate(-50%)",
+          width: "36rem",
+          alignItems: "center",
+        }}
+      >
         <Card.Body>
           <h2 className="text-center mb4">Log In</h2>
           {error && <Alert variant="danger">{error}</Alert>}
@@ -62,11 +71,11 @@ const LoginPage = () => {
               Log In
             </Button>
           </Form>
+          <div className="w-100 text-center mt-2">
+            <Link to="/signup">Need an accout? </Link>
+          </div>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        <Link to="/signup">Need an accout? </Link>
-      </div>
     </>
   );
 };

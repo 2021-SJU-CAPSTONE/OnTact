@@ -23,6 +23,15 @@ app.get("/", (req, res) => {
 //형찬
 // ID : KWs9Ziq6kJKhiZRNbrW5
 // secret : SbPxW5FnuS
+//주혁
+// ID : AUQpEFdrXtvFKNOcjGKO
+// secret : hs8YBpxhZq
+//재호
+// ID : e2O6A9FbaJKz056vHYsy
+// secret : 4pC9nipoqx
+//종민
+// ID : Mo_d0dmRjBOaHTb6qMqc
+// secret : xsRNSeVZUN
 app.post("/stt", async (req, res) => {
   try {
     const result = await axios({
@@ -34,8 +43,8 @@ app.post("/stt", async (req, res) => {
         text: req.body.text,
       },
       headers: {
-        "X-Naver-Client-Id": "KWs9Ziq6kJKhiZRNbrW5",
-        "X-Naver-Client-Secret": "SbPxW5FnuS",
+        "X-Naver-Client-Id": "e2O6A9FbaJKz056vHYsy",
+        "X-Naver-Client-Secret": "4pC9nipoqx",
         Accept: "application/json",
       },
     });
@@ -57,7 +66,7 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   console.log("[connected from]", socket.id, new Date());
   socket.on("join-room", (roomId, userId) => {
     console.log(roomId, userId);
