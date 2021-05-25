@@ -47,7 +47,12 @@ const LoginPage = () => {
     <>
       <Card
         style={{
-          width: "36 rem",
+          position: "absolute",
+          top: "20%",
+          left: "50%",
+          transform: "translate(-50%)",
+          width: "36rem",
+          alignItems: "center",
         }}
       >
         <Card.Body>
@@ -66,11 +71,11 @@ const LoginPage = () => {
               Log In
             </Button>
           </Form>
+          <div className="w-100 text-center mt-2">
+            <Link to="/signup">Need an accout? </Link>
+          </div>
         </Card.Body>
       </Card>
-      <div className="w-100 text-center mt-2">
-        <Link to="/signup">Need an accout? </Link>
-      </div>
     </>
   );
 };
