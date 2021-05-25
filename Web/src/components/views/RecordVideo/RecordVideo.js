@@ -3,7 +3,7 @@ import ReactPlayer from "react-player/youtube";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Playercontrol from "./Playcontrol/Playcontrol";
-//import Subtitle from "./Subtitle";
+import Subtitle from "./Subtitle";
 import screenfull from "screenfull";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -55,6 +55,14 @@ export default function RecordVideo() {
 
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
+
+  //경원
+  const getTime = () => {
+    if (playerRef.current) {
+      return playerRef.current.getCurrentTime();
+    }
+  };
+  //
 
   const handleRewind = () => {
     playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
@@ -206,7 +214,7 @@ export default function RecordVideo() {
             onBookmark={addBookmark}
           />
         </div>
-        {/* <Subtitle /> */}
+        {/* <Subtitle getTime={getTime} /> */}
       </Container>
       <div
         style={{

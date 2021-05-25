@@ -33,7 +33,7 @@ const LoginPage = () => {
     await login(emailRef.current.value, passwordRef.current.value);
 
     const ref = store.collection("User").doc(auth.currentUser.uid);
-    ref.get().then(item => {
+    ref.get().then((item) => {
       auth.currentUser.isProfessor = item.data().isProfessor;
       if (auth.currentUser.isProfessor === "on") {
         history.push("/professorpage");
@@ -45,7 +45,11 @@ const LoginPage = () => {
 
   return (
     <>
-      <Card>
+      <Card
+        style={{
+          width: "36 rem",
+        }}
+      >
         <Card.Body>
           <h2 className="text-center mb4">Log In</h2>
           {error && <Alert variant="danger">{error}</Alert>}
