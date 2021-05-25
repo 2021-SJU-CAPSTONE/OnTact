@@ -25,7 +25,7 @@ app.get("/", (req, res) => {
 // secret : SbPxW5FnuS
 //주혁
 // ID : AUQpEFdrXtvFKNOcjGKO
-// secret : hs8YBpxh2q
+// secret : hs8YBpxhZq
 //재호
 // ID : e2O6A9FbaJKz056vHYsy
 // secret : 4pC9nipoqx
@@ -43,8 +43,8 @@ app.post("/stt", async (req, res) => {
         text: req.body.text,
       },
       headers: {
-        "X-Naver-Client-Id": "AUQpEFdrXtvFKNOcjGKO",
-        "X-Naver-Client-Secret": "hs8YBpxh2q",
+        "X-Naver-Client-Id": "e2O6A9FbaJKz056vHYsy",
+        "X-Naver-Client-Secret": "4pC9nipoqx",
         Accept: "application/json",
       },
     });
