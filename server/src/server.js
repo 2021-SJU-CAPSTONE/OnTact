@@ -23,6 +23,15 @@ app.get("/", (req, res) => {
 //형찬
 // ID : KWs9Ziq6kJKhiZRNbrW5
 // secret : SbPxW5FnuS
+//주혁
+// ID : AUQpEFdrXtvFKNOcjGKO
+// secret : hs8YBpxh2q
+//재호
+// ID : e2O6A9FbaJKz056vHYsy
+// secret : 4pC9nipoqx
+//종민
+// ID : Mo_d0dmRjBOaHTb6qMqc
+// secret : xsRNSeVZUN
 app.post("/stt", async (req, res) => {
   try {
     const result = await axios({
@@ -34,8 +43,8 @@ app.post("/stt", async (req, res) => {
         text: req.body.text,
       },
       headers: {
-        "X-Naver-Client-Id": "nXKrFtze25Ega3Hb2VHN",
-        "X-Naver-Client-Secret": "d45U4kaKGG",
+        "X-Naver-Client-Id": "AUQpEFdrXtvFKNOcjGKO",
+        "X-Naver-Client-Secret": "hs8YBpxh2q",
         Accept: "application/json",
       },
     });
@@ -69,5 +78,3 @@ io.on("connection", (socket) => {
     });
   });
 });
-
-setInterval(() => io.emit("time", new Date().toTimeString()), 1000);
