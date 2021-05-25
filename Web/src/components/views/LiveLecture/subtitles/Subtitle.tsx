@@ -126,8 +126,8 @@ const Subtitle = () => {
       });
     }
 
-    console.log("finalTranscript", finalTranscript);
-    console.log("interimTranscript", interimTranscript);
+    // console.log("finalTranscript", finalTranscript);
+    // console.log("interimTranscript", interimTranscript);
   };
 
   /**

@@ -81,7 +81,6 @@ export const KotoEn = async (text) => {
 
   try {
     const result = await translator.translate(text, "ko", "en");
-    console.log(result.data);
     resultText = result.data;
   } catch (err) {
     resultText = err.code;
