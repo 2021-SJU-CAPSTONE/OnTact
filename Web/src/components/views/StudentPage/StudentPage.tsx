@@ -1,6 +1,5 @@
 import React from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { useAuth } from "../../hoc/AuthContext";
 import Lecturelist from "./Sections/Lecturelist";
 import { Link } from "react-router-dom";
 import { getUserInfo, getCurrentUserUid } from "./../../hoc/authService";
@@ -11,19 +10,19 @@ function StudentPage() {
   const [v, setv] = React.useState(false);
   const [uid, setUid] = React.useState<string>(getCurrentUserUid());
   const [userInfo, setUserInfo] = React.useState<type.UserInfo>();
-  getUserInfo(uid).then(info => {
-    setUserInfo(info);
-  });
+
   React.useEffect(() => {
     setUid(getCurrentUserUid());
     if (uid === "not login") {
       setIsLogIn(false);
       setv(!v);
     } else {
-      setIsLogIn(true);
-      getUserInfo(uid).then(info => {
-        setUserInfo(info);
-      });
+      if (!userInfo) {
+        setIsLogIn(true);
+        getUserInfo(uid).then(info => {
+          setUserInfo(info);
+        });
+      }
     }
   }, [isLogIn, v]);
   return (
