@@ -4,13 +4,14 @@ import Lecturelist from "./Sections/Lecturelist";
 import { Link } from "react-router-dom";
 import { getUserInfo, getCurrentUserUid } from "./../../hoc/authService";
 import * as type from "../../type";
+import AutoAttendance from "./AutoAttendance";
+
 //import Lecturelist from './Sections/Lecturelist';
 function StudentPage() {
   const [isLogIn, setIsLogIn] = React.useState(false);
   const [v, setv] = React.useState(false);
   const [uid, setUid] = React.useState<string>(getCurrentUserUid());
   const [userInfo, setUserInfo] = React.useState<type.UserInfo>();
-
   React.useEffect(() => {
     setUid(getCurrentUserUid());
     if (uid === "not login") {
@@ -25,6 +26,12 @@ function StudentPage() {
       }
     }
   }, [isLogIn, v]);
+  const checkAttendance = () => {
+    if (userInfo) {
+      const studentId = userInfo.id;
+      AutoAttendance("Sample", studentId);
+    }
+  };
   return (
     <div>
       {isLogIn ? (
@@ -41,7 +48,7 @@ function StudentPage() {
           </div>
           <div>
             <Link to="/livelecture">
-              <button>backdoor</button>
+              <button onClick={checkAttendance}>backdoor</button>
             </Link>
           </div>
         </div>

@@ -8,6 +8,7 @@ export default function SignUp() {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const isprofessor = useRef();
+  const idRef = useRef();
   const name = useRef();
   const { signup, currentUser } = useAuth();
   const [error, setError] = useState("");
@@ -26,17 +27,20 @@ export default function SignUp() {
       emailRef.current.value,
       passwordRef.current.value,
       isprofessor.current.value,
-      name.current.value
+      name.current.value,
+      idRef.current.value
     );
     const ref = store.collection("User").doc(auth.currentUser.uid);
+
     ref.get().then((item) => {
+      console.log("!!!!!!!!!!!!", item);
       auth.currentUser.isProfessor = item.data().isProfessor;
     });
     console.log(isprofessor);
     if (isprofessor === "on") {
       history.push("/professorpage");
     } else {
-      history.push("/studentpage");
+      history.push("/dentpage");
     }
   }
 
@@ -67,6 +71,10 @@ export default function SignUp() {
                   ref={passwordConfirmRef}
                   required
                 />
+              </Form.Group>
+              <Form.Group id="id">
+                <Form.Label>학번/교번</Form.Label>
+                <Form.Control type="text" ref={idRef} required />
               </Form.Group>
               <Form.Group id="name">
                 <Form.Label>Name</Form.Label>
