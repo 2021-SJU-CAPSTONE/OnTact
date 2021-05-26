@@ -1,8 +1,10 @@
 import React from "react";
 import { store } from "../../firebase";
+
 type Prop = {
-  getTime: () => Number;
+  getTime: () => number;
 };
+
 const Subtitle = (prop: Prop) => {
   const lectureId = "Sample";
   const Ref = store.collection(`Lecture/${lectureId}/Subtitle`).doc("caption");
@@ -22,7 +24,7 @@ const Subtitle = (prop: Prop) => {
   React.useEffect(() => {
     let curtime = 0;
     let interval = setInterval(() => {
-      curtime = Math.round(Number(prop.getTime()));
+      curtime = Math.round(prop.getTime());
       //console.log(curtime, data[curtime]);
       if (data !== undefined) {
         if (data[curtime] !== undefined) {

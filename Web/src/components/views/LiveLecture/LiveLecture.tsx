@@ -28,7 +28,7 @@ const LiveLecture = () => {
       setIsLogIn(false);
     } else {
       setIsLogIn(true);
-      getUserInfo(currentUid).then(currentUserInfo => {
+      getUserInfo(currentUid).then((currentUserInfo) => {
         if (currentUserInfo !== undefined) {
           setUserInfo({
             Dept: currentUserInfo.Dept,
@@ -39,25 +39,29 @@ const LiveLecture = () => {
           });
           if (isConnect) {
             if (currentUserInfo.isProfessor === "on" || localId === "prof") {
-              navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-                if (localId === "prof") {
-                  educatorConnect(localId, stream, videoRef);
-                } else {
-                  if (userInfo !== undefined) {
-                    educatorConnect(userInfo.Name, stream, videoRef);
+              navigator.mediaDevices
+                .getUserMedia({ video: true, audio: false })
+                .then((stream) => {
+                  if (localId === "prof") {
+                    educatorConnect(localId, stream, videoRef);
+                  } else {
+                    if (userInfo !== undefined) {
+                      educatorConnect(userInfo.Name, stream, videoRef);
+                    }
                   }
-                }
-              });
+                });
             } else {
-              navigator.mediaDevices.getUserMedia({ video: true, audio: false }).then(stream => {
-                if (localId === "") {
-                  if (userInfo !== undefined) {
-                    educateeConnect(userInfo.Name, stream, videoRef);
+              navigator.mediaDevices
+                .getUserMedia({ video: true, audio: false })
+                .then((stream) => {
+                  if (localId === "") {
+                    if (userInfo !== undefined) {
+                      educateeConnect(userInfo.Name, stream, videoRef);
+                    }
+                  } else {
+                    educateeConnect(localId, stream, videoRef);
                   }
-                } else {
-                  educateeConnect(localId, stream, videoRef);
-                }
-              });
+                });
             }
           }
         }
@@ -72,7 +76,7 @@ const LiveLecture = () => {
           <button
             onClick={() => {
               setIsConnect(true);
-              reload(o => !o);
+              reload((o) => !o);
               if (localIdRef.current) {
                 setLocalId(localIdRef.current.value);
               }
