@@ -7,7 +7,7 @@ import screenfull from "screenfull";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
-
+import { Link } from "react-router-dom";
 const useStyles = makeStyles({
   playerWrapper: {
     width: "100%",
@@ -155,7 +155,9 @@ export default function RecordVideo() {
     console.log(inputRef.current.value);
     messages = "";
     console.log(messages);
+    console.log(Bookmarks);
   };
+
   return (
     <div>
       {/* Top control */}
@@ -179,9 +181,7 @@ export default function RecordVideo() {
             volume={volume}
             playbackRate={playbackRate}
             onProgress={handleProgress}
-          >
-            <track src="test.vtt" kind="subtitles" srcLang="kr" default></track>
-          </ReactPlayer>
+          />
           <Playercontrol
             onPlayPause={handlePlayPause}
             playing={playing}
@@ -205,6 +205,21 @@ export default function RecordVideo() {
             onBookmark={addBookmark}
           />
         </div>
+        <Link to="/studentpage/recordlecturelist">
+          <span
+            className="badge  mt-4"
+            style={{
+              width: "100px",
+              display: "block",
+              marginBottom: "20px",
+              fontSize: "1rem",
+              backgroundColor: "#D65E2A",
+              color: "white",
+            }}
+          >
+            나가기
+          </span>
+        </Link>
       </Container>
       <div
         style={{
