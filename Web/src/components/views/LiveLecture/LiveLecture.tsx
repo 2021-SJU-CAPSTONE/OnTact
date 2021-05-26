@@ -3,6 +3,8 @@ import Chatting from "./Chat/Chatting";
 import { educatorConnect, educateeConnect } from "./connect";
 import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 import Subtitle from "./subtitles/Subtitle";
+import Recording from "./Record/Recording";
+
 type UserInfo = {
   Dept: string;
   Name: string;
@@ -113,6 +115,9 @@ const LiveLecture = () => {
             >
               <div>
                 <Subtitle />
+              </div>
+              <div>
+                <Recording />
               </div>
             </div>
           </div>
