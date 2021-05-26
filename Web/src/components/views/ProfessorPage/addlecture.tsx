@@ -1,8 +1,12 @@
-import React, { Component } from "react";
+import React, { Component, HtmlHTMLAttributes, useRef } from "react";
 import StudentList from "./addLectureboard/StudentList";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
+import { Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
+import { store } from "../../firebase";
+import firebase from "firebase";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     "& > *": {
@@ -12,12 +16,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+type LectureType = {
+  startTime: string;
+  Name: string;
+  absentTime: string;
+  tardyTime: string;
+};
+
 const Addlecture = () => {
+  const startTimeRef = useRef<HTMLInputElement>(null);
+  const NameRef = useRef();
+  const absentTimeRef = useRef<HTMLInputElement>(null);
+  const tardyTimeRef = useRef<HTMLInputElement>(null);
   const classes = useStyles();
 
   return (
     <div style={{ width: "80%", paddingLeft: "100px" }}>
-      <form className={classes.root} noValidate autoComplete="off">
+      <Form className={classes.root} noValidate autoComplete="off">
         <div className="col-md-6">
           <span
             className="badge "
@@ -50,6 +65,7 @@ const Addlecture = () => {
             강의시간 입력
           </span>
         </div>
+
         <div
           style={{ paddingLeft: "15px" }}
           className="  align-items-center col-md-24"
@@ -59,7 +75,7 @@ const Addlecture = () => {
               className="d-flex flex-column"
               style={{ paddingRight: "30px" }}
             >
-              <select
+              {/* <select
                 className="custom-select mb-2 mr-sm-2 mb-sm-0"
                 id="inlineFormCustomSelect"
                 style={{ marginTop: "15px", width: "100px" }}
@@ -71,13 +87,58 @@ const Addlecture = () => {
                 <option value="4">목요일</option>
                 <option value="5">금요일</option>
               </select>
-            </div>
-            <div className=" flex-column" style={{ width: "200px" }}>
-              <TextField id="강의시간 " label="강의시간 " />
+            </div> */}
+              <Form.Group as={Row}>
+                <Form.Label as="legend" sm={2}>
+                  강의 요일
+                </Form.Label>
+
+                <Form.Check
+                  type="radio"
+                  label="월요일"
+                  name="formHorizontalRadios"
+                  id="formHorizontalRadios1"
+                />
+                <Form.Check
+                  type="radio"
+                  label="화요일"
+                  name="formHorizontalRadios"
+                  id="formHorizontalRadios2"
+                  style={{ paddingLeft: 30 }}
+                />
+                <Form.Check
+                  type="radio"
+                  label="수요일"
+                  name="formHorizontalRadios"
+                  id="formHorizontalRadios3"
+                  style={{ paddingLeft: 30 }}
+                />
+                <Form.Check
+                  type="radio"
+                  label="목요일"
+                  name="formHorizontalRadios"
+                  id="formHorizontalRadios3"
+                />
+                <Form.Check
+                  type="radio"
+                  label="금요일"
+                  name="formHorizontalRadios"
+                  id="formHorizontalRadios3"
+                  style={{ paddingLeft: 30 }}
+                />
+              </Form.Group>
+              <Form.Group>
+                <Form.Label>시작시간</Form.Label>
+                <Form.Control type="text" ref={startTimeRef} required />
+                <Form.Label>지각시간</Form.Label>
+                <Form.Control type="text" ref={tardyTimeRef} required />
+                <Form.Label>결석시간</Form.Label>
+                <Form.Control type="text" ref={absentTimeRef} required />
+              </Form.Group>
             </div>
           </div>
         </div>
-      </form>
+      </Form>
       <StudentList />
       <Link to="/professorpage">
         <span
