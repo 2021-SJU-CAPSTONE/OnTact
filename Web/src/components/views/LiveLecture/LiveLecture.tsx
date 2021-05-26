@@ -23,7 +23,7 @@ const LiveLecture = () => {
     } else {
       setIsLogIn(true);
       if (!userInfo) {
-        getUserInfo(uid).then(info => {
+        getUserInfo(uid).then((info) => {
           setUserInfo(info);
         });
       }
