@@ -1,8 +1,10 @@
 import React from "react";
 import { KotoEn } from "./papago.js";
 // import { store } from "../../../firebase";
-
-const Subtitle = () => {
+type Prop = {
+  changeIsShare: (value?: boolean) => boolean;
+};
+const Subtitle = (prop: Prop) => {
   const { webkitSpeechRecognition } = window as any;
 
   const recognition = new webkitSpeechRecognition();
@@ -13,6 +15,24 @@ const Subtitle = () => {
   const translateRef = React.useRef<HTMLSpanElement>(null);
   const [visibleSub, setVisibleSub] = React.useState(false);
   const [visibleTrans, setVisibleTrans] = React.useState(false);
+  //형찬
+  const btnShareRef = React.useRef<HTMLButtonElement>(null);
+  const btnShareClick = () => {
+    const cur = prop.changeIsShare();
+    if (cur) {
+      //현재 공유중
+      if (btnShareRef.current) {
+        btnShareRef.current.innerHTML = "화면 공유";
+        prop.changeIsShare(false);
+      }
+    } else {
+      // 현재 공유중 X
+      if (btnShareRef.current) {
+        btnShareRef.current.innerHTML = "공유 중지";
+        prop.changeIsShare(true);
+      }
+    }
+  };
   // const lectureId = "Sample";
 
   // const Ref = store.collection(`Lecture/${lectureId}/Subtitle`).doc("caption");
@@ -111,14 +131,14 @@ const Subtitle = () => {
     }
     if (translateRef.current) {
       if (firstText !== "") {
-        KotoEn(firstText).then((resultText) => {
+        KotoEn(firstText).then(resultText => {
           //console.log("papago " + resultText);
           if (translateRef.current) {
             translateRef.current.innerHTML = resultText;
           }
         });
       }
-      KotoEn(secondText).then((resultText) => {
+      KotoEn(secondText).then(resultText => {
         //console.log("papago " + resultText);
         if (translateRef.current) {
           translateRef.current.innerHTML += "<br>" + resultText;
@@ -145,7 +165,7 @@ const Subtitle = () => {
    * 개행 처리
    * @param {string} s
    */
-  const linebreak = (s) => {
+  const linebreak = s => {
     return s.replace(TWO_LINE, "<p></p>").replace(ONE_LINE, "<br>");
   };
 
@@ -213,6 +233,9 @@ const Subtitle = () => {
       </button>
       <button className="btnTrans" ref={btnTransref} onClick={useTrans}>
         번역 활성화
+      </button>
+      <button className="btnShare" ref={btnShareRef} onClick={btnShareClick}>
+        공유
       </button>
       {visibleSub ? (
         <div className="result">

@@ -12,9 +12,6 @@ const roomId = "test_room";
 const profId = "p";
 export const getSocket = () => {
   if (socket === undefined) {
-    // socket = io("https://115.91.214.5:5000", {
-    //   transports: ["polling"],
-    // });
     socket = io(serverURL, {
       transports: ["polling"],
     });
@@ -56,7 +53,6 @@ export const educateeConnect = (
   socket.on("user-connected", (userId: string) => {
     //steam 수신 peer 연결
     // userid : 상대방 아이디
-
     console.log("connected with :", userId);
     const call = peer.call(profId, stream);
     call.on("stream", remoteStream => {
