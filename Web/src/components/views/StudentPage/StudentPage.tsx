@@ -12,6 +12,7 @@ function StudentPage() {
   const [v, setv] = React.useState(false);
   const [uid, setUid] = React.useState<string>(getCurrentUserUid());
   const [userInfo, setUserInfo] = React.useState<type.UserInfo>();
+
   React.useEffect(() => {
     setUid(getCurrentUserUid());
     if (uid === "not login") {
@@ -25,7 +26,7 @@ function StudentPage() {
         });
       }
     }
-  }, [isLogIn, v]);
+  }, [isLogIn, v, userInfo]);
   const checkAttendance = () => {
     if (userInfo) {
       const studentId = userInfo.id;

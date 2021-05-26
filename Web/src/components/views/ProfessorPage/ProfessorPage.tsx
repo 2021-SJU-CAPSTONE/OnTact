@@ -23,7 +23,7 @@ function ProfessorPage() {
         });
       }
     }
-  }, [isLogIn, v]);
+  }, [isLogIn, v, userInfo]);
   return (
     <div>
       {isLogIn ? (
