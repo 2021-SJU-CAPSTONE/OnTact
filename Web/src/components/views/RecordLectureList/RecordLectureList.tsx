@@ -1,7 +1,24 @@
 import React from "react";
 import Cardlist from "./Card/Cardlist";
 import { Link } from "react-router-dom";
+import { store } from "../../firebase";
+
 export default function RecordLectureList() {
+  // async function name() {
+  //   const lecRef = store.collection("Lecture").doc("Capstone");
+  //   const collections = await lecRef.get();
+  //   collections((collection) => {
+  //     console.log("find something", collection.id);
+  //   });
+  //   console.log("aaaaaaa", lecRef);
+  // }
+  let documentRef = store.doc("Lecture/Capstone");
+  documentRef.get().then((documentSnapshot) => {
+    if (documentSnapshot.exists) {
+      console.log("Document find", documentSnapshot.id);
+    }
+  });
+
   return (
     <div
       className="card overflow-auto"

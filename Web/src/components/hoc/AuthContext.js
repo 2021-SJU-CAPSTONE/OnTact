@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [isLogin, setIsLogin] = useState(false);
   const [rerender, setrerender] = useState(false);
-  async function signup(email, password, isProfessor, name, stuid) {
+  async function signup(email, password, isProfessor, name, id) {
     const idRes = await auth.createUserWithEmailAndPassword(email, password);
 
     const Ref = store.collection("User").doc(idRes.user.uid);
@@ -23,7 +23,7 @@ export function AuthProvider({ children }) {
       isProfessor: isProfessor,
       email: email,
       password: password,
-      stuid: stuid,
+      id: id,
     });
     setIsLogin(true);
     setrerender((o) => !o);

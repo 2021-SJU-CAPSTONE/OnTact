@@ -8,7 +8,7 @@ export default function SignUp() {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const isprofessor = useRef();
-  const stuidRef = useRef();
+  const idRef = useRef();
   const name = useRef();
   const { signup, currentUser } = useAuth();
   const [error, setError] = useState("");
@@ -28,7 +28,7 @@ export default function SignUp() {
       passwordRef.current.value,
       isprofessor.current.value,
       name.current.value,
-      stuidRef.current.value
+      idRef.current.value
     );
     const ref = store.collection("User").doc(auth.currentUser.uid);
 
@@ -40,7 +40,7 @@ export default function SignUp() {
     if (isprofessor === "on") {
       history.push("/professorpage");
     } else {
-      history.push("/studentpage");
+      history.push("/dentpage");
     }
   }
 
@@ -72,9 +72,9 @@ export default function SignUp() {
                   required
                 />
               </Form.Group>
-              <Form.Group id="stuid">
+              <Form.Group id="id">
                 <Form.Label>학번/교번</Form.Label>
-                <Form.Control type="text" ref={stuidRef} required />
+                <Form.Control type="text" ref={idRef} required />
               </Form.Group>
               <Form.Group id="name">
                 <Form.Label>Name</Form.Label>

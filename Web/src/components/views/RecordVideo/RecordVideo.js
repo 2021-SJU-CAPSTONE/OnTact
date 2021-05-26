@@ -9,6 +9,7 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
+import { store } from "../../firebase";
 const useStyles = makeStyles({
   playerWrapper: {
     width: "100%",
