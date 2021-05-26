@@ -4,4 +4,5 @@ export type UserInfo = {
   email: string;
   isProfessor: string;
   password: string;
+  id: string;
 };
