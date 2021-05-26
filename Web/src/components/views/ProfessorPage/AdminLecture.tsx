@@ -7,8 +7,10 @@ import { Link } from "react-router-dom";
 import AttendBoard from "./Sections/AttendBoard";
 //import Lecturelist from './Sections/Lecturelist';
 function AdimnLecture() {
-  const [state, setstate] = useState("");
-
+  const [Open, setOpen] = useState(false);
+  const changeOpen = () => {
+    setOpen((o) => !o);
+  };
   return (
     <div className="row" style={{ width: "75%", margin: "6rem auto" }}>
       <div className="col-md-6">
@@ -38,7 +40,7 @@ function AdimnLecture() {
           Capstone Design(001)
         </span>
         <div>
-          <StudentList />
+          <StudentList changeOpen={changeOpen} />
         </div>
       </div>
       <div className="col-md-6 ">
@@ -67,9 +69,12 @@ function AdimnLecture() {
         >
           금요일 13:30 ~ 19:00
         </span>
-        <div>
-          <AttendBoard />
-        </div>
+        {Open ? (
+          <div>
+            <AttendBoard />
+          </div>
+        ) : null}
+
         <Link to="/professorpage">
           <span
             className="badge  mt-4"
@@ -80,6 +85,8 @@ function AdimnLecture() {
               fontSize: "1rem",
               backgroundColor: "#D65E2A",
               color: "white",
+              top: "70vh",
+              position: "absolute",
             }}
           >
             저장하기

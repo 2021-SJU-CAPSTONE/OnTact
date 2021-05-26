@@ -6,7 +6,7 @@ import { store } from "../../firebase";
 export default function RecordLectureList() {
   // async function name() {
   //   const lecRef = store.collection("Lecture").doc("Capstone");
-  //   const collections = await lecRef.get();
+  //   const collections = await lecRef.listCollections();
   //   collections((collection) => {
   //     console.log("find something", collection.id);
   //   });
