@@ -219,7 +219,7 @@ export default function RecordVideo() {
           <span
             className="badge  mt-4"
             style={{
-              width: "100px",
+              width: "150px",
               display: "block",
               marginBottom: "20px",
               fontSize: "1rem",
