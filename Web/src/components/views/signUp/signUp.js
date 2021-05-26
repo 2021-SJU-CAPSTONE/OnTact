@@ -8,6 +8,7 @@ export default function SignUp() {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const isprofessor = useRef();
+  const stuidRef = useRef();
   const name = useRef();
   const { signup, currentUser } = useAuth();
   const [error, setError] = useState("");
@@ -26,10 +27,13 @@ export default function SignUp() {
       emailRef.current.value,
       passwordRef.current.value,
       isprofessor.current.value,
-      name.current.value
+      name.current.value,
+      stuidRef.current.value
     );
     const ref = store.collection("User").doc(auth.currentUser.uid);
+
     ref.get().then((item) => {
+      console.log("!!!!!!!!!!!!", item);
       auth.currentUser.isProfessor = item.data().isProfessor;
     });
     console.log(isprofessor);
@@ -67,6 +71,10 @@ export default function SignUp() {
                   ref={passwordConfirmRef}
                   required
                 />
+              </Form.Group>
+              <Form.Group id="stuid">
+                <Form.Label>학번/교번</Form.Label>
+                <Form.Control type="text" ref={stuidRef} required />
               </Form.Group>
               <Form.Group id="name">
                 <Form.Label>Name</Form.Label>
