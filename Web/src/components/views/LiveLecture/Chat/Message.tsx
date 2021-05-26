@@ -1,13 +1,13 @@
 const Message = ({
   username,
   message,
-  localId,
+  name,
 }: {
   username: string;
   message: string;
-  localId: string;
+  name?: string;
 }) => {
-  const sender = username === localId ? "Me" : username;
+  const sender = username === name ? "Me" : username;
 
   return (
     <div

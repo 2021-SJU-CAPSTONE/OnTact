@@ -8,10 +8,10 @@ type MessageType = {
   message: string;
 };
 const Chatting = ({
-  localId,
+  name,
   lectureId,
 }: {
-  localId: string;
+  name?: string;
   lectureId: string;
 }) => {
   const [messages, setMessages] = React.useState<MessageType[]>([]);
@@ -32,18 +32,19 @@ const Chatting = ({
 
   const sendMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (inputRef.current) {
-      console.log("[localId]", localId);
-      store.collection(`Lecture/${lectureId}/Chatting`).add({
-        message: inputRef.current.value,
-        username: localId,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
-      });
-      setMessages([
-        ...messages,
-        { username: localId, message: inputRef.current.value },
-      ]);
-      inputRef.current.value = "";
+    if (name !== undefined) {
+      if (inputRef.current) {
+        store.collection(`Lecture/${lectureId}/Chatting`).add({
+          message: inputRef.current.value,
+          username: name,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+        setMessages([
+          ...messages,
+          { username: name, message: inputRef.current.value },
+        ]);
+        inputRef.current.value = "";
+      }
     }
   };
 
@@ -59,7 +60,7 @@ const Chatting = ({
     >
       <div style={{ paddingLeft: 50, marginTop: 20 }}>
         {messages.map(({ username, message }) => (
-          <Message username={username} message={message} localId={localId} />
+          <Message username={username} message={message} name={name} />
         ))}
       </div>
       <form

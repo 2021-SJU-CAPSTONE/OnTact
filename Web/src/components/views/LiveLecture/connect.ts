@@ -3,7 +3,7 @@ import Peer from "peerjs";
 type PeerList = {
   [userId: string]: Peer.MediaConnection;
 };
-
+const serverURL = "https://capstone-ontact.herokuapp.com";
 let peerList: PeerList = {};
 let peerIds: string[] = [];
 // const socket = io("http://localhost:5001", { transports: ["polling"] });
@@ -11,11 +11,11 @@ let socket;
 const roomId = "test_room";
 const profId = "p";
 export const getSocket = () => {
-  if (!socket) {
+  if (socket === undefined) {
     // socket = io("https://115.91.214.5:5000", {
     //   transports: ["polling"],
     // });
-    socket = io("https://capstone-ontact.herokuapp.com", {
+    socket = io(serverURL, {
       transports: ["polling"],
     });
     console.log("get socket", socket);
@@ -28,7 +28,17 @@ export const educateeConnect = (
   remoteVideoRef: React.RefObject<HTMLVideoElement>
 ) => {
   getSocket();
-  const peer = new Peer(localId);
+  let peer;
+  try {
+    // peer = new Peer(localId, {
+    //   host: "ontact-socket.herokuapp.com",
+    //   port: 8000,
+    //   path: "/",
+    // });
+    peer = new Peer(localId);
+  } catch (e) {
+    console.log(e);
+  }
   peer.on("open", id => {
     // id : localid
     console.log(`[PEER OPEN BY ${id}]`);
@@ -70,7 +80,17 @@ export const educatorConnect = (
   localVideoRef: React.RefObject<HTMLVideoElement>
 ) => {
   getSocket();
-  const peer = new Peer(localId);
+  let peer;
+  try {
+    // peer = new Peer(localId, {
+    //   host: "ontact-socket.herokuapp.com",
+    //   port: 8000,
+    //   path: "/",
+    // });
+    peer = new Peer(localId);
+  } catch (e) {
+    console.log(e);
+  }
   if (localVideoRef.current) {
     localVideoRef.current.srcObject = localStream;
   }

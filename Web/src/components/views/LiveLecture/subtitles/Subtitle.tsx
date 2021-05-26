@@ -1,17 +1,23 @@
 import React from "react";
 import { KotoEn } from "./papago.js";
+// import { store } from "../../../firebase";
 
 const Subtitle = () => {
   const { webkitSpeechRecognition } = window as any;
 
   const recognition = new webkitSpeechRecognition();
   const language = "ko-KR";
-  const btnMicref = React.useRef<HTMLButtonElement>(null);
-  const final_spanref = React.useRef<HTMLSpanElement>(null);
-  const interim_spanref = React.useRef<HTMLSpanElement>(null);
-  const papago_spanref = React.useRef<HTMLSpanElement>(null);
+  const btnSubref = React.useRef<HTMLButtonElement>(null);
+  const btnTransref = React.useRef<HTMLButtonElement>(null);
+  const finalRef = React.useRef<HTMLSpanElement>(null);
+  const translateRef = React.useRef<HTMLSpanElement>(null);
+  const [visibleSub, setVisibleSub] = React.useState(false);
+  const [visibleTrans, setVisibleTrans] = React.useState(false);
+  // const lectureId = "Sample";
 
-  const FIRST_CHAR = /\S/;
+  // const Ref = store.collection(`Lecture/${lectureId}/Subtitle`).doc("caption");
+
+  // const FIRST_CHAR = /\S/;
   const TWO_LINE = /\n\n/g;
   const ONE_LINE = /\n/g;
 
@@ -20,6 +26,10 @@ const Subtitle = () => {
   let finalTranscript = "";
   let firstText = "";
   let secondText = "";
+  let tempText = "";
+
+  let startTime = 0;
+  let curTime = 0;
 
   recognition.continuous = true;
   recognition.interimResults = true;
@@ -28,30 +38,25 @@ const Subtitle = () => {
    * 음성 인식 시작 처리
    */
   recognition.onstart = function () {
-    console.log("onstart", arguments);
+    //console.log("onstart", arguments);
     isRecognizing = true;
-    if (btnMicref.current) {
-      btnMicref.current.className = "on";
-    }
+
+    startTime = arguments[0].timeStamp;
   };
 
   /**
    * 음성 인식 종료 처리
    */
   recognition.onend = function () {
-    console.log("onend", arguments);
+    //console.log("onend", arguments);
     isRecognizing = false;
 
     if (ignoreEndProcess) {
       return false;
     }
 
-    // DO end process
-    if (btnMicref.current) {
-      btnMicref.current.className = "off";
-    }
     if (!finalTranscript) {
-      console.log("empty finalTranscript");
+      //console.log("empty finalTranscript");
       return false;
     }
   };
@@ -63,6 +68,9 @@ const Subtitle = () => {
     // console.log("onresult", event);
 
     let interimTranscript = "";
+    let finalSub = "";
+    // let fireTime = 0;
+
     if (typeof event.results === "undefined") {
       recognition.onend = null;
       recognition.stop();
@@ -74,39 +82,52 @@ const Subtitle = () => {
 
       if (event.results[i].isFinal) {
         finalTranscript += transcript + "\n";
-        firstText = secondText;
         secondText = transcript;
-        if (firstText === "" && secondText !== "") {
-          firstText = secondText;
-          secondText = "";
-        }
+        tempText = secondText;
+        // fireTime = curTime;
+        curTime = 0;
       } else {
         interimTranscript += transcript;
+        firstText = tempText;
+        secondText = interimTranscript;
+        if (curTime === 0) {
+          curTime = Math.round((event.timeStamp - startTime) / 1000);
+        }
       }
     }
 
-    finalTranscript = capitalize(finalTranscript);
-    if (
-      final_spanref.current &&
-      interim_spanref.current &&
-      papago_spanref.current
-    ) {
-      final_spanref.current.innerHTML = linebreak(
-        firstText + "\n" + secondText
-      );
-      interim_spanref.current.innerHTML = linebreak(interimTranscript);
-      KotoEn(final_spanref.current.innerHTML).then((resultText) => {
-        console.log("papago " + resultText);
-
-        if (papago_spanref.current) {
-          papago_spanref.current.innerHTML = resultText;
+    finalSub = linebreak(firstText + "\n" + secondText);
+    if (finalRef.current) {
+      finalRef.current.innerHTML = finalSub;
+      // if (fireTime !== 0) {
+      //   Ref.set(
+      //     {
+      //       [fireTime]: linebreak(firstText),
+      //     },
+      //     { merge: true }
+      //   );
+      //   fireTime = 0;
+      // }
+    }
+    if (translateRef.current) {
+      if (firstText !== "") {
+        KotoEn(firstText).then((resultText) => {
+          //console.log("papago " + resultText);
+          if (translateRef.current) {
+            translateRef.current.innerHTML = resultText;
+          }
+        });
+      }
+      KotoEn(secondText).then((resultText) => {
+        //console.log("papago " + resultText);
+        if (translateRef.current) {
+          translateRef.current.innerHTML += "<br>" + resultText;
         }
       });
     }
-    // all_spanref.current.innerHTML = linebreak(finalTranscript);
 
-    console.log("finalTranscript", finalTranscript);
-    console.log("interimTranscript", interimTranscript);
+    // console.log("finalTranscript", finalTranscript);
+    // console.log("interimTranscript", interimTranscript);
   };
 
   /**
@@ -118,9 +139,6 @@ const Subtitle = () => {
     if (event.error.match(/no-speech|audio-capture|not-allowed/)) {
       ignoreEndProcess = true;
     }
-    if (btnMicref.current) {
-      btnMicref.current.className = "off";
-    }
   };
 
   /**
@@ -131,15 +149,15 @@ const Subtitle = () => {
     return s.replace(TWO_LINE, "<p></p>").replace(ONE_LINE, "<br>");
   };
 
-  /**
-   * 첫문자를 대문자로 변환
-   * @param {string} s
-   */
-  const capitalize = (s) => {
-    return s.replace(FIRST_CHAR, (m) => {
-      return m.toUpperCase();
-    });
-  };
+  // /**
+  //  * 첫문자를 대문자로 변환
+  //  * @param {string} s
+  //  */
+  // const capitalize = (s) => {
+  //   return s.replace(FIRST_CHAR, (m) => {
+  //     return m.toUpperCase();
+  //   });
+  // };
 
   /**
    * 음성 인식 트리거
@@ -152,30 +170,60 @@ const Subtitle = () => {
     recognition.lang = language;
     recognition.start();
     ignoreEndProcess = false;
-    if (
-      final_spanref.current &&
-      interim_spanref.current &&
-      papago_spanref.current
-    ) {
-      final_spanref.current.innerHTML = "";
-      interim_spanref.current.innerHTML = "";
-      papago_spanref.current.innerHTML = "";
+
+    if (finalRef.current) {
+      finalRef.current.innerHTML = "";
     }
-    // all_spanref.current.innerHTML = "";
+    if (translateRef.current) {
+      translateRef.current.innerHTML = "";
+    }
+  };
+
+  const useSub = () => {
+    if (btnSubref.current) {
+      if (visibleSub) {
+        btnSubref.current.innerHTML = "자막 활성화";
+        setVisibleSub(false);
+      } else {
+        btnSubref.current.innerHTML = "자막 비활성화";
+        setVisibleSub(true);
+      }
+    }
+  };
+
+  const useTrans = () => {
+    if (btnTransref.current) {
+      if (visibleTrans) {
+        btnTransref.current.innerHTML = "번역 활성화";
+        setVisibleTrans(false);
+      } else {
+        btnTransref.current.innerHTML = "번역 비활성화";
+        setVisibleTrans(true);
+      }
+    }
   };
 
   return (
     <div className="content">
-      <div className="result">
-        <span className="final" ref={final_spanref}></span>
-        <span className="interim" ref={interim_spanref}></span>
-      </div>
-      <div className="trans">
-        <span className="papago" ref={papago_spanref}></span>
-      </div>
-      <button className="btn-mic" ref={btnMicref} onClick={start}>
-        마이크<span></span>
+      <button className="btnMic" onClick={start}>
+        마이크
       </button>
+      <button className="btnSub" ref={btnSubref} onClick={useSub}>
+        자막 활성화
+      </button>
+      <button className="btnTrans" ref={btnTransref} onClick={useTrans}>
+        번역 활성화
+      </button>
+      {visibleSub ? (
+        <div className="result">
+          <span className="final" ref={finalRef}></span>
+          {visibleTrans ? (
+            <div>
+              <span className="translate" ref={translateRef}></span>
+            </div>
+          ) : null}
+        </div>
+      ) : null}
     </div>
   );
 };
