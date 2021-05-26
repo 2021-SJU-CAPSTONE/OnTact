@@ -75,19 +75,6 @@ const Addlecture = () => {
               className="d-flex flex-column"
               style={{ paddingRight: "30px" }}
             >
-              {/* <select
-                className="custom-select mb-2 mr-sm-2 mb-sm-0"
-                id="inlineFormCustomSelect"
-                style={{ marginTop: "15px", width: "100px" }}
-              >
-                <option selected>요일</option>
-                <option value="1">월요일</option>
-                <option value="2">화요일</option>
-                <option value="3">수요일</option>
-                <option value="4">목요일</option>
-                <option value="5">금요일</option>
-              </select>
-            </div> */}
               <Form.Group as={Row}>
                 <Form.Label as="legend" sm={2}>
                   강의 요일
