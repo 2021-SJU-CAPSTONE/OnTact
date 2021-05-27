@@ -2,7 +2,7 @@ import React from "react";
 import { useReactMediaRecorder } from "react-media-recorder";
 import firebase from "firebase/app";
 
-const Recording = () => {
+const Recording = ({ userInfo }) => {
   const {
     status,
     startRecording,
@@ -67,6 +67,16 @@ const Recording = () => {
     // );
   };
 
+  const [isProf, setIsProf] = React.useState(false);
+  React.useEffect(() => {
+    if (userInfo) {
+      if (userInfo.isProfessor === "on") {
+        setIsProf(true);
+      } else {
+        setIsProf(false);
+      }
+    }
+  }, [isProf]);
   const useRecord = () => {
     if (recordButton.current) {
       if (recordButton.current.innerHTML === "녹화 종료") {
@@ -94,25 +104,29 @@ const Recording = () => {
   };
 
   const visible = () => {
-    setVisibleVideo(true);
+    setVisibleVideo((o) => !o);
   };
 
   return (
-    <div>
-      <button ref={recordButton} onClick={useRecord}>
-        녹화 시작
-      </button>
-      {visiblePause ? (
-        <button ref={pauseButton} onClick={usePause}>
-          녹화 중지
-        </button>
+    <>
+      {isProf ? (
+        <>
+          <button ref={recordButton} onClick={useRecord}>
+            녹화 시작
+          </button>
+          {visiblePause ? (
+            <button ref={pauseButton} onClick={usePause}>
+              녹화 중지
+            </button>
+          ) : null}
+          <button onClick={visible}>영상</button>
+          {visibleVideo ? (
+            <video src={mediaBlobUrl} controls autoPlay loop />
+          ) : null}
+        </>
       ) : null}
-      <button onClick={visible}>영상</button>
-      {visibleVideo ? (
-        <video src={mediaBlobUrl} controls autoPlay loop />
-      ) : null}
-    </div>
+    </>
   );
 };
 
-export default Recording;
+export default React.memo(Recording);
