@@ -1,9 +1,10 @@
 import React from "react";
 import { educatorConnect, educateeConnect } from "./connect";
 import Subtitle from "../Subtitle/Subtitle";
-
 const Video = ({ userInfo }) => {
+  //video
   const videoRef = React.useRef();
+  // share
   const [isShare, setIsShare] = React.useState(false);
   const changeIsShare = value => {
     if (value !== undefined) {
@@ -11,6 +12,8 @@ const Video = ({ userInfo }) => {
     }
     return isShare;
   };
+  //record
+
   React.useEffect(() => {
     if (userInfo) {
       if (userInfo.isProfessor === "on") {

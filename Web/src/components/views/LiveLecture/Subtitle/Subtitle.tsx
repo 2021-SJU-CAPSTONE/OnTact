@@ -1,5 +1,6 @@
 import React from "react";
 import { KotoEn } from "./papago.js";
+import Recording from "../Record/Recording";
 // import { store } from "../../../firebase";
 type Prop = {
   changeIsShare: (value?: boolean) => boolean;
@@ -237,6 +238,7 @@ const Subtitle = (prop: Prop) => {
       <button className="btnShare" ref={btnShareRef} onClick={btnShareClick}>
         공유
       </button>
+      <Recording />
       {visibleSub ? (
         <div className="result">
           <span className="final" ref={finalRef}></span>

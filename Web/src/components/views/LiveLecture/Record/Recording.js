@@ -2,18 +2,12 @@ import React from "react";
 import { useReactMediaRecorder } from "react-media-recorder";
 
 const Recording = () => {
-  const {
-    status,
-    startRecording,
-    stopRecording,
-    pauseRecording,
-    resumeRecording,
-    mediaBlobUrl,
-  } = useReactMediaRecorder({ video: true });
+  const { status, startRecording, stopRecording, pauseRecording, resumeRecording, mediaBlobUrl } =
+    useReactMediaRecorder({ video: true });
 
   const recordButton = React.useRef(null);
   const pauseButton = React.useRef(null);
-  const [visibleVideo, setVisibleVideo] = React.useState(false);
+  // const [visibleVideo, setVisibleVideo] = React.useState(false);
   const [visiblePause, setVisiblePause] = React.useState(false);
 
   const useRecord = () => {
@@ -42,12 +36,12 @@ const Recording = () => {
     }
   };
 
-  const visible = () => {
-    setVisibleVideo(true);
-  };
+  // const visible = () => {
+  //   setVisibleVideo(true);
+  // };
 
   return (
-    <div>
+    <>
       <button ref={recordButton} onClick={useRecord}>
         녹화 시작
       </button>
@@ -56,12 +50,12 @@ const Recording = () => {
           녹화 중지
         </button>
       ) : null}
-      <button onClick={visible}>영상</button>
-      {visibleVideo ? (
-        <video src={mediaBlobUrl} controls autoPlay loop />
-      ) : null}
-    </div>
+      {/*
+        <button onClick={visible}>영상</button>
+        {visibleVideo ? <video src={mediaBlobUrl} controls autoPlay loop /> : null}
+        */}
+    </>
   );
 };
 
-export default Recording;
+export default React.memo(Recording);
