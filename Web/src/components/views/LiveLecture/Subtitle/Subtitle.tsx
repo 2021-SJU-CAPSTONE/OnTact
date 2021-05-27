@@ -134,14 +134,14 @@ const Subtitle = (prop: Prop) => {
     }
     if (translateRef.current) {
       if (firstText !== "") {
-        KotoEn(firstText).then(resultText => {
+        KotoEn(firstText).then((resultText) => {
           //console.log("papago " + resultText);
           if (translateRef.current) {
             translateRef.current.innerHTML = resultText;
           }
         });
       }
-      KotoEn(secondText).then(resultText => {
+      KotoEn(secondText).then((resultText) => {
         //console.log("papago " + resultText);
         if (translateRef.current) {
           translateRef.current.innerHTML += "<br>" + resultText;
@@ -168,7 +168,7 @@ const Subtitle = (prop: Prop) => {
    * 개행 처리
    * @param {string} s
    */
-  const linebreak = s => {
+  const linebreak = (s) => {
     return s.replace(TWO_LINE, "<p></p>").replace(ONE_LINE, "<br>");
   };
 
@@ -227,17 +227,36 @@ const Subtitle = (prop: Prop) => {
   };
 
   return (
-    <div className="content">
-      <button className="btnMic" onClick={start}>
+    <div className="content" style={{ textAlign: "center" }}>
+      <button
+        className="btnMic btn-secondary"
+        style={{ width: "8vw" }}
+        onClick={start}
+      >
         마이크
       </button>
-      <button className="btnSub" ref={btnSubref} onClick={useSub}>
+      <button
+        className="btnSub btn-info"
+        ref={btnSubref}
+        onClick={useSub}
+        style={{ width: "8vw" }}
+      >
         자막 활성화
       </button>
-      <button className="btnTrans" ref={btnTransref} onClick={useTrans}>
+      <button
+        className="btnTrans btn-success"
+        ref={btnTransref}
+        onClick={useTrans}
+        style={{ width: "8vw" }}
+      >
         번역 활성화
       </button>
-      <button className="btnShare" ref={btnShareRef} onClick={btnShareClick}>
+      <button
+        className="btnShare btn-primary"
+        ref={btnShareRef}
+        onClick={btnShareClick}
+        style={{ width: "8vw" }}
+      >
         공유
       </button>
       <Recording userInfo={prop.userInfo} />

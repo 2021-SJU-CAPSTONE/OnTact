@@ -111,15 +111,31 @@ const Recording = ({ userInfo }) => {
     <>
       {isProf ? (
         <>
-          <button ref={recordButton} onClick={useRecord}>
+          <button
+            ref={recordButton}
+            className="btn-danger"
+            onClick={useRecord}
+            style={{ width: "8vw" }}
+          >
             녹화 시작
           </button>
           {visiblePause ? (
-            <button ref={pauseButton} onClick={usePause}>
+            <button
+              ref={pauseButton}
+              className="btn-danger"
+              onClick={usePause}
+              style={{ width: "8vw" }}
+            >
               녹화 중지
             </button>
           ) : null}
-          <button onClick={visible}>영상</button>
+          <button
+            onClick={visible}
+            className="btn-dark"
+            style={{ width: "8vw" }}
+          >
+            영상
+          </button>
           {visibleVideo ? (
             <video src={mediaBlobUrl} controls autoPlay loop />
           ) : null}

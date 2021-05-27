@@ -1,12 +1,13 @@
 import React from "react";
 import { educatorConnect, educateeConnect } from "./connect";
 import Subtitle from "../Subtitle/Subtitle";
+import "./video.css";
 const Video = ({ userInfo, lecture }) => {
   //video
   const videoRef = React.useRef();
   // share
   const [isShare, setIsShare] = React.useState(false);
-  const changeIsShare = value => {
+  const changeIsShare = (value) => {
     if (value !== undefined) {
       setIsShare(value);
     }
@@ -17,24 +18,30 @@ const Video = ({ userInfo, lecture }) => {
     if (userInfo) {
       if (userInfo.isProfessor === "on") {
         if (isShare) {
-          navigator.mediaDevices.getDisplayMedia({ audio: true, video: true }).then(stream => {
-            educatorConnect(userInfo.id, stream, videoRef, lecture);
-          });
+          navigator.mediaDevices
+            .getDisplayMedia({ audio: true, video: true })
+            .then((stream) => {
+              educatorConnect(userInfo.id, stream, videoRef, lecture);
+            });
         } else {
-          navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-            educatorConnect(userInfo.id, stream, videoRef, lecture);
-          });
+          navigator.mediaDevices
+            .getUserMedia({ video: true, audio: true })
+            .then((stream) => {
+              educatorConnect(userInfo.id, stream, videoRef, lecture);
+            });
         }
       } else {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-          educateeConnect(userInfo.id, stream, videoRef, lecture);
-        });
+        navigator.mediaDevices
+          .getUserMedia({ video: true, audio: true })
+          .then((stream) => {
+            educateeConnect(userInfo.id, stream, videoRef, lecture);
+          });
       }
     }
   }, [isShare]);
   return (
     <div>
-      <video ref={videoRef} autoPlay playsInline muted></video>
+      <video id="video" ref={videoRef} autoPlay playsInline muted></video>
       <Subtitle changeIsShare={changeIsShare} userInfo={userInfo} />
     </div>
   );

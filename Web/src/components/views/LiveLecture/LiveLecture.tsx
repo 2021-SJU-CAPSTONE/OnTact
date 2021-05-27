@@ -23,7 +23,7 @@ const LiveLecture = () => {
     } else {
       setIsLogIn(true);
       if (!userInfo) {
-        getUserInfo(uid).then(info => {
+        getUserInfo(uid).then((info) => {
           setUserInfo(info);
         });
       }
@@ -34,7 +34,7 @@ const LiveLecture = () => {
   };
   return (
     <div>
-      <button className="btnExit" onClick={onBtnExit}>
+      <button className="btnExit btn-dark" onClick={onBtnExit}>
         강의 나가기
       </button>
       {isLogIn ? (
@@ -45,12 +45,14 @@ const LiveLecture = () => {
                 width: "60%",
                 height: "60vh",
                 border: "solid",
-                // backgroundColor: "black",
+                backgroundColor: "black",
                 float: "left",
                 marginLeft: "50px",
               }}
             >
-              {userInfo ? <Video userInfo={userInfo} lecture={lectureId} /> : null}
+              {userInfo ? (
+                <Video userInfo={userInfo} lecture={lectureId} />
+              ) : null}
             </div>
             <div>
               <Chatting name={userInfo?.Name} lectureId={lectureId} />
