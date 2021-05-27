@@ -1,3 +1,4 @@
+import { makeAlarm } from "./../../../utils/Alarm";
 import io from "socket.io-client";
 import Peer from "peerjs";
 type PeerList = {
@@ -8,7 +9,6 @@ let peerList: PeerList = {};
 let peerIds: string[] = [];
 // const socket = io("http://localhost:5001", { transports: ["polling"] });
 let socket;
-const roomId = "test_room";
 const profId = "p";
 export const getSocket = () => {
   if (socket === undefined) {
@@ -22,7 +22,8 @@ export const getSocket = () => {
 export const educateeConnect = (
   localId: string,
   stream: MediaStream,
-  remoteVideoRef: React.RefObject<HTMLVideoElement>
+  remoteVideoRef: React.RefObject<HTMLVideoElement>,
+  lectureName: string
 ) => {
   getSocket();
   let peer;
@@ -38,8 +39,8 @@ export const educateeConnect = (
   }
   peer.on("open", id => {
     // id : localid
-    console.log(`[PEER OPEN BY ${id}]`);
-    socket.emit("join-room", roomId, id);
+    makeAlarm(`${id}님이 입장했습니다.`, lectureName);
+    socket.emit("join-room", lectureName, id);
   });
   peer.on("call", call => {
     call.answer(stream);
@@ -73,7 +74,8 @@ export const educateeConnect = (
 export const educatorConnect = (
   localId: string,
   localStream: MediaStream,
-  localVideoRef: React.RefObject<HTMLVideoElement>
+  localVideoRef: React.RefObject<HTMLVideoElement>,
+  lectureName: string
 ) => {
   getSocket();
   let peer;
@@ -92,8 +94,8 @@ export const educatorConnect = (
   }
   peer.on("open", id => {
     // id : localid
-    console.log(`open peer by ${id}`);
-    socket.emit("join-room", roomId, id);
+    makeAlarm(`${id}님이 입장했습니다.`, lectureName);
+    socket.emit("join-room", lectureName, id);
   });
   peer.on("call", call => {
     call.answer(localStream);
