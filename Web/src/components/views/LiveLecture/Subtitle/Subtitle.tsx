@@ -1,9 +1,11 @@
 import React from "react";
 import { KotoEn } from "./papago.js";
 import Recording from "../Record/Recording";
+import * as type from "../../../type";
 // import { store } from "../../../firebase";
 type Prop = {
   changeIsShare: (value?: boolean) => boolean;
+  userInfo: type.UserInfo;
 };
 const Subtitle = (prop: Prop) => {
   const { webkitSpeechRecognition } = window as any;
@@ -238,7 +240,7 @@ const Subtitle = (prop: Prop) => {
       <button className="btnShare" ref={btnShareRef} onClick={btnShareClick}>
         공유
       </button>
-      <Recording />
+      <Recording userInfo={prop.userInfo} />
       {visibleSub ? (
         <div className="result">
           <span className="final" ref={finalRef}></span>

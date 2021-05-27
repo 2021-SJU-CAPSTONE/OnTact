@@ -12,7 +12,6 @@ const Video = ({ userInfo }) => {
     }
     return isShare;
   };
-  //record
 
   React.useEffect(() => {
     if (userInfo) {
@@ -36,7 +35,7 @@ const Video = ({ userInfo }) => {
   return (
     <div>
       <video ref={videoRef} autoPlay playsInline muted></video>
-      <Subtitle changeIsShare={changeIsShare} />
+      <Subtitle changeIsShare={changeIsShare} userInfo={userInfo} />
     </div>
   );
 };
