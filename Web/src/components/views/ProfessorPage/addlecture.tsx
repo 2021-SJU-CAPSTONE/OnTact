@@ -1,4 +1,4 @@
-import React, { Component, HtmlHTMLAttributes, useRef } from "react";
+import React, { Component, HtmlHTMLAttributes, useRef, useState } from "react";
 import StudentList from "./addLectureboard/StudentList";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import { Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import { store } from "../../firebase";
 import firebase from "firebase";
+import LectureStore from "./addLectureboard/LectureStore";
+import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,14 +24,102 @@ type LectureType = {
   absentTime: string;
   tardyTime: string;
 };
+type Student = {
+  key: number;
+  id: string;
+  name: string;
+};
 
 const Addlecture = () => {
+  const lectureNameRef = useRef<HTMLInputElement>(null);
   const startTimeRef = useRef<HTMLInputElement>(null);
-  const NameRef = useRef();
-  const absentTimeRef = useRef<HTMLInputElement>(null);
   const tardyTimeRef = useRef<HTMLInputElement>(null);
+  const absentTimeRef = useRef<HTMLInputElement>(null);
   const classes = useStyles();
+  const [day, setDay] = React.useState("0");
+  const [isSave, setIsSave] = React.useState(false);
+  const [studentList, setStudentList] = useState<Student[]>([]);
 
+  const monday = () => {
+    setDay("1");
+  };
+  const tuesday = () => {
+    setDay("2");
+  };
+  const wednesday = () => {
+    setDay("3");
+  };
+  const thursday = () => {
+    setDay("4");
+  };
+  const friday = () => {
+    setDay("5");
+  };
+
+  const useSave = async () => {
+    let n, s, t, a;
+
+    if (
+      lectureNameRef.current &&
+      startTimeRef.current &&
+      absentTimeRef.current &&
+      tardyTimeRef.current
+    ) {
+      lectureNameRef.current.focus();
+      startTimeRef.current.focus();
+      absentTimeRef.current.focus();
+      tardyTimeRef.current.focus();
+
+      n = lectureNameRef.current.value;
+      s = startTimeRef.current.value;
+      t = tardyTimeRef.current.value;
+      a = absentTimeRef.current.value;
+
+      const lectureRef = await store.collection(`Lecture`).doc(n);
+      lectureRef.set(
+        {
+          Name: n,
+          DayofWeek: day,
+          StartTime: s,
+          TardyTime: t,
+          AbsentTime: a,
+          cnt: "0",
+        },
+        { merge: true }
+      );
+    }
+
+    const studentCol = await store.collection(`User`);
+    const snapshot = await studentCol.get();
+    snapshot.forEach(async (doc) => {
+      const stuRef = await studentCol.doc(doc.id);
+      const stuDoc = await stuRef.get();
+      const stuData = stuDoc.data();
+      const lecList: Array<string> = stuDoc.data()?.lectureList;
+
+      if (stuData) {
+        studentList.forEach((data) => {
+          if (stuData.id === data.id) {
+            stuRef.set(
+              {
+                lectureList: [...lecList, n],
+              },
+              { merge: true }
+            );
+          }
+        });
+      }
+    });
+  };
+
+  const setList = (value?: Student) => {
+    if (value !== undefined) {
+      const newSL = studentList.concat(value);
+      setStudentList(newSL);
+      return newSL;
+    }
+    return studentList;
+  };
   return (
     <div style={{ width: "80%", paddingLeft: "100px" }}>
       <Form className={classes.root} noValidate autoComplete="off">
@@ -48,7 +138,11 @@ const Addlecture = () => {
           </span>
         </div>
         <div className="col-md-6">
-          <TextField id="강의명 입력" label="강의명 입력" />
+          <TextField
+            id="강의명 입력"
+            label="강의명 입력"
+            inputRef={lectureNameRef}
+          />
         </div>
         <div className="col-md-6">
           <span
@@ -85,6 +179,7 @@ const Addlecture = () => {
                   label="월요일"
                   name="formHorizontalRadios"
                   id="formHorizontalRadios1"
+                  onClick={monday}
                 />
                 <Form.Check
                   type="radio"
@@ -92,6 +187,7 @@ const Addlecture = () => {
                   name="formHorizontalRadios"
                   id="formHorizontalRadios2"
                   style={{ paddingLeft: 30 }}
+                  onClick={tuesday}
                 />
                 <Form.Check
                   type="radio"
@@ -99,12 +195,14 @@ const Addlecture = () => {
                   name="formHorizontalRadios"
                   id="formHorizontalRadios3"
                   style={{ paddingLeft: 30 }}
+                  onClick={wednesday}
                 />
                 <Form.Check
                   type="radio"
                   label="목요일"
                   name="formHorizontalRadios"
                   id="formHorizontalRadios3"
+                  onClick={thursday}
                 />
                 <Form.Check
                   type="radio"
@@ -112,6 +210,7 @@ const Addlecture = () => {
                   name="formHorizontalRadios"
                   id="formHorizontalRadios3"
                   style={{ paddingLeft: 30 }}
+                  onClick={friday}
                 />
               </Form.Group>
               <Form.Group>
@@ -126,8 +225,8 @@ const Addlecture = () => {
           </div>
         </div>
       </Form>
-      <StudentList />
-      <Link to="/professorpage">
+      <StudentList setStudentList={setList} />
+      <Link onClick={useSave} to="/professorpage">
         <span
           className="badge  mt-4"
           style={{
