@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
 import CardMedia from "@material-ui/core/CardMedia";
 import IconButton from "@material-ui/core/IconButton";
-import Typography from "@material-ui/core/Typography";
+
 import SkipPreviousIcon from "@material-ui/icons/SkipPrevious";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import SkipNextIcon from "@material-ui/icons/SkipNext";
@@ -35,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Cardlist() {
+export default function Cardlist(onADD) {
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -44,7 +45,7 @@ export default function Cardlist() {
         <div className={classes.details}>
           <CardContent className={classes.content}>
             <Typography component="h5" variant="h5">
-              캡스톤 디자인소개
+              캡스톤 디자인
             </Typography>
             <Typography variant="subtitle1" color="textSecondary">
               1회차

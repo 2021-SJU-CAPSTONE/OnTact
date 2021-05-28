@@ -4,7 +4,36 @@ import { faCheckSquare, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { MDBIcon } from "mdbreact";
 import { Link } from "react-router-dom";
+import AutoAttendance from "../AutoAttendance";
+import { getUserInfo, getCurrentUserUid } from "../../../hoc/authService";
+import * as type from "../../../type";
+
 function Lecturelist() {
+  const [isLogIn, setIsLogIn] = React.useState(false);
+  const [v, setv] = React.useState(false);
+  const [uid, setUid] = React.useState<string>(getCurrentUserUid());
+  const [userInfo, setUserInfo] = React.useState<type.UserInfo>();
+
+  React.useEffect(() => {
+    setUid(getCurrentUserUid());
+    if (uid === "not login") {
+      setIsLogIn(false);
+      setv(!v);
+    } else {
+      if (!userInfo) {
+        setIsLogIn(true);
+        getUserInfo(uid).then((info) => {
+          setUserInfo(info);
+        });
+      }
+    }
+  }, [isLogIn, v, userInfo]);
+  const checkAttendance = () => {
+    if (userInfo) {
+      const studentId = userInfo.id;
+      AutoAttendance("Sample", studentId);
+    }
+  };
   return (
     <div className="container">
       <div className="row d-flex justify-content-center mt-5 ">
@@ -57,9 +86,11 @@ function Lecturelist() {
               <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex flex-row align-items-center">
                   {" "}
-                  <span className="star">
-                    <MDBIcon icon="play" />
-                  </span>
+                  <Link to="/livelecture">
+                    <span className="star" onClick={checkAttendance}>
+                      <MDBIcon icon="play" />
+                    </span>
+                  </Link>
                   <div className="d-flex flex-column">
                     {" "}
                     <span>Capstone 디자인(산학협렵프로젝트)(001)</span>
@@ -70,21 +101,21 @@ function Lecturelist() {
                   </div>
                 </div>
                 <div className="d-flex flex-row">
-                  <Link to="/studentpage/checkattendence">
-                    <button
-                      className="btn btn-success mr-2 font-weight-bold"
-                      style={{ fontSize: "1rem" }}
-                    >
-                      출석확인
-                    </button>
-                  </Link>
                   <button
-                    className="btn btn-warning mr-2 font-weight-bold"
+                    className="btn btn-success mr-2 font-weight-bold"
                     style={{ fontSize: "1rem" }}
                   >
-                    {" "}
-                    녹화강의
+                    출석확인
                   </button>
+                  <Link to="/studentpage/recordlecturelist">
+                    <button
+                      className="btn btn-warning mr-2 font-weight-bold"
+                      style={{ fontSize: "1rem" }}
+                    >
+                      {" "}
+                      녹화강의
+                    </button>
+                  </Link>
                 </div>
               </div>
             </div>
