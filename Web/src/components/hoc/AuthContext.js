@@ -24,23 +24,24 @@ export function AuthProvider({ children }) {
       email: email,
       password: password,
       id: id,
+      lectureList: [],
     });
     setIsLogin(true);
-    setrerender((o) => !o);
+    setrerender(o => !o);
     return;
   }
   function login(email, password) {
     setIsLogin(true);
-    setrerender((o) => !o);
+    setrerender(o => !o);
     return auth.signInWithEmailAndPassword(email, password);
   }
 
   useEffect(() => {
     if (isLogin) {
-      const ussubscribe = auth.onAuthStateChanged((user) => {
+      const ussubscribe = auth.onAuthStateChanged(user => {
         if (user) {
           const ref = store.collection("User").doc(user.uid);
-          ref.get().then((item) => {
+          ref.get().then(item => {
             setCurrentUser(item.data());
           });
         }
@@ -54,9 +55,5 @@ export function AuthProvider({ children }) {
     signup,
     login,
   };
-  return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
 }

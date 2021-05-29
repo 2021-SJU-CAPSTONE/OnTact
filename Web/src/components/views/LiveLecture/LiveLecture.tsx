@@ -3,7 +3,6 @@ import Chatting from "./Chat/Chatting";
 import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 import * as type from "../../type";
 import Video from "./Video/Video";
-import * as lecture from "../../utils/Lecture";
 const lectureId = "Capstone"; // sample lecture db
 // todo 화면 공유, 화면 녹화 기능 추가
 // 화면 공유 기능 링크
