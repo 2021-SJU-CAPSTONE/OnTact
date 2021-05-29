@@ -136,15 +136,6 @@ export default function RecordVideo() {
     );
   };
 
-  const addBookmark = (event) => {
-    setBookmarks([
-      ...Bookmarks,
-      {
-        time: playerRef.current.getCurrentTime(),
-        display: format(currentTime),
-      },
-    ]);
-  };
   let messages = "";
   const inputRef = useRef(null);
   const [message, setMessage] = useState([]);
@@ -154,7 +145,6 @@ export default function RecordVideo() {
       ...Bookmarks,
       {
         time: playerRef.current.getCurrentTime(),
-        display: format(currentTime),
         chat: inputRef.current.value,
       },
     ]);
@@ -212,7 +202,6 @@ export default function RecordVideo() {
             elapsedTime={elapsedTime}
             totalDuration={totalDuration}
             onChangeDisplayFormat={handleChangeDisplayFormat}
-            onBookmark={addBookmark}
           />
         </div>
 
@@ -237,7 +226,13 @@ export default function RecordVideo() {
           paddingTop: "30px",
         }}
       >
-        <h6 style={{ marginLeft: "1200px", fontWeight: "bold", fontSize: 30 }}>
+        <h6
+          style={{
+            paddingLeft: "1200px",
+            fontWeight: "bold",
+            fontSize: 30,
+          }}
+        >
           채팅창
         </h6>
 
@@ -253,7 +248,7 @@ export default function RecordVideo() {
                 onClick={() => playerRef.current.seekTo(bookmark.time)}
                 style={{ fontWeight: "bold" }}
               >
-                {bookmark.display} : {bookmark.chat}
+                {format(bookmark.time)} : {bookmark.chat}
               </span>
             </div>
           ))}
