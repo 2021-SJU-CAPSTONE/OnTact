@@ -230,29 +230,74 @@ const Subtitle = (prop: Prop) => {
     start();
   }, []);
   return (
-    <div className="content" style={{ textAlign: "center" }}>
-      <button className="btnSub btn-info" ref={btnSubref} onClick={useSub} style={{ width: "8vw" }}>
-        자막 활성화
+    <div className="content" style={{ textAlign: "center", marginTop: "7px", backgroundColor: "#eeeee4", height: "120px", paddingTop: "0px" }}>
+      <div className="subtitle_btn" style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}>
+        <button className="btnSub " ref={btnSubref} onClick={useSub}
+          style={{
+            width: "12vw", height: "3vw",
+            backgroundColor: "gray",
+            boxShadow: "3px", 
+            fontSize: "25px",
+            color: "white",
+            borderRadius: 15,
+            fontWeight: "bold",
+          }}>
+          <i className="far fa-closed-captioning" style={{ marginRight: "20px"}} ></i>
+            자막 활성화
       </button>
-      <button
-        className="btnTrans btn-success"
-        ref={btnTransref}
-        onClick={useTrans}
-        style={{ width: "8vw" }}
-      >
-        번역 활성화
-      </button>
-      {isProf && (
+      </div>
+      <div className="translate_btn" style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}>
         <button
-          className="btnShare btn-primary"
-          ref={btnShareRef}
-          onClick={btnShareClick}
-          style={{ width: "8vw" }}
+          className="btnTrans "
+          ref={btnTransref}
+          onClick={useTrans}
+          style={{
+            width: "12vw", 
+            height: "3vw", 
+            fontSize: "25px", 
+            borderRadius: 15,
+            color: "white",
+            fontWeight: "bold",
+            backgroundColor: "gray"
+          }}
         >
-          공유
-        </button>
-      )}
-      <button onClick={prop.onExit}>나가기</button>
+          <i className="fas fa-sign-language" style={{ marginRight: "20px"}} />
+          번역 활성화
+      </button>
+      </div>
+      <div className="share_btn" style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}>
+        {isProf && (
+          <button
+            className="btnShare "
+            ref={btnShareRef}
+            onClick={btnShareClick}
+            style={{
+              width: "12vw", 
+              height: "3vw", 
+              fontSize: "25px", 
+              borderRadius: 15,
+              color: "white",
+              fontWeight: "bold",
+              backgroundColor: "gray"
+            }}
+          >
+            <i className="fas fa-share-square" style={{ marginRight: "20px"}} />
+            공유
+          </button>
+        )}
+      </div>
+      <div className="exit_btn" style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}>
+        <button onClick={prop.onExit} 
+        style={{
+          width: "12vw", 
+          height: "3vw", 
+          fontSize: "25px", 
+          borderRadius: 15, 
+          backgroundColor: "red", 
+          color: "white",
+          fontWeight: "bold"
+        }}>나가기</button>
+      </div>
       {visibleSub ? (
         <div className="result">
           <span className="final" ref={finalRef}></span>
