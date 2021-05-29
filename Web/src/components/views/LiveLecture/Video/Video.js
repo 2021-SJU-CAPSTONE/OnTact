@@ -27,8 +27,15 @@ const Video = ({ userInfo, lecture, onExit }) => {
     a.click();
     window.URL.revokeObjectURL(url);
   };
+  const recodeStop = () => {
+    if (userInfo.isProfessor === "on") {
+      recorder.current.stop();
+    } else {
+      //
+    }
+  };
   const onExit2 = () => {
-    recorder.current.stop();
+    recodeStop();
     onExit();
   };
   // share
@@ -36,7 +43,7 @@ const Video = ({ userInfo, lecture, onExit }) => {
   const changeIsShare = value => {
     if (value !== undefined) {
       setIsShare(value);
-      recorder.current.stop();
+      recodeStop();
     }
     return isShare;
   };
