@@ -87,9 +87,14 @@ const Chatting = ({
           placeholder=" 메세지를 입력하세요"
         />
         <button
-          className="btn-warning"
           type="submit"
-          style={{ height: "80px", borderRadius: 15, width: "3vw" }}
+          style={{
+            height: "85px",
+            borderRadius: 15,
+            width: "3vw",
+            backgroundColor: "#D65E2A",
+            color: "white",
+          }}
           onClick={(e) => {
             sendMessage(e);
           }}
