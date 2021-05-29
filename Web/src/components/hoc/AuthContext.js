@@ -1,58 +1,72 @@
-import React, { Children, useContext, useEffect, useState } from "react";
+import React from "react";
+import { getUserInfo, getCurrentUserUid } from "../utils/Auth";
 import { auth, store } from "../firebase";
-import firebaseApps from "../firebase";
-import firebase from "firebase";
 const AuthContext = React.createContext();
 
-export function useAuth() {
-  return useContext(AuthContext);
+export function UseAuth() {
+  return React.useContext(AuthContext);
 }
 export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState();
-  const [loading, setLoading] = useState(true);
-  const [isLogin, setIsLogin] = useState(false);
-  const [rerender, setrerender] = useState(false);
-  async function signup(email, password, isProfessor, name, id) {
-    const idRes = await auth.createUserWithEmailAndPassword(email, password);
-
-    const Ref = store.collection("User").doc(idRes.user.uid);
-    Ref.set({
-      Dept: "Software",
-      Name: name,
-      isProfessor: isProfessor,
-      email: email,
-      password: password,
-      id: id,
-      lectureList: [],
-    });
-    setIsLogin(true);
-    setrerender(o => !o);
-    return;
-  }
-  function login(email, password) {
-    setIsLogin(true);
-    setrerender(o => !o);
-    return auth.signInWithEmailAndPassword(email, password);
-  }
-
-  useEffect(() => {
-    if (isLogin) {
-      const ussubscribe = auth.onAuthStateChanged(user => {
-        if (user) {
-          const ref = store.collection("User").doc(user.uid);
-          ref.get().then(item => {
-            setCurrentUser(item.data());
-          });
+  const [isLogIn, setIsLogIn] = React.useState(false);
+  const [v, setv] = React.useState(false);
+  const [uid, setUid] = React.useState(getCurrentUserUid());
+  const [userInfo, setUserInfo] = React.useState();
+  let flag = 1;
+  const reload = () => {
+    if (flag === 1) {
+      setTimeout(() => {
+        setUid(getCurrentUserUid());
+        if (uid === "not login") {
+          setIsLogIn(false);
+          setv(!v);
+        } else {
+          if (!userInfo) {
+            setIsLogIn(true);
+            getUserInfo(uid).then(info => {
+              setUserInfo(info);
+            });
+          }
         }
-      });
-      return ussubscribe;
+      }, 1000);
+      console.log("[getUserInfo in AuthContext]...");
     }
-    setLoading(false);
-  });
-  const value = {
-    currentUser,
-    signup,
-    login,
   };
-  return <AuthContext.Provider value={value}>{!loading && children}</AuthContext.Provider>;
+  React.useEffect(() => {
+    reload();
+  }, [isLogIn, v, userInfo]);
+  const signUp = async (email, password, isProfessor, name, id) => {
+    const idRes = await auth.createUserWithEmailAndPassword(email, password);
+    if (idRes.user) {
+      const Ref = store.collection("User").doc(idRes.user.uid);
+      Ref.set({
+        Dept: "Software",
+        Name: name,
+        isProfessor: isProfessor,
+        email: email,
+        password: password,
+        id: id,
+        lectureList: [],
+      });
+    }
+  };
+  const logIn = async (email, password) => {
+    const uid = await auth.signInWithEmailAndPassword(email, password);
+    const info = await getUserInfo(uid.user.uid);
+    setUserInfo(info);
+    setUid(uid.user.uid);
+    flag = 1;
+  };
+  const logOut = async () => {
+    await auth.signOut();
+    setUserInfo(null);
+    setUid("not login");
+    flag = 0;
+  };
+  const value = {
+    userInfo,
+    signUp,
+    logIn,
+    logOut,
+  };
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

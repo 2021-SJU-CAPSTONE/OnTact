@@ -1,30 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Lecturelist.css";
 import { faCheckSquare, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { MDBIcon } from "mdbreact";
 import { Link } from "react-router-dom";
-import { getUserInfo, getCurrentUserUid } from "./../../../hoc/authService";
 import * as type from "../../../type";
 import { store } from "../../../firebase";
 import { getLectureInfo } from "../../../utils/Lecture";
-type Prop = {
-  getInfo: () => type.UserInfo | undefined;
-};
+import { UseAuth } from "../../../hoc/AuthContext";
 
-function Lecturelist(prop: Prop) {
-  const userInfo = prop.getInfo();
-  const [isDefine, setIsDefine] = React.useState(false);
+function Lecturelist() {
+  const userInfo = UseAuth().userInfo;
 
-  React.useEffect(() => {
-    if (userInfo === undefined) {
-      setIsDefine(false);
-    } else {
-      setIsDefine(true);
-    }
-  }, [userInfo]);
-
-  const lecStart = async (lecture) => {
+  const lecStart = async lecture => {
     const lecRef = await store.collection(`Lecture`).doc(lecture);
     const lecInfo: type.LectureInfo = await getLectureInfo(lecture);
 
@@ -39,7 +27,7 @@ function Lecturelist(prop: Prop) {
   };
 
   const ShowList = () => {
-    const lecList = userInfo?.lectureList.map((lecture) => (
+    const lecList = userInfo?.lectureList.map(lecture => (
       <div className="mt-3">
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-row align-items-center">
@@ -71,10 +59,7 @@ function Lecturelist(prop: Prop) {
               </button>
             </Link>
             <Link to={`/professorpage/adminlecture/${lecture}`}>
-              <button
-                className="btn btn-danger mr-2 font-weight-bold"
-                style={{ fontSize: "1rem" }}
-              >
+              <button className="btn btn-danger mr-2 font-weight-bold" style={{ fontSize: "1rem" }}>
                 {" "}
                 강의관리
               </button>
@@ -97,16 +82,12 @@ function Lecturelist(prop: Prop) {
               <h4 className="font-weight-bold"> 강의목록</h4>
               <Link to="/professorpage/addlecture">
                 <h6 className="font-weight-bold">
-                  <MDBIcon
-                    far
-                    icon="plus-square"
-                    style={{ marginRight: "5px" }}
-                  />
+                  <MDBIcon far icon="plus-square" style={{ marginRight: "5px" }} />
                   강의추가
                 </h6>
               </Link>
             </div>
-            {isDefine ? <ShowList /> : null}
+            {userInfo ? <ShowList /> : null}
           </div>
         </div>
       </div>

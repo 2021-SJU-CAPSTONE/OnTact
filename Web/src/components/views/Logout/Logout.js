@@ -1,18 +1,17 @@
 import React, { useState } from "react";
-import { useAuth } from "../../hoc/AuthContext";
+import { UseAuth } from "../../hoc/AuthContext";
 import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
 export default function Logout() {
   const [error, setError] = useState("");
-  const { logout } = useAuth();
-  const { currentUser } = useAuth();
+  const { logOut } = UseAuth();
   const history = useHistory();
 
   async function handleLogout() {
     setError("");
     try {
-      await logout();
+      logOut();
       history.push("/");
     } catch {
       setError("Failed to log out");
@@ -21,11 +20,7 @@ export default function Logout() {
 
   return (
     <>
-      <Button
-        onClick={handleLogout}
-        varient="link"
-        style={{ marginRight: "50px" }}
-      >
+      <Button onClick={handleLogout} varient="link">
         logout
       </Button>
     </>

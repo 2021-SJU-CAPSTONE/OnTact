@@ -13,7 +13,6 @@ import LiveLecture from "./views/LiveLecture/LiveLecture";
 import signUp from "./views/signUp/signUp";
 import RecordLectureList from "./views/RecordLectureList/RecordLectureList";
 import RecordVideo from "./views/RecordVideo/RecordVideo";
-
 function App() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
