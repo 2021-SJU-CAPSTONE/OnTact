@@ -8,7 +8,10 @@ import { getUserInfo, getCurrentUserUid } from "./../../hoc/authService";
 
 function NavBar() {
   return (
-    <nav className="menu" style={{ position: "fixed", zIndex: 5, width: "100%", height: "60px" }}>
+    <nav
+      className="menu"
+      style={{ position: "fixed", zIndex: 5, width: "100%", height: "60px" }}
+    >
       <div className="menu__logo">
         <Link to="/">
           <img

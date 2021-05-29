@@ -81,7 +81,7 @@ export default function SignUp() {
                 <Form.Control type="text" ref={name} required />
               </Form.Group>
               <Form.Group id="isprofessor">
-                <Form.Label>교수님?</Form.Label>
+                <Form.Label>교수님이신가요?</Form.Label>
                 <Form.Control
                   type="hidden"
                   ref={isprofessor}

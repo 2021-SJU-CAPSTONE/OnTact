@@ -3,7 +3,8 @@ import Chatting from "./Chat/Chatting";
 import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 import * as type from "../../type";
 import Video from "./Video/Video";
-const lectureId = "Sample"; // sample lecture db
+import * as lecture from "../../utils/Lecture";
+const lectureId = "Capstone"; // sample lecture db
 // todo 화면 공유, 화면 녹화 기능 추가
 // 화면 공유 기능 링크
 //https://cryingnavi.github.io/webrtc/2020/10/15/webrtc-sharedscreen.html
@@ -23,7 +24,7 @@ const LiveLecture = () => {
     } else {
       setIsLogIn(true);
       if (!userInfo) {
-        getUserInfo(uid).then((info) => {
+        getUserInfo(uid).then(info => {
           setUserInfo(info);
         });
       }
@@ -50,9 +51,7 @@ const LiveLecture = () => {
                 marginLeft: "50px",
               }}
             >
-              {userInfo ? (
-                <Video userInfo={userInfo} lecture={lectureId} />
-              ) : null}
+              {userInfo ? <Video userInfo={userInfo} lecture={lectureId} /> : null}
             </div>
             <div>
               <Chatting name={userInfo?.Name} lectureId={lectureId} />
