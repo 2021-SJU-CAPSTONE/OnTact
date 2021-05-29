@@ -6,8 +6,6 @@ import { Link } from "react-router-dom";
 import { Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import { store } from "../../firebase";
 import firebase from "firebase";
-import LectureStore from "./addLectureboard/LectureStore";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
 
 const useStyles = makeStyles((theme) => ({
   root: {
