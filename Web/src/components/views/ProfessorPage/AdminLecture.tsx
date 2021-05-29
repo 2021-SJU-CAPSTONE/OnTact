@@ -2,15 +2,23 @@ import React, { Component, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import "./Sections/AdminLecture.css";
 import StudentList from "./Sections/StudentList";
-
 import { Link } from "react-router-dom";
 import AttendBoard from "./Sections/AttendBoard";
+import * as type from "../../type";
+import { getLectureInfo } from "../../utils/Lecture";
+
 //import Lecturelist from './Sections/Lecturelist';
-function AdimnLecture() {
+const AdimnLecture = ({ match }) => {
   const [Open, setOpen] = useState(false);
   const changeOpen = () => {
     setOpen((o) => !o);
   };
+
+  const [lecInfo, setLecInfo] = React.useState<type.LectureInfo>();
+  getLectureInfo(match.params.lecture).then((info) => {
+    setLecInfo(info);
+  });
+
   return (
     <div className="row" style={{ width: "75%", margin: "6rem auto" }}>
       <div className="col-md-6">
@@ -37,10 +45,13 @@ function AdimnLecture() {
             color: "white",
           }}
         >
-          Capstone Design(001)
+          {match.params.lecture}
         </span>
         <div>
-          <StudentList changeOpen={changeOpen} />
+          <StudentList
+            changeOpen={changeOpen}
+            lectureId={match.params.lecture}
+          />
         </div>
       </div>
       <div className="col-md-6 ">
@@ -95,6 +106,6 @@ function AdimnLecture() {
       </div>
     </div>
   );
-}
+};
 
 export default AdimnLecture;

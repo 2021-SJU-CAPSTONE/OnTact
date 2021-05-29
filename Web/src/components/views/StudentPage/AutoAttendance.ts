@@ -1,6 +1,7 @@
 import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 import { store } from "../../firebase";
 import * as type from "../../type";
+import { getLectureInfo } from "../../utils/Lecture";
 
 const calTime = (t: string) => {
   let timeData = t.split(":");
@@ -28,25 +29,21 @@ const Check = (st: string, at: string, tt: string) => {
 };
 
 const AutoAttendance = async (lecture: string, studentId: string) => {
-  const lecRef = await store.collection(`Lecture`).doc(lecture);
-  const lecDoc = await lecRef.get();
-  const lecData = lecDoc.data();
-  const stuRef = await lecDoc.ref
-    .collection(`AttendenceByEducatee`)
+  const lecInfo: type.LectureInfo = await getLectureInfo(lecture);
+  const lecRef = store
+    .collection(`Lecture/${lecture}/AttendanceByEducatee`)
     .doc(studentId);
 
-  if (lecData) {
-    stuRef.set(
-      {
-        [`${lecData.cnt}회차`]: Check(
-          lecData.startTime,
-          lecData.absentTime,
-          lecData.tardyTime
-        ),
-      },
-      { merge: true }
-    );
-  }
+  lecRef.set(
+    {
+      [`${lecInfo.cnt}회차`]: Check(
+        lecInfo.StartTime,
+        lecInfo.AbsentTime,
+        lecInfo.TardyTime
+      ),
+    },
+    { merge: true }
+  );
 };
 
 export default AutoAttendance;

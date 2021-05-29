@@ -6,8 +6,7 @@ import { Link } from "react-router-dom";
 import { Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import { store } from "../../firebase";
 import firebase from "firebase";
-import LectureStore from "./addLectureboard/LectureStore";
-import { ThemeConsumer } from "react-bootstrap/esm/ThemeProvider";
+import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -110,6 +109,16 @@ const Addlecture = () => {
         });
       }
     });
+
+    const profRef = await store.collection(`User`).doc(getCurrentUserUid());
+    const profDoc = await profRef.get();
+    const lecList: Array<string> = profDoc.data()?.lectureList;
+    profRef.set(
+      {
+        lectureList: [...lecList, n],
+      },
+      { merge: true }
+    );
   };
 
   const setList = (value?: Student) => {

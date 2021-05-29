@@ -9,7 +9,7 @@ const lectureId = "Capstone"; // sample lecture db
 // 화면 공유 기능 링크
 //https://cryingnavi.github.io/webrtc/2020/10/15/webrtc-sharedscreen.html
 //https://github.com/microsoft/TypeScript/issues/33232
-const LiveLecture = () => {
+const LiveLecture = ({ match }) => {
   //계정 확인
   const [isLogIn, setIsLogIn] = React.useState(false);
   const [v, setv] = React.useState(false);
@@ -25,7 +25,7 @@ const LiveLecture = () => {
     } else {
       setIsLogIn(true);
       if (!userInfo) {
-        getUserInfo(uid).then(info => {
+        getUserInfo(uid).then((info) => {
           setUserInfo(info);
         });
       }
@@ -54,7 +54,13 @@ const LiveLecture = () => {
                 marginLeft: "50px",
               }}
             >
-              {userInfo ? <Video userInfo={userInfo} lecture={lectureId} onExit={onExit} /> : null}
+              {userInfo ? (
+                <Video
+                  userInfo={userInfo}
+                  lecture={lectureId}
+                  onExit={onExit}
+                />
+              ) : null}
             </div>
             <div>
               <Chatting name={userInfo?.Name} lectureId={lectureId} />
