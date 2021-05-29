@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { getUserInfo, getCurrentUserUid } from "./../../hoc/authService";
 import * as type from "../../type";
 import AutoAttendance from "./AutoAttendance";
+import { time } from "console";
 
 //import Lecturelist from './Sections/Lecturelist';
 function StudentPage() {
@@ -27,12 +28,11 @@ function StudentPage() {
       }
     }
   }, [isLogIn, v, userInfo]);
-  const checkAttendance = () => {
-    if (userInfo) {
-      const studentId = userInfo.id;
-      AutoAttendance("Sample", studentId);
-    }
+
+  const getInfo = () => {
+    return userInfo;
   };
+
   return (
     <div>
       {isLogIn ? (
@@ -47,12 +47,7 @@ function StudentPage() {
             </h2>
           </div>
           <div style={{ textAlign: "center" }}>
-            <Lecturelist />
-          </div>
-          <div>
-            {/* <Link to="/livelecture">
-              <button onClick={checkAttendance}>backdoor</button>
-            </Link> */}
+            <Lecturelist getInfo={getInfo} />
           </div>
         </div>
       ) : (
