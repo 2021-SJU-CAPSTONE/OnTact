@@ -1,11 +1,11 @@
 import React from "react";
 import { KotoEn } from "./papago.js";
-import Recording from "../Record/Recording";
 import * as type from "../../../type";
 // import { store } from "../../../firebase";
 type Prop = {
   changeIsShare: (value?: boolean) => boolean;
   userInfo: type.UserInfo;
+  onExit: () => void;
 };
 const Subtitle = (prop: Prop) => {
   const { webkitSpeechRecognition } = window as any;
@@ -134,14 +134,14 @@ const Subtitle = (prop: Prop) => {
     }
     if (translateRef.current) {
       if (firstText !== "") {
-        KotoEn(firstText).then((resultText) => {
+        KotoEn(firstText).then(resultText => {
           //console.log("papago " + resultText);
           if (translateRef.current) {
             translateRef.current.innerHTML = resultText;
           }
         });
       }
-      KotoEn(secondText).then((resultText) => {
+      KotoEn(secondText).then(resultText => {
         //console.log("papago " + resultText);
         if (translateRef.current) {
           translateRef.current.innerHTML += "<br>" + resultText;
@@ -168,7 +168,7 @@ const Subtitle = (prop: Prop) => {
    * 개행 처리
    * @param {string} s
    */
-  const linebreak = (s) => {
+  const linebreak = s => {
     return s.replace(TWO_LINE, "<p></p>").replace(ONE_LINE, "<br>");
   };
 
@@ -228,19 +228,10 @@ const Subtitle = (prop: Prop) => {
 
   return (
     <div className="content" style={{ textAlign: "center" }}>
-      <button
-        className="btnMic btn-secondary"
-        style={{ width: "8vw" }}
-        onClick={start}
-      >
+      <button className="btnMic btn-secondary" style={{ width: "8vw" }} onClick={start}>
         마이크
       </button>
-      <button
-        className="btnSub btn-info"
-        ref={btnSubref}
-        onClick={useSub}
-        style={{ width: "8vw" }}
-      >
+      <button className="btnSub btn-info" ref={btnSubref} onClick={useSub} style={{ width: "8vw" }}>
         자막 활성화
       </button>
       <button
@@ -259,7 +250,7 @@ const Subtitle = (prop: Prop) => {
       >
         공유
       </button>
-      <Recording userInfo={prop.userInfo} />
+      <button onClick={prop.onExit}>나가기</button>
       {visibleSub ? (
         <div className="result">
           <span className="final" ref={finalRef}></span>

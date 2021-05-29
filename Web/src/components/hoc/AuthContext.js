@@ -16,7 +16,6 @@ export function AuthProvider({ children }) {
     const idRes = await auth.createUserWithEmailAndPassword(email, password);
 
     const Ref = store.collection("User").doc(idRes.user.uid);
-    console.log("#####doc(idRes.user.uid): ", Ref);
     Ref.set({
       Dept: "Software",
       Name: name,
