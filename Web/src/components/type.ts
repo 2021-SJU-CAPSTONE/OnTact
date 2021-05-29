@@ -5,4 +5,5 @@ export type UserInfo = {
   isProfessor: string;
   password: string;
   id: string;
+  lectureList: string[];
 };
