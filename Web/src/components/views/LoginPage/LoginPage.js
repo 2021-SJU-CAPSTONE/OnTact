@@ -55,6 +55,7 @@ const LoginPage = () => {
           left: "30%",
           transform: "translate(-50%)",
           alignItems: "center",
+          
         }}
       ></img>
       <Card
