@@ -3,18 +3,50 @@ import { educatorConnect, educateeConnect } from "./connect";
 import Subtitle from "../Subtitle/Subtitle";
 import "./video.css";
 
-const Video = ({ userInfo, lecture }) => {
+const Video = ({ userInfo, lecture, onExit }) => {
   //video
   const videoRef = React.useRef();
+  //record
+  let recordChunk = [];
+  let temp;
+  let recorder = React.useRef();
+  const handleDataAvailable = (event) => {
+    recordChunk.push(event.data);
+    download();
+  };
+  const download = () => {
+    var blob = new Blob(recordChunk, {
+      type: "video/mp4",
+    });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    document.body.appendChild(a);
+    a.style = "display: none";
+    a.href = url;
+    a.download = `${new Date().getTime()}.mp4`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+  };
+  const recodeStop = () => {
+    if (userInfo.isProfessor === "on") {
+      recorder.current.stop();
+    } else {
+      //
+    }
+  };
+  const onExit2 = () => {
+    recodeStop();
+    onExit();
+  };
   // share
   const [isShare, setIsShare] = React.useState(false);
   const changeIsShare = (value) => {
     if (value !== undefined) {
       setIsShare(value);
+      recodeStop();
     }
     return isShare;
   };
-
   React.useEffect(() => {
     if (userInfo) {
       if (userInfo.isProfessor === "on") {
@@ -23,12 +55,22 @@ const Video = ({ userInfo, lecture }) => {
             .getDisplayMedia({ audio: true, video: true })
             .then((stream) => {
               educatorConnect(userInfo.id, stream, videoRef, lecture);
+              recorder.current = new MediaRecorder(stream, {
+                type: "video/mp4",
+              });
+              recorder.current.ondataavailable = handleDataAvailable;
+              recorder.current.start();
             });
         } else {
           navigator.mediaDevices
             .getUserMedia({ video: true, audio: true })
             .then((stream) => {
               educatorConnect(userInfo.id, stream, videoRef, lecture);
+              recorder.current = new MediaRecorder(stream, {
+                type: "video/mp4",
+              });
+              recorder.current.ondataavailable = handleDataAvailable;
+              recorder.current.start();
             });
         }
       } else {
@@ -43,7 +85,11 @@ const Video = ({ userInfo, lecture }) => {
   return (
     <div>
       <video id="video" ref={videoRef} autoPlay playsInline muted></video>
-      <Subtitle changeIsShare={changeIsShare} userInfo={userInfo} />
+      <Subtitle
+        changeIsShare={changeIsShare}
+        userInfo={userInfo}
+        onExit={onExit2}
+      />
     </div>
   );
 };

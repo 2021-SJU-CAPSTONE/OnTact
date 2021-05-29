@@ -14,7 +14,7 @@ export default function SignUp() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-
+  const [isProf, setIsProf] = useState("off");
   async function handleSubmit(e) {
     e.preventDefault();
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
@@ -26,21 +26,15 @@ export default function SignUp() {
     await signup(
       emailRef.current.value,
       passwordRef.current.value,
-      isprofessor.current.value,
+      isProf,
       name.current.value,
       idRef.current.value
     );
-    const ref = store.collection("User").doc(auth.currentUser.uid);
 
-    ref.get().then((item) => {
-      console.log("!!!!!!!!!!!!", item);
-      auth.currentUser.isProfessor = item.data().isProfessor;
-    });
-    console.log(isprofessor);
-    if (isprofessor === "on") {
+    if (isProf === "on") {
       history.push("/professorpage");
     } else {
-      history.push("/dentpage");
+      history.push("/studentpage");
     }
   }
 
@@ -52,10 +46,7 @@ export default function SignUp() {
             <h2 className="text-center mb4">Sign Up</h2>
 
             {error && <Alert variant="danger">{error}</Alert>}
-            <Form
-              style={{ alignItems: "center", maxWidth: "400px" }}
-              onSubmit={handleSubmit}
-            >
+            <Form style={{ alignItems: "center", maxWidth: "400px" }} onSubmit={handleSubmit}>
               <Form.Group id="email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control type="email" ref={emailRef} required />
@@ -66,11 +57,7 @@ export default function SignUp() {
               </Form.Group>
               <Form.Group id="password-confirm">
                 <Form.Label>Password Confirmation</Form.Label>
-                <Form.Control
-                  type="password"
-                  ref={passwordConfirmRef}
-                  required
-                />
+                <Form.Control type="password" ref={passwordConfirmRef} required />
               </Form.Group>
               <Form.Group id="id">
                 <Form.Label>학번/교번</Form.Label>
@@ -82,17 +69,18 @@ export default function SignUp() {
               </Form.Group>
               <Form.Group id="isprofessor">
                 <Form.Label>교수님이신가요?</Form.Label>
-                <Form.Control
-                  type="hidden"
-                  ref={isprofessor}
-                  name="checkbox1"
-                  value="off"
-                />
+                <Form.Control type="hidden" ref={isprofessor} name="checkbox1" />
                 <Form.Control
                   type="checkbox"
                   ref={isprofessor}
                   name="on"
-                  value="on"
+                  onChange={e => {
+                    if (isProf === "off") {
+                      setIsProf("on");
+                    } else {
+                      setIsProf("off");
+                    }
+                  }}
                 />
               </Form.Group>
               <Button className="w-100" type="submit" disabled={loading}>

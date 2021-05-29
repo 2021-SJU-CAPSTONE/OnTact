@@ -131,7 +131,7 @@ const Addlecture = () => {
   };
   return (
     <div style={{ width: "80%", paddingLeft: "100px" }}>
-      <Form className={classes.root} noValidate autoComplete="off">
+      <Form className={classes.root} style={{ float: "left" }}noValidate autoComplete="off">
         <div className="col-md-6">
           <span
             className="badge "
@@ -234,7 +234,9 @@ const Addlecture = () => {
           </div>
         </div>
       </Form>
-      <StudentList setStudentList={setList} />
+      <div className="student_list">
+        <StudentList setStudentList={setList} />
+      </div>
       <Link onClick={useSave} to="/professorpage">
         <span
           className="badge  mt-4"
@@ -245,6 +247,7 @@ const Addlecture = () => {
             fontSize: "1rem",
             backgroundColor: "#D65E2A",
             color: "white",
+            marginLeft: "20px"
           }}
         >
           저장하기

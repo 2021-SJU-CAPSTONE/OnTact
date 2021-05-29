@@ -2,6 +2,7 @@ import React from "react";
 import { store } from "../../../firebase";
 import firebase from "firebase";
 import Message from "./Message";
+import { Card } from "react-bootstrap";
 type MessageType = {
   username: string;
   message: string;
@@ -48,9 +49,9 @@ const Chatting = ({
   };
 
   return (
-    <div
+    <Card
       style={{
-        height: "73vh",
+        height: "60vh",
         width: "680px",
         border: "solid",
         marginLeft: "20px",
@@ -64,21 +65,36 @@ const Chatting = ({
       </div>
       <form
         style={{
+          marginLeft: -23,
           paddingLeft: 5,
-          top: "82vh",
+          top: "48.8vh",
+          width: "35.4vw",
           position: "absolute",
           border: "solid",
+          backgroundColor: "#C4C4C4",
+          textAlign: "center",
         }}
       >
         <input
-          style={{ width: "620px", height: "100px" }}
+          style={{
+            width: "29vw",
+            height: "80px",
+            borderRadius: 15,
+            marginTop: "10px",
+            marginBottom: "15px",
+          }}
           ref={inputRef}
-          placeholder="메세지를 입력하세요"
+          placeholder=" 메세지를 입력하세요"
         />
         <button
-          className="btn-warning"
           type="submit"
-          style={{ height: "105px" }}
+          style={{
+            height: "85px",
+            borderRadius: 15,
+            width: "3vw",
+            backgroundColor: "#D65E2A",
+            color: "white",
+          }}
           onClick={(e) => {
             sendMessage(e);
           }}
@@ -86,7 +102,7 @@ const Chatting = ({
           전송
         </button>
       </form>
-    </div>
+    </Card>
   );
 };
 

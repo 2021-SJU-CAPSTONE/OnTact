@@ -140,7 +140,7 @@ export default function Playcontrol({
         <Grid item>
           <h5 style={{ color: "#fff" }}>Video Title</h5>
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <Button
             onClick={onBookmark}
             variant="contained"
@@ -149,7 +149,7 @@ export default function Playcontrol({
           >
             bookmark
           </Button>
-        </Grid>
+        </Grid> */}
       </Grid>
 
       {/* middle control */}
