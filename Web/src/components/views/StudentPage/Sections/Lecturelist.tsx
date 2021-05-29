@@ -5,29 +5,9 @@ import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { MDBIcon } from "mdbreact";
 import { Link } from "react-router-dom";
 import AutoAttendance from "../AutoAttendance";
-import { getUserInfo, getCurrentUserUid } from "../../../hoc/authService";
-import * as type from "../../../type";
-
+import { UseAuth } from "../../../hoc/AuthContext";
 function Lecturelist() {
-  const [isLogIn, setIsLogIn] = React.useState(false);
-  const [v, setv] = React.useState(false);
-  const [uid, setUid] = React.useState<string>(getCurrentUserUid());
-  const [userInfo, setUserInfo] = React.useState<type.UserInfo>();
-
-  React.useEffect(() => {
-    setUid(getCurrentUserUid());
-    if (uid === "not login") {
-      setIsLogIn(false);
-      setv(!v);
-    } else {
-      if (!userInfo) {
-        setIsLogIn(true);
-        getUserInfo(uid).then((info) => {
-          setUserInfo(info);
-        });
-      }
-    }
-  }, [isLogIn, v, userInfo]);
+  const userInfo = UseAuth().userInfo;
   const checkAttendance = () => {
     if (userInfo) {
       const studentId = userInfo.id;
@@ -166,8 +146,7 @@ function Lecturelist() {
                     <span>운영체제 맟 프로그래밍(001)</span>
                     <div className="d-flex flex-row align-items-center time-text">
                       {" "}
-                      <span className="dots"></span>{" "}
-                      <small>Muhamad Raheal Butta</small>{" "}
+                      <span className="dots"></span> <small>Muhamad Raheal Butta</small>{" "}
                     </div>
                   </div>
                 </div>

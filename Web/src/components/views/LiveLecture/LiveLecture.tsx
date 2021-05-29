@@ -1,9 +1,10 @@
 import React from "react";
 import Chatting from "./Chat/Chatting";
-import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
+import { getUserInfo, getCurrentUserUid } from "../../utils/Auth";
 import * as type from "../../type";
 import Video from "./Video/Video";
 import { useHistory } from "react-router-dom";
+import { UseAuth } from "../../hoc/AuthContext";
 const lectureId = "Capstone"; // sample lecture db
 // todo 화면 공유, 화면 녹화 기능 추가
 // 화면 공유 기능 링크
@@ -11,26 +12,9 @@ const lectureId = "Capstone"; // sample lecture db
 //https://github.com/microsoft/TypeScript/issues/33232
 const LiveLecture = () => {
   //계정 확인
-  const [isLogIn, setIsLogIn] = React.useState(false);
-  const [v, setv] = React.useState(false);
-  const [uid, setUid] = React.useState<string>(getCurrentUserUid());
-  const [userInfo, setUserInfo] = React.useState<type.UserInfo>();
+  const userInfo = UseAuth().userInfo;
   const history = useHistory();
 
-  React.useEffect(() => {
-    setUid(getCurrentUserUid());
-    if (uid === "not login") {
-      setIsLogIn(false);
-      setv(!v);
-    } else {
-      setIsLogIn(true);
-      if (!userInfo) {
-        getUserInfo(uid).then(info => {
-          setUserInfo(info);
-        });
-      }
-    }
-  }, [isLogIn, v, userInfo]);
   const onExit = () => {
     if (userInfo?.isProfessor === "on") {
       history.push("/professorpage");
@@ -41,7 +25,7 @@ const LiveLecture = () => {
   };
   return (
     <div>
-      {isLogIn ? (
+      {userInfo ? (
         <div style={{ paddingTop: "50px", minHeight: "calc(100vh - 80px" }}>
           <div className="row d-flex ">
             <div

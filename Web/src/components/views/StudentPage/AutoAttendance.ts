@@ -1,4 +1,3 @@
-import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
 import { store } from "../../firebase";
 import * as type from "../../type";
 
@@ -31,18 +30,12 @@ const AutoAttendance = async (lecture: string, studentId: string) => {
   const lecRef = await store.collection(`Lecture`).doc(lecture);
   const lecDoc = await lecRef.get();
   const lecData = lecDoc.data();
-  const stuRef = await lecDoc.ref
-    .collection(`AttendenceByEducatee`)
-    .doc(studentId);
+  const stuRef = await lecDoc.ref.collection(`AttendenceByEducatee`).doc(studentId);
 
   if (lecData) {
     stuRef.set(
       {
-        [`${lecData.cnt}회차`]: Check(
-          lecData.startTime,
-          lecData.absentTime,
-          lecData.tardyTime
-        ),
+        [`${lecData.cnt}회차`]: Check(lecData.startTime, lecData.absentTime, lecData.tardyTime),
       },
       { merge: true }
     );

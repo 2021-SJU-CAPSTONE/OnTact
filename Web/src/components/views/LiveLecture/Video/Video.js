@@ -8,7 +8,6 @@ const Video = ({ userInfo, lecture, onExit }) => {
   const videoRef = React.useRef();
   //record
   let recordChunk = [];
-  let temp;
   let recorder = React.useRef();
   const handleDataAvailable = event => {
     recordChunk.push(event.data);

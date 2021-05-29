@@ -1,17 +1,11 @@
-import React, { useState } from "react";
-import { Drawer, Button } from "antd";
 import "./Sections/Navbar.css";
 import logo from "./Sections/onTact.png";
-import { UserOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { getUserInfo, getCurrentUserUid } from "./../../hoc/authService";
+import Logout from "../Logout/Logout";
 
 function NavBar() {
   return (
-    <nav
-      className="menu"
-      style={{ position: "fixed", zIndex: 5, width: "100%", height: "60px" }}
-    >
+    <nav className="menu" style={{ position: "fixed", zIndex: 5, width: "100%", height: "60px" }}>
       <div className="menu__logo">
         <Link to="/">
           <img
@@ -26,7 +20,7 @@ function NavBar() {
         </Link>
       </div>
       <div style={{ float: "right", marginTop: "20px" }}>
-        <h6>logout</h6>
+        <Logout />
       </div>
       {/*<div style={{ float: "right", marginTop: "20px" }}>
         {isLogIn ? (
