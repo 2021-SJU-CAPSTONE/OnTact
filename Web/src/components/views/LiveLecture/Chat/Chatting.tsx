@@ -6,16 +6,22 @@ type MessageType = {
   username: string;
   message: string;
 };
-const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => {
+const Chatting = ({
+  name,
+  lectureId,
+}: {
+  name?: string;
+  lectureId: string;
+}) => {
   const [messages, setMessages] = React.useState<MessageType[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
   React.useEffect(() => {
     store
       .collection(`Lecture/${lectureId}/Chatting`)
       .orderBy("timestamp", "asc")
-      .onSnapshot(collection => {
+      .onSnapshot((collection) => {
         setMessages(
-          collection.docs.map(doc => ({
+          collection.docs.map((doc) => ({
             username: doc.data().username,
             message: doc.data().message,
           }))
@@ -32,7 +38,10 @@ const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => 
           username: name,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
-        setMessages([...messages, { username: name, message: inputRef.current.value }]);
+        setMessages([
+          ...messages,
+          { username: name, message: inputRef.current.value },
+        ]);
         inputRef.current.value = "";
       }
     }
@@ -70,7 +79,7 @@ const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => 
           className="btn-warning"
           type="submit"
           style={{ height: "105px" }}
-          onClick={e => {
+          onClick={(e) => {
             sendMessage(e);
           }}
         >

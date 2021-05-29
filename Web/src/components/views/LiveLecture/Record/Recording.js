@@ -10,7 +10,7 @@ const Recording = ({ userInfo }) => {
     pauseRecording,
     resumeRecording,
     mediaBlobUrl,
-  } = useReactMediaRecorder({ video: true });
+  } = useReactMediaRecorder({ video: true, screen: false });
 
   const recordButton = React.useRef(null);
   const pauseButton = React.useRef(null);

@@ -2,6 +2,7 @@ import React from "react";
 import { educatorConnect, educateeConnect } from "./connect";
 import Subtitle from "../Subtitle/Subtitle";
 import "./video.css";
+
 const Video = ({ userInfo, lecture }) => {
   //video
   const videoRef = React.useRef();
