@@ -19,7 +19,7 @@ function NavBar() {
           />
         </Link>
       </div>
-      <div style={{ float: "right", marginTop: "20px" }}>
+      <div style={{ float: "right", marginTop: "12px"}}>
         <Logout />
       </div>
       {/*<div style={{ float: "right", marginTop: "20px" }}>

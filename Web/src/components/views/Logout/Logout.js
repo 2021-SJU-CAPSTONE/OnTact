@@ -20,9 +20,10 @@ export default function Logout() {
 
   return (
     <>
-      <Button onClick={handleLogout} varient="link">
+      <button onClick={handleLogout} varient="link" 
+      style={{backgroundColor: "white", color: "black"}}>
         logout
-      </Button>
+      </button>
     </>
   );
 }
