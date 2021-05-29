@@ -10,12 +10,17 @@ const Message = ({
   const sender = username === name ? "Me" : username;
 
   return (
-    <div
-      style={{ marginTop: 10, border: "solid", width: "50%", borderRadius: 15 }}
-    >
-      <span style={{ fontWeight: "bold", paddingLeft: 20 }}>
-        {sender} : {message}
-      </span>
+    <div>
+      <div className="sender" style={{fontWeight: "bold"}}>
+        {sender}
+      </div>
+      <div
+        style={{ marginTop: 10, border: "solid", width: "50%", borderRadius: 15 }}
+      >
+        <span style={{ fontWeight: "bold", paddingLeft: 20 }}>
+          {message}
+        </span>
+      </div>
     </div>
   );
 };

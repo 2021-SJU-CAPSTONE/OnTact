@@ -41,7 +41,7 @@ const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => 
   return (
     <div
       style={{
-        height: "73vh",
+        height: "60vh",
         width: "680px",
         border: "solid",
         marginLeft: "20px",
@@ -56,7 +56,7 @@ const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => 
       <form
         style={{
           paddingLeft: 5,
-          top: "82vh",
+          top: "73vh",
           position: "absolute",
           border: "solid",
         }}

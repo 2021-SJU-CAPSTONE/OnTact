@@ -2,8 +2,11 @@ import React, { Component, useEffect, useRef, useState } from "react";
 import { useAuth } from "../../hoc/AuthContext";
 import { auth, store } from "../../firebase";
 import logo from "../Navbar/Sections/onTact.png";
+import logo_desc from "./logo_desc.png";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
+
+
 const LoginPage = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -45,13 +48,21 @@ const LoginPage = () => {
 
   return (
     <>
+    <img src = {logo_desc} 
+    style = {{
+      position: "absolute",
+          top: "30%",
+          left: "30%",
+          transform: "translate(-50%)",
+          alignItems: "center"
+    }}></img>
       <Card
         style={{
           position: "absolute",
-          top: "20%",
-          left: "50%",
+          top: "30%",
+          left: "70%",
           transform: "translate(-50%)",
-          width: "36rem",
+          width: "28rem",
           alignItems: "center",
         }}
       >
