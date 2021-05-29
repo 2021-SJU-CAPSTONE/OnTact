@@ -2,20 +2,27 @@ import React from "react";
 import { store } from "../../../firebase";
 import firebase from "firebase";
 import Message from "./Message";
+import { Card } from "react-bootstrap";
 type MessageType = {
   username: string;
   message: string;
 };
-const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => {
+const Chatting = ({
+  name,
+  lectureId,
+}: {
+  name?: string;
+  lectureId: string;
+}) => {
   const [messages, setMessages] = React.useState<MessageType[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
   React.useEffect(() => {
     store
       .collection(`Lecture/${lectureId}/Chatting`)
       .orderBy("timestamp", "asc")
-      .onSnapshot(collection => {
+      .onSnapshot((collection) => {
         setMessages(
-          collection.docs.map(doc => ({
+          collection.docs.map((doc) => ({
             username: doc.data().username,
             message: doc.data().message,
           }))
@@ -32,14 +39,17 @@ const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => 
           username: name,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
-        setMessages([...messages, { username: name, message: inputRef.current.value }]);
+        setMessages([
+          ...messages,
+          { username: name, message: inputRef.current.value },
+        ]);
         inputRef.current.value = "";
       }
     }
   };
 
   return (
-    <div
+    <Card
       style={{
         height: "60vh",
         width: "680px",
@@ -55,29 +65,39 @@ const Chatting = ({ name, lectureId }: { name?: string; lectureId: string }) => 
       </div>
       <form
         style={{
+          marginLeft: -23,
           paddingLeft: 5,
-          top: "73vh",
+          top: "48.8vh",
+          width: "35.4vw",
           position: "absolute",
           border: "solid",
+          backgroundColor: "#C4C4C4",
+          textAlign: "center",
         }}
       >
         <input
-          style={{ width: "620px", height: "100px" }}
+          style={{
+            width: "29vw",
+            height: "80px",
+            borderRadius: 15,
+            marginTop: "10px",
+            marginBottom: "15px",
+          }}
           ref={inputRef}
-          placeholder="메세지를 입력하세요"
+          placeholder=" 메세지를 입력하세요"
         />
         <button
           className="btn-warning"
           type="submit"
-          style={{ height: "105px" }}
-          onClick={e => {
+          style={{ height: "80px", borderRadius: 15, width: "3vw" }}
+          onClick={(e) => {
             sendMessage(e);
           }}
         >
           전송
         </button>
       </form>
-    </div>
+    </Card>
   );
 };
 

@@ -5,8 +5,7 @@ import logo from "../Navbar/Sections/onTact.png";
 import logo_desc from "./logo_desc.png";
 import { Form, Button, Card, Alert } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
-
-
+import "../ProfessorPage/Sections/AdminLecture.css";
 const LoginPage = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -48,14 +47,16 @@ const LoginPage = () => {
 
   return (
     <>
-    <img src = {logo_desc} 
-    style = {{
-      position: "absolute",
+      <img
+        src={logo_desc}
+        style={{
+          position: "absolute",
           top: "30%",
           left: "30%",
           transform: "translate(-50%)",
-          alignItems: "center"
-    }}></img>
+          alignItems: "center",
+        }}
+      ></img>
       <Card
         style={{
           position: "absolute",
@@ -67,7 +68,9 @@ const LoginPage = () => {
         }}
       >
         <Card.Body>
-          <h2 className="text-center mb4">Log In</h2>
+          <h2 className="text-center mb4" style={{ color: "#807E7E" }}>
+            Log In
+          </h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
@@ -78,12 +81,21 @@ const LoginPage = () => {
               <Form.Label>Password</Form.Label>
               <Form.Control type="password" ref={passwordRef} required />
             </Form.Group>
-            <Button className="w-100" type="submit" disabled={loading}>
+            <button
+              className="w-100"
+              style={{
+                backgroundColor: "#D65E2A",
+                color: "white",
+                fontSize: 20,
+              }}
+              type="submit"
+              disabled={loading}
+            >
               Log In
-            </Button>
+            </button>
           </Form>
           <div className="w-100 text-center mt-2">
-            <Link to="/signup">Need an accout? </Link>
+            <Link to="/signup">Need an accout?</Link>
           </div>
         </Card.Body>
       </Card>
