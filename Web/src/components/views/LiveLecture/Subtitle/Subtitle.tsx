@@ -150,8 +150,8 @@ const Subtitle = (prop: Prop) => {
       });
     }
 
-    console.log("finalTranscript", finalTranscript);
-    console.log("interimTranscript", interimTranscript);
+    // console.log("finalTranscript", finalTranscript);
+    // console.log("interimTranscript", interimTranscript);
   };
 
   /**
@@ -230,73 +230,103 @@ const Subtitle = (prop: Prop) => {
     start();
   }, []);
   return (
-    <div className="content" style={{ textAlign: "center", marginTop: "7px", backgroundColor: "#eeeee4", height: "120px", paddingTop: "0px" }}>
-      <div className="subtitle_btn" style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}>
-        <button className="btnSub " ref={btnSubref} onClick={useSub}
+    <div
+      className="content"
+      style={{
+        textAlign: "center",
+        marginTop: "7px",
+        backgroundColor: "#eeeee4",
+        height: "120px",
+        paddingTop: "0px",
+      }}
+    >
+      <div
+        className="subtitle_btn"
+        style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}
+      >
+        <button
+          className="btnSub "
+          ref={btnSubref}
+          onClick={useSub}
           style={{
-            width: "12vw", height: "3vw",
+            width: "12vw",
+            height: "3vw",
             backgroundColor: "gray",
-            boxShadow: "3px", 
+            boxShadow: "3px",
             fontSize: "25px",
             color: "white",
             borderRadius: 15,
             fontWeight: "bold",
-          }}>
-          <i className="far fa-closed-captioning" style={{ marginRight: "20px"}} ></i>
-            자막 활성화
-      </button>
+          }}
+        >
+          <i className="far fa-closed-captioning" style={{ marginRight: "20px" }}></i>
+          자막 활성화
+        </button>
       </div>
-      <div className="translate_btn" style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}>
+      <div
+        className="translate_btn"
+        style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}
+      >
         <button
           className="btnTrans "
           ref={btnTransref}
           onClick={useTrans}
           style={{
-            width: "12vw", 
-            height: "3vw", 
-            fontSize: "25px", 
+            width: "12vw",
+            height: "3vw",
+            fontSize: "25px",
             borderRadius: 15,
             color: "white",
             fontWeight: "bold",
-            backgroundColor: "gray"
+            backgroundColor: "gray",
           }}
         >
-          <i className="fas fa-sign-language" style={{ marginRight: "20px"}} />
+          <i className="fas fa-sign-language" style={{ marginRight: "20px" }} />
           번역 활성화
-      </button>
+        </button>
       </div>
-      <div className="share_btn" style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}>
+      <div
+        className="share_btn"
+        style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}
+      >
         {isProf && (
           <button
             className="btnShare "
             ref={btnShareRef}
             onClick={btnShareClick}
             style={{
-              width: "12vw", 
-              height: "3vw", 
-              fontSize: "25px", 
+              width: "12vw",
+              height: "3vw",
+              fontSize: "25px",
               borderRadius: 15,
               color: "white",
               fontWeight: "bold",
-              backgroundColor: "gray"
+              backgroundColor: "gray",
             }}
           >
-            <i className="fas fa-share-square" style={{ marginRight: "20px"}} />
+            <i className="fas fa-share-square" style={{ marginRight: "20px" }} />
             공유
           </button>
         )}
       </div>
-      <div className="exit_btn" style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}>
-        <button onClick={prop.onExit} 
-        style={{
-          width: "12vw", 
-          height: "3vw", 
-          fontSize: "25px", 
-          borderRadius: 15, 
-          backgroundColor: "red", 
-          color: "white",
-          fontWeight: "bold"
-        }}>나가기</button>
+      <div
+        className="exit_btn"
+        style={{ marginLeft: "20px", float: "left", width: "22%", marginTop: "28px" }}
+      >
+        <button
+          onClick={prop.onExit}
+          style={{
+            width: "12vw",
+            height: "3vw",
+            fontSize: "25px",
+            borderRadius: 15,
+            backgroundColor: "red",
+            color: "white",
+            fontWeight: "bold",
+          }}
+        >
+          나가기
+        </button>
       </div>
       {visibleSub ? (
         <div className="result">

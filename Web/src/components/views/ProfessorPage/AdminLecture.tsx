@@ -11,11 +11,11 @@ import { getLectureInfo } from "../../utils/Lecture";
 const AdimnLecture = ({ match }) => {
   const [Open, setOpen] = useState(false);
   const changeOpen = () => {
-    setOpen((o) => !o);
+    setOpen(o => !o);
   };
 
   const [lecInfo, setLecInfo] = React.useState<type.LectureInfo>();
-  getLectureInfo(match.params.lecture).then((info) => {
+  getLectureInfo(match.params.lecture).then(info => {
     setLecInfo(info);
   });
 
@@ -48,10 +48,7 @@ const AdimnLecture = ({ match }) => {
           {match.params.lecture}
         </span>
         <div>
-          <StudentList
-            changeOpen={changeOpen}
-            lectureId={match.params.lecture}
-          />
+          <StudentList changeOpen={changeOpen} lectureId={match.params.lecture} />
         </div>
       </div>
       <div className="col-md-6 ">

@@ -1,27 +1,22 @@
 import React from "react";
 import Chatting from "./Chat/Chatting";
-import { getUserInfo, getCurrentUserUid } from "../../utils/Auth";
-import * as type from "../../type";
 import Video from "./Video/Video";
 import { useHistory } from "react-router-dom";
 import { UseAuth } from "../../hoc/AuthContext";
-const lectureId = "Capstone"; // sample lecture db
-// todo 화면 공유, 화면 녹화 기능 추가
-// 화면 공유 기능 링크
-//https://cryingnavi.github.io/webrtc/2020/10/15/webrtc-sharedscreen.html
-//https://github.com/microsoft/TypeScript/issues/33232
+import { clearChat } from "../../utils/Lecture";
 const LiveLecture = ({ match }) => {
   //계정 확인
+  const lectureId = match.params.lecture;
   const userInfo = UseAuth().userInfo;
   const history = useHistory();
 
   const onExit = () => {
     if (userInfo?.isProfessor === "on") {
       history.push("/professorpage");
+      clearChat(lectureId);
     } else {
       history.push("/studentpage");
     }
-    //saveTSList in Firebase
   };
   return (
     <div>
@@ -41,7 +36,7 @@ const LiveLecture = ({ match }) => {
               {userInfo ? <Video userInfo={userInfo} lecture={lectureId} onExit={onExit} /> : null}
             </div>
             <div>
-              <Chatting name={userInfo?.Name} lectureId={lectureId} />
+              <Chatting lectureId={lectureId} />
             </div>
           </div>
         </div>
