@@ -58,6 +58,7 @@ const Chatting = ({
         borderRadius: 10,
       }}
     >
+      <div className="chatting_logo" style={{alignContent: "center", fontWeight: "bold", fontSize: 20}}>CHAT</div>
       <div style={{ paddingLeft: 50, marginTop: 20 }}>
         {messages.map(({ username, message }) => (
           <Message username={username} message={message} name={name} />
