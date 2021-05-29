@@ -51,7 +51,7 @@ const Chatting = ({
   return (
     <Card
       style={{
-        height: "60vh",
+        height: "61vh",
         width: "680px",
         border: "solid",
         marginLeft: "20px",
@@ -67,7 +67,7 @@ const Chatting = ({
         style={{
           marginLeft: -23,
           paddingLeft: 5,
-          top: "48.8vh",
+          top: "60.3vh",
           width: "35.4vw",
           position: "absolute",
           border: "solid",
