@@ -10,6 +10,7 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 import { store } from "../../firebase";
+import { Card } from "react-bootstrap";
 const useStyles = makeStyles({
   playerWrapper: {
     width: "100%",
@@ -159,17 +160,22 @@ export default function RecordVideo() {
   };
 
   return (
-    <div>
+    <div className="row">
       {/* Top control */}
       <Container
         maxWidth="md"
         display="flex"
-        style={{ flexDirection: "row", float: "left", marginTop: "40px" }}
+        style={{
+          flexDirection: "row",
+          float: "left",
+          marginTop: "40px",
+        }}
+        className="col-md-6"
       >
         <div
           ref={playerContainerRef}
           className={classes.playerWrapper}
-          style={{ left: "50" }}
+          style={{ left: "50", marginTop: 50 }}
         >
           <ReactPlayer
             ref={playerRef}
@@ -224,53 +230,58 @@ export default function RecordVideo() {
       <div
         style={{
           paddingTop: "30px",
+          paddingLeft: "30px",
         }}
+        className="col-md-6"
       >
-        <h6
-          style={{
-            paddingLeft: "1200px",
-            fontWeight: "bold",
-            fontSize: 30,
-          }}
-        >
-          채팅창
-        </h6>
-
-        <div>
-          {Bookmarks.map((bookmark, index) => (
-            <div
-              style={{
-                marginTop: 10,
-                paddingLeft: "1250px",
-              }}
-            >
-              <span
-                onClick={() => playerRef.current.seekTo(bookmark.time)}
-                style={{ fontWeight: "bold" }}
-              >
-                {format(bookmark.time)} : {bookmark.chat}
-              </span>
-            </div>
-          ))}
-        </div>
-        <form
-          style={{
-            top: "600px",
-            float: "right",
-            left: "1200px",
-            position: "absolute",
-          }}
-        >
-          <input ref={inputRef} style={{ width: "600px" }} />
-          <button
-            type="submit"
-            onClick={(e) => {
-              messagesend(e);
+        <Card style={{ width: "70%", height: "60vh" }}>
+          <h6
+            style={{
+              fontWeight: "bold",
+              fontSize: 30,
             }}
           >
-            입력
-          </button>
-        </form>
+            책갈피
+          </h6>
+          <div className="overflow-auto">
+            {Bookmarks.map((bookmark, index) => (
+              <div
+                style={{
+                  marginTop: 10,
+                  paddingLeft: 15,
+                }}
+              >
+                <span
+                  onClick={() => playerRef.current.seekTo(bookmark.time)}
+                  style={{ fontWeight: "bold" }}
+                >
+                  {format(bookmark.time)} : {bookmark.chat}
+                </span>
+              </div>
+            ))}
+          </div>
+          <div>
+            <form
+              style={{
+                top: "65vh",
+                float: "right",
+                position: "fixed",
+                alignItems: "center",
+              }}
+            >
+              <input ref={inputRef} style={{ width: "580px" }} />
+              <button
+                type="submit"
+                onClick={(e) => {
+                  messagesend(e);
+                }}
+                style={{ backgroundColor: "#D65E2A", color: "white" }}
+              >
+                입력
+              </button>
+            </form>
+          </div>
+        </Card>
       </div>
     </div>
   );
