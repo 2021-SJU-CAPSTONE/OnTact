@@ -16,3 +16,8 @@ export type LectureInfo = {
   AbsentTime: string;
   cnt: number;
 };
+
+export type Bookmark = {
+  time: number;
+  chat: string;
+};
