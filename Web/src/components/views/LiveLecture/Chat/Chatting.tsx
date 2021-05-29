@@ -3,26 +3,26 @@ import { store } from "../../../firebase";
 import firebase from "firebase";
 import Message from "./Message";
 import { Card } from "react-bootstrap";
+import { UseAuth } from "../../../hoc/AuthContext";
 type MessageType = {
   username: string;
   message: string;
 };
-const Chatting = ({
-  name,
-  lectureId,
-}: {
-  name?: string;
+type Prop = {
   lectureId: string;
-}) => {
+};
+const Chatting = (prop: Prop) => {
   const [messages, setMessages] = React.useState<MessageType[]>([]);
   const inputRef = React.useRef<HTMLInputElement>(null);
+  const userInfo = UseAuth().userInfo;
+
   React.useEffect(() => {
     store
-      .collection(`Lecture/${lectureId}/Chatting`)
+      .collection(`Lecture/${prop.lectureId}/Chatting`)
       .orderBy("timestamp", "asc")
-      .onSnapshot((collection) => {
+      .onSnapshot(collection => {
         setMessages(
-          collection.docs.map((doc) => ({
+          collection.docs.map(doc => ({
             username: doc.data().username,
             message: doc.data().message,
           }))
@@ -32,17 +32,14 @@ const Chatting = ({
 
   const sendMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (name !== undefined) {
+    if (userInfo) {
       if (inputRef.current) {
-        store.collection(`Lecture/${lectureId}/Chatting`).add({
+        store.collection(`Lecture/${prop.lectureId}/Chatting`).add({
           message: inputRef.current.value,
-          username: name,
+          username: userInfo.Name,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
-        setMessages([
-          ...messages,
-          { username: name, message: inputRef.current.value },
-        ]);
+        setMessages([...messages, { username: userInfo.Name, message: inputRef.current.value }]);
         inputRef.current.value = "";
       }
     }
@@ -58,10 +55,15 @@ const Chatting = ({
         borderRadius: 10,
       }}
     >
-      <div className="chatting_logo" style={{alignContent: "center", fontWeight: "bold", fontSize: 20}}>CHAT</div>
+      <div
+        className="chatting_logo"
+        style={{ alignContent: "center", fontWeight: "bold", fontSize: 20 }}
+      >
+        CHAT
+      </div>
       <div style={{ paddingLeft: 50, marginTop: 20 }}>
         {messages.map(({ username, message }) => (
-          <Message username={username} message={message} name={name} />
+          <Message username={username} message={message} name={userInfo.name} />
         ))}
       </div>
       <form
@@ -96,7 +98,7 @@ const Chatting = ({
             backgroundColor: "#D65E2A",
             color: "white",
           }}
-          onClick={(e) => {
+          onClick={e => {
             sendMessage(e);
           }}
         >
