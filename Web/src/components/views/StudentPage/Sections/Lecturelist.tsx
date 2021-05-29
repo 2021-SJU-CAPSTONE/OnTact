@@ -1,29 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Lecturelist.css";
 import { faCheckSquare, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
 import { MDBIcon } from "mdbreact";
 import { Link } from "react-router-dom";
 import AutoAttendance from "../AutoAttendance";
-import { getUserInfo, getCurrentUserUid } from "../../../hoc/authService";
-import * as type from "../../../type";
-type Prop = {
-  getInfo: () => type.UserInfo | undefined;
-};
+import { UseAuth } from "../../../hoc/AuthContext";
+function Lecturelist() {
+  const userInfo = UseAuth().userInfo;
 
-function Lecturelist(prop: Prop) {
-  const userInfo = prop.getInfo();
-  const [isDefine, setIsDefine] = React.useState(false);
-
-  React.useEffect(() => {
-    if (userInfo === undefined) {
-      setIsDefine(false);
-    } else {
-      setIsDefine(true);
-    }
-  }, [userInfo]);
-
-  const checkAttendance = (lecture) => {
+  const checkAttendance = lecture => {
     if (userInfo) {
       const studentId = userInfo.id;
       AutoAttendance(lecture, studentId);
@@ -31,7 +17,7 @@ function Lecturelist(prop: Prop) {
   };
 
   const ShowList = () => {
-    const lecList = userInfo?.lectureList.map((lecture) => (
+    const lecList = userInfo?.lectureList.map(lecture => (
       <div className="mt-3">
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-row align-items-center">
@@ -92,7 +78,7 @@ function Lecturelist(prop: Prop) {
               <h4 className="font-weight-bold"> 강의목록</h4>
               <h6 className="font-weight-bold">2021학년도 1학기</h6>
             </div>
-            {isDefine ? <ShowList /> : null}
+            {userInfo ? <ShowList /> : null}
           </div>
         </div>
       </div>

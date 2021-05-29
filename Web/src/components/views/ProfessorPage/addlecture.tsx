@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import { Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import { store } from "../../firebase";
 import firebase from "firebase";
-import { getUserInfo, getCurrentUserUid } from "../../hoc/authService";
+import { getUserInfo, getCurrentUserUid } from "../../utils/Auth";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     "& > *": {
       margin: theme.spacing(1),
@@ -90,14 +90,14 @@ const Addlecture = () => {
 
     const studentCol = await store.collection(`User`);
     const snapshot = await studentCol.get();
-    snapshot.forEach(async (doc) => {
+    snapshot.forEach(async doc => {
       const stuRef = await studentCol.doc(doc.id);
       const stuDoc = await stuRef.get();
       const stuData = stuDoc.data();
       const lecList: Array<string> = stuDoc.data()?.lectureList;
 
       if (stuData) {
-        studentList.forEach((data) => {
+        studentList.forEach(data => {
           if (stuData.id === data.id) {
             stuRef.set(
               {
@@ -131,7 +131,7 @@ const Addlecture = () => {
   };
   return (
     <div style={{ width: "80%", paddingLeft: "100px" }}>
-      <Form className={classes.root} style={{ float: "left" }}noValidate autoComplete="off">
+      <Form className={classes.root} style={{ float: "left" }} noValidate autoComplete="off">
         <div className="col-md-6">
           <span
             className="badge "
@@ -147,11 +147,7 @@ const Addlecture = () => {
           </span>
         </div>
         <div className="col-md-6">
-          <TextField
-            id="강의명 입력"
-            label="강의명 입력"
-            inputRef={lectureNameRef}
-          />
+          <TextField id="강의명 입력" label="강의명 입력" inputRef={lectureNameRef} />
         </div>
         <div className="col-md-6">
           <span
@@ -169,15 +165,9 @@ const Addlecture = () => {
           </span>
         </div>
 
-        <div
-          style={{ paddingLeft: "15px" }}
-          className="  align-items-center col-md-24"
-        >
+        <div style={{ paddingLeft: "15px" }} className="  align-items-center col-md-24">
           <div className="flex-row">
-            <div
-              className="d-flex flex-column"
-              style={{ paddingRight: "30px" }}
-            >
+            <div className="d-flex flex-column" style={{ paddingRight: "30px" }}>
               <Form.Group as={Row}>
                 <Form.Label as="legend" sm={2}>
                   강의 요일
@@ -247,7 +237,7 @@ const Addlecture = () => {
             fontSize: "1rem",
             backgroundColor: "#D65E2A",
             color: "white",
-            marginLeft: "20px"
+            marginLeft: "20px",
           }}
         >
           저장하기

@@ -18,8 +18,8 @@ const Subtitle = (prop: Prop) => {
   const translateRef = React.useRef<HTMLSpanElement>(null);
   const [visibleSub, setVisibleSub] = React.useState(false);
   const [visibleTrans, setVisibleTrans] = React.useState(false);
-  const isProf = prop.userInfo.isProfessor === "on";
   //형찬
+  const isProf = prop.userInfo.isProfessor === "on";
   const btnShareRef = React.useRef<HTMLButtonElement>(null);
   const btnShareClick = () => {
     const cur = prop.changeIsShare();

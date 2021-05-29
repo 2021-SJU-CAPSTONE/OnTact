@@ -1,8 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert } from "react-bootstrap";
-import { useAuth } from "../../hoc/AuthContext";
 import { Link, useHistory } from "react-router-dom";
-import { auth, store } from "../../firebase";
+import { UseAuth } from "../../hoc/AuthContext";
 export default function SignUp() {
   const emailRef = useRef();
   const passwordRef = useRef();
@@ -10,11 +9,11 @@ export default function SignUp() {
   const isprofessor = useRef();
   const idRef = useRef();
   const name = useRef();
-  const { signup, currentUser } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
   const [isProf, setIsProf] = useState("off");
+  const { signUp } = UseAuth();
   async function handleSubmit(e) {
     e.preventDefault();
     if (passwordRef.current.value !== passwordConfirmRef.current.value) {
@@ -23,7 +22,7 @@ export default function SignUp() {
 
     setError("");
     setLoading(true);
-    await signup(
+    await signUp(
       emailRef.current.value,
       passwordRef.current.value,
       isProf,
