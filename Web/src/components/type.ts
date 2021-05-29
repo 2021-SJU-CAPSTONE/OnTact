@@ -7,3 +7,12 @@ export type UserInfo = {
   id: string;
   lectureList: string[];
 };
+
+export type LectureInfo = {
+  Name: string;
+  DayofWeek: string;
+  StartTime: string;
+  TardyTime: string;
+  AbsentTime: string;
+  cnt: number;
+};

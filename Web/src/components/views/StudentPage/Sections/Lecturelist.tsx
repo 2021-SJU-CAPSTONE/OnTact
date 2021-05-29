@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Lecturelist.css";
 import { faCheckSquare, faSpinner } from "@fortawesome/free-solid-svg-icons";
 import { faSquare } from "@fortawesome/free-regular-svg-icons";
@@ -8,12 +8,66 @@ import AutoAttendance from "../AutoAttendance";
 import { UseAuth } from "../../../hoc/AuthContext";
 function Lecturelist() {
   const userInfo = UseAuth().userInfo;
-  const checkAttendance = () => {
+
+  const checkAttendance = lecture => {
     if (userInfo) {
       const studentId = userInfo.id;
-      AutoAttendance("Sample", studentId);
+      AutoAttendance(lecture, studentId);
     }
   };
+
+  const ShowList = () => {
+    const lecList = userInfo?.lectureList.map(lecture => (
+      <div className="mt-3">
+        <div className="d-flex justify-content-between align-items-center">
+          <div className="d-flex flex-row align-items-center">
+            {" "}
+            <Link to={`/livelecture/${lecture}`}>
+              <span
+                className="star"
+                onClick={() => {
+                  checkAttendance(lecture);
+                }}
+              >
+                <MDBIcon icon="play" />
+                {/* <MDBIcon icon="stop" /> */}
+              </span>
+            </Link>
+            <div className="d-flex flex-column">
+              {" "}
+              <span>{lecture}</span>
+              <div className="d-flex flex-row align-items-center time-text">
+                {" "}
+                <span className="dots"></span> <small>여러 교수자</small>{" "}
+              </div>
+            </div>
+          </div>
+          <div className="d-flex flex-row">
+            <Link to="/studentpage/checkattendence">
+              <button
+                className="btn btn-success mr-2 font-weight-bold"
+                style={{ fontSize: "1rem" }}
+              >
+                출석확인
+              </button>
+            </Link>
+            <Link to="/studentpage/recordlecturelist">
+              <button
+                className="btn btn-warning mr-2 font-weight-bold"
+                style={{ fontSize: "1rem" }}
+              >
+                {" "}
+                녹화강의
+              </button>
+            </Link>
+          </div>
+        </div>
+      </div>
+    ));
+
+    return <div>{lecList}</div>;
+  };
+
   return (
     <div className="container">
       <div className="row d-flex justify-content-center mt-5 ">
@@ -24,151 +78,7 @@ function Lecturelist() {
               <h4 className="font-weight-bold"> 강의목록</h4>
               <h6 className="font-weight-bold">2021학년도 1학기</h6>
             </div>
-
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span className="star">
-                    <MDBIcon icon="stop" />
-                  </span>
-                  <div className="d-flex flex-column">
-                    {" "}
-                    <span>고급프로그래밍 입문-P(002) </span>
-                    <div className="d-flex flex-row align-items-center time-text">
-                      {" "}
-                      <span className="dots"></span> <small>여러 교수자</small>{" "}
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex flex-row">
-                  <Link to="/studentpage/checkattendence">
-                    <button
-                      className="btn btn-success mr-2 font-weight-bold"
-                      style={{ fontSize: "1rem" }}
-                    >
-                      출석확인
-                    </button>
-                  </Link>
-                  <Link to="/studentpage/recordlecturelist">
-                    <button
-                      className="btn btn-warning mr-2 font-weight-bold"
-                      style={{ fontSize: "1rem" }}
-                    >
-                      {" "}
-                      녹화강의
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <Link to="/livelecture">
-                    <span className="star" onClick={checkAttendance}>
-                      <MDBIcon icon="play" />
-                    </span>
-                  </Link>
-                  <div className="d-flex flex-column">
-                    {" "}
-                    <span>Capstone 디자인(산학협렵프로젝트)(001)</span>
-                    <div className="d-flex flex-row align-items-center time-text">
-                      {" "}
-                      <span className="dots"></span> <small>여러 교수자</small>{" "}
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex flex-row">
-                  <button
-                    className="btn btn-success mr-2 font-weight-bold"
-                    style={{ fontSize: "1rem" }}
-                  >
-                    출석확인
-                  </button>
-                  <Link to="/studentpage/recordlecturelist">
-                    <button
-                      className="btn btn-warning mr-2 font-weight-bold"
-                      style={{ fontSize: "1rem" }}
-                    >
-                      {" "}
-                      녹화강의
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span className="star">
-                    <MDBIcon icon="stop" />
-                  </span>
-                  <div className="d-flex flex-column">
-                    {" "}
-                    <span>Technical Writing</span>
-                    <div className="d-flex flex-row align-items-center time-text">
-                      {" "}
-                      <span className="dots"></span> <small>진실로</small>{" "}
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex flex-row">
-                  <Link to="/studentpage/checkattendence">
-                    <button
-                      className="btn btn-success mr-2 font-weight-bold"
-                      style={{ fontSize: "1rem" }}
-                    >
-                      출석확인
-                    </button>
-                  </Link>
-                  <button
-                    className="btn btn-warning mr-2 font-weight-bold"
-                    style={{ fontSize: "1rem" }}
-                  >
-                    {" "}
-                    녹화강의
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span className="star">
-                    <MDBIcon icon="stop" />
-                  </span>
-                  <div className="d-flex flex-column">
-                    {" "}
-                    <span>운영체제 맟 프로그래밍(001)</span>
-                    <div className="d-flex flex-row align-items-center time-text">
-                      {" "}
-                      <span className="dots"></span> <small>Muhamad Raheal Butta</small>{" "}
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex flex-row">
-                  <Link to="/studentpage/checkattendence">
-                    <button
-                      className="btn btn-success mr-2 font-weight-bold"
-                      style={{ fontSize: "1rem" }}
-                    >
-                      출석확인
-                    </button>
-                  </Link>
-                  <button
-                    className="btn btn-warning mr-2 font-weight-bold"
-                    style={{ fontSize: "1rem" }}
-                  >
-                    {" "}
-                    녹화강의
-                  </button>
-                </div>
-              </div>
-            </div>
+            {userInfo ? <ShowList /> : null}
           </div>
         </div>
       </div>

@@ -2,18 +2,11 @@ import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 import Lecturelist from "./Sections/Lecturelist";
 import { UseAuth } from "../../hoc/AuthContext";
-import AutoAttendance from "./AutoAttendance";
 
 //import Lecturelist from './Sections/Lecturelist';
 function StudentPage() {
   const userInfo = UseAuth().userInfo;
 
-  const checkAttendance = () => {
-    if (userInfo) {
-      const studentId = userInfo.id;
-      AutoAttendance("Sample", studentId);
-    }
-  };
   return (
     <div>
       {userInfo ? (

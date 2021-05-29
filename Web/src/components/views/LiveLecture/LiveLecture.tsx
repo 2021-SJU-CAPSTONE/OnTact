@@ -10,7 +10,7 @@ const lectureId = "Capstone"; // sample lecture db
 // 화면 공유 기능 링크
 //https://cryingnavi.github.io/webrtc/2020/10/15/webrtc-sharedscreen.html
 //https://github.com/microsoft/TypeScript/issues/33232
-const LiveLecture = () => {
+const LiveLecture = ({ match }) => {
   //계정 확인
   const userInfo = UseAuth().userInfo;
   const history = useHistory();
