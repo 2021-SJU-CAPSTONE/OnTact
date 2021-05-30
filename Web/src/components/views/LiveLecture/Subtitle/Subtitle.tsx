@@ -2,6 +2,7 @@ import React from "react";
 import { KotoEn } from "./papago.js";
 import * as type from "../../../type";
 import { store } from "../../../firebase";
+import * as lecture from "../../../utils/Lecture";
 type Prop = {
   changeIsShare: (value?: boolean) => boolean;
   userInfo: type.UserInfo;
@@ -39,10 +40,6 @@ const Subtitle = (prop: Prop) => {
     }
   };
 
-  const Ref = store
-    .collection(`Lecture/${prop.lectureInfo.Name}/Subtitle`)
-    .doc(`${prop.lectureInfo.cnt + 1}회차`);
-
   // const FIRST_CHAR = /\S/;
   const TWO_LINE = /\n\n/g;
   const ONE_LINE = /\n/g;
@@ -64,7 +61,6 @@ const Subtitle = (prop: Prop) => {
    * 음성 인식 시작 처리
    */
   recognition.onstart = function () {
-    //console.log("onstart", arguments);
     isRecognizing = true;
 
     startTime = arguments[0].timeStamp;
@@ -123,37 +119,40 @@ const Subtitle = (prop: Prop) => {
     }
 
     finalSub = linebreak(firstText + "\n" + secondText);
-    if (finalRef.current) {
-      finalRef.current.innerHTML = finalSub;
-      if (fireTime !== 0) {
-        Ref.set(
-          {
-            [fireTime]: linebreak(firstText),
-          },
-          { merge: true }
-        );
-        fireTime = 0;
-      }
-    }
-    if (translateRef.current) {
-      if (firstText !== "") {
-        KotoEn(firstText).then((resultText) => {
-          //console.log("papago " + resultText);
-          if (translateRef.current) {
-            translateRef.current.innerHTML = resultText;
-          }
-        });
-      }
-      KotoEn(secondText).then((resultText) => {
-        //console.log("papago " + resultText);
-        if (translateRef.current) {
-          translateRef.current.innerHTML += "<br>" + resultText;
-        }
-      });
+    ///save in tempSub
+    console.log(finalSub);
+    store
+      .collection("Lecture")
+      .doc(prop.lectureInfo.Name)
+      .update({ tempSub: finalSub });
+    // 번역기능
+    // KotoEn(finalSub).then(resultText => {
+    //   //save in tempTrans
+    //   console.log(resultText);
+    //   store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempTrans: resultText });
+    // });
+    /// save in subTitle and Translate for record lecture
+    if (fireTime !== 0 && firstText !== "") {
+      lecture.stackSubtitle(
+        prop.lectureInfo.Name,
+        prop.lectureInfo.cnt + 1,
+        fireTime,
+        linebreak(firstText)
+      );
+      // 번역기능
+      // let sfireTime = fireTime;
+      // KotoEn(firstText).then(resultText => {
+      //   lecture.stackTranslation(
+      //     prop.lectureInfo.Name,
+      //     prop.lectureInfo.cnt + 1,
+      //     sfireTime,
+      //     resultText
+      //   );
+      // });
+      fireTime = 0;
     }
 
     // console.log("finalTranscript", finalTranscript);
-    // console.log("interimTranscript", interimTranscript);
   };
 
   /**
@@ -174,16 +173,6 @@ const Subtitle = (prop: Prop) => {
   const linebreak = (s) => {
     return s.replace(TWO_LINE, "<p></p>").replace(ONE_LINE, "<br>");
   };
-
-  // /**
-  //  * 첫문자를 대문자로 변환
-  //  * @param {string} s
-  //  */
-  // const capitalize = (s) => {
-  //   return s.replace(FIRST_CHAR, (m) => {
-  //     return m.toUpperCase();
-  //   });
-  // };
 
   /**
    * 음성 인식 트리거
@@ -229,7 +218,29 @@ const Subtitle = (prop: Prop) => {
     }
   };
   React.useEffect(() => {
-    start();
+    if (prop.userInfo.isProfessor === "on") {
+      start();
+    } else {
+      store
+        .collection("Lecture")
+        .doc(prop.lectureInfo.Name)
+        .onSnapshot((snap) => {
+          const data = snap.data();
+          if (data !== undefined) {
+            if (finalRef.current) {
+              finalRef.current.innerHTML = data.tempSub;
+            }
+            if (translateRef.current) {
+              translateRef.current.innerHTML = data.tempTrans;
+            }
+          }
+        });
+    }
+    return () => {
+      if (prop.userInfo.isProfessor === "on") {
+        recognition.stop();
+      }
+    };
   }, []);
   return (
     <div
@@ -247,72 +258,6 @@ const Subtitle = (prop: Prop) => {
       {isProf ? (
         //////////////////////////교수/////////////////////
         <div>
-          <div
-            className="subtitle_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "22%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              className="btnSub "
-              ref={btnSubref}
-              onClick={useSub}
-              style={{
-                width: "12vw",
-                height: "3vw",
-                backgroundColor: "gray",
-                boxShadow: "3px",
-                fontSize: "25px",
-                color: "white",
-                borderRadius: 15,
-                fontWeight: "bold",
-                border: "solid",
-                borderColor: "black",
-              }}
-            >
-              <i
-                className="far fa-closed-captioning"
-                style={{ marginRight: "20px" }}
-              ></i>
-              자막 활성화
-            </button>
-          </div>
-          <div
-            className="translate_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "22%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              className="btnTrans "
-              ref={btnTransref}
-              onClick={useTrans}
-              style={{
-                width: "12vw",
-                height: "3vw",
-                fontSize: "25px",
-                borderRadius: 15,
-                color: "white",
-                fontWeight: "bold",
-                backgroundColor: "gray",
-                border: "solid",
-                borderColor: "black",
-              }}
-            >
-              <i
-                className="fas fa-sign-language"
-                style={{ marginRight: "20px" }}
-              />
-              번역 활성화
-            </button>
-          </div>
-
           <div
             className="share_btn"
             style={{
@@ -473,13 +418,22 @@ const Subtitle = (prop: Prop) => {
       {visibleSub ? (
         <div className="result">
           <span className="final" ref={finalRef}></span>
-          {visibleTrans ? (
-            <div>
-              <span className="translate" ref={translateRef}></span>
-            </div>
-          ) : null}
         </div>
       ) : null}
+      {visibleTrans ? (
+        <div className="result">
+          <span className="translate" ref={finalRef}></span>
+        </div>
+      ) : null}
+      {/* 재호형!! 밑에 있는 게 진짜 번역 데이터 인데요 papago 
+      사용량 때문에 지금은 막아 둘께요 
+      위에 있는거랑 같은 형태로 출력되면 되니까 
+      className='final' 이 translate라고 생각하고 하면 될 거같아요*/}
+      {/* {visibleTrans ? (
+        <div>
+          <span className="translate" ref={translateRef}></span>
+        </div>
+      ) : null} */}
     </div>
   );
 };
