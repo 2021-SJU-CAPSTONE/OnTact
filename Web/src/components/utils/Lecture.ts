@@ -33,7 +33,7 @@ export const getBookmark = async (lectureId: string, round: number, uid: string)
   const data = col.docs.map(doc => {
     return doc.data();
   });
-  return data;
+  return data as type.Bookmark[];
 };
 export const removeBookmark = async (
   lectureId: string,
