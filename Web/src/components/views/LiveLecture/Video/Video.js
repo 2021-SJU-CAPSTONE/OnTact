@@ -16,6 +16,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   //record
   let recordChunk = [];
   let recorder = React.useRef();
+  let recordCnt = 0;
   const handleDataAvailable = event => {
     recordChunk.push(event.data);
     download();
@@ -29,7 +30,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
     document.body.appendChild(a);
     a.style = "display: none";
     a.href = url;
-    a.download = `${new Date().getTime()}.mp4`;
+    a.download = `${lectureInfo.Name}.mp4`;
     a.click();
     window.URL.revokeObjectURL(url);
   };
@@ -57,6 +58,11 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   };
   // share
   const [isShare, setIsShare] = React.useState(false);
+  /*
+   |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+   위에 false 값을 true로 수정하면 강의 시작시 디폴트 송출 영상이 공유 화면
+   false일 경우 상의 시작시 디폴트 송출 영상이 캡 화면
+  */
   const changeIsShare = value => {
     if (value !== undefined) {
       setIsShare(value);
@@ -107,7 +113,12 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
       ) : null}
       <div>
         <video id="video" ref={videoRef} autoPlay playsInline muted></video>
-        <Subtitle changeIsShare={changeIsShare} userInfo={userInfo} onExit={onExit2} />
+        <Subtitle
+          changeIsShare={changeIsShare}
+          userInfo={userInfo}
+          onExit={onExit2}
+          lectureInfo={lectureInfo}
+        />
       </div>
     </div>
   );
