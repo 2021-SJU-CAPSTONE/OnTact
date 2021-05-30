@@ -9,7 +9,6 @@ let peerList: PeerList = {};
 let peerIds: string[] = [];
 // const socket = io("http://localhost:5001", { transports: ["polling"] });
 let socket;
-const profId = "p";
 export const getSocket = () => {
   if (socket === undefined) {
     socket = io(serverURL, {
@@ -23,7 +22,8 @@ export const educateeConnect = (
   localId: string,
   stream: MediaStream,
   remoteVideoRef: React.RefObject<HTMLVideoElement>,
-  lectureName: string
+  lectureName: string,
+  profId: string
 ) => {
   getSocket();
   let peer;
@@ -39,7 +39,6 @@ export const educateeConnect = (
   }
   peer.on("open", id => {
     // id : localid
-    makeAlarm(`${id}님이 입장했습니다.`, lectureName);
     socket.emit("join-room", lectureName, id);
   });
   peer.on("call", call => {
@@ -94,7 +93,6 @@ export const educatorConnect = (
   }
   peer.on("open", id => {
     // id : localid
-    makeAlarm(`${id}님이 입장했습니다.`, lectureName);
     socket.emit("join-room", lectureName, id);
   });
   peer.on("call", call => {
@@ -103,6 +101,8 @@ export const educatorConnect = (
   });
 
   socket.on("user-connected", userId => {
+    makeAlarm(`${userId}님이 입장했습니다.`, lectureName);
+
     //steam 수신 peer 연결
     // userid : 상대방 아이디
     console.log("connected with :", userId);
