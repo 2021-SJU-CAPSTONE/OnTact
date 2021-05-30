@@ -4,6 +4,7 @@ import Video from "./Video/Video";
 import { useHistory } from "react-router-dom";
 import { UseAuth } from "../../hoc/AuthContext";
 import { clearChat, getLectureInfo } from "../../utils/Lecture";
+import Bookmark from "./Bookmark/Bookmark";
 import * as type from "../../type";
 const LiveLecture = ({ match }) => {
   //계정 확인
@@ -11,7 +12,10 @@ const LiveLecture = ({ match }) => {
   const userInfo = UseAuth().userInfo;
   const history = useHistory();
   const [lectureInfo, setLectureInfo] = React.useState<type.LectureInfo>();
+  const [isChat, setIsChat] = React.useState(true);
+  const startTime = React.useRef<number>();
   React.useEffect(() => {
+    startTime.current = new Date().getTime();
     if (lectureInfo === undefined) {
       getLectureInfo(lectureId).then(info => {
         setLectureInfo(info);
@@ -45,8 +49,21 @@ const LiveLecture = ({ match }) => {
                 <Video userInfo={userInfo} lectureInfo={lectureInfo} onExit={onExit} />
               ) : null}
             </div>
+
             <div>
-              <Chatting lectureId={lectureInfo.Name} />
+              <button
+                onClick={E => {
+                  E.preventDefault();
+                  setIsChat(!isChat);
+                }}
+              >
+                CHANGE
+              </button>
+              {isChat ? (
+                <Chatting lectureId={lectureInfo.Name} />
+              ) : (
+                <Bookmark lectureInfo={lectureInfo} startTime={startTime.current} />
+              )}
             </div>
           </div>
         </div>

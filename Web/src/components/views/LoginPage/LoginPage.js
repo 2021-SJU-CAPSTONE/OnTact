@@ -33,7 +33,7 @@ const LoginPage = () => {
     await logIn(emailRef.current.value, passwordRef.current.value);
 
     const ref = store.collection("User").doc(auth.currentUser.uid);
-    ref.get().then(item => {
+    ref.get().then((item) => {
       auth.currentUser.isProfessor = item.data().isProfessor;
       if (auth.currentUser.isProfessor === "on") {
         history.push("/professorpage");
@@ -53,7 +53,6 @@ const LoginPage = () => {
           left: "30%",
           transform: "translate(-50%)",
           alignItems: "center",
-          
         }}
       ></img>
       <Card
@@ -64,21 +63,34 @@ const LoginPage = () => {
           transform: "translate(-50%)",
           width: "28rem",
           alignItems: "center",
+          border: "solid",
+          borderColor: "#c4c4c4",
+          borderRadius: 15,
         }}
       >
         <Card.Body>
           <h2 className="text-center mb4" style={{ color: "#807E7E" }}>
-            Log In
+            로그인
           </h2>
           {error && <Alert variant="danger">{error}</Alert>}
           <Form onSubmit={handleSubmit}>
             <Form.Group id="email">
               <Form.Label>Email</Form.Label>
-              <Form.Control type="email" ref={emailRef} required />
+              <Form.Control
+                style={{ borderRadius: 10 }}
+                type="email"
+                ref={emailRef}
+                required
+              />
             </Form.Group>
             <Form.Group id="password">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" ref={passwordRef} required />
+              <Form.Control
+                style={{ borderRadius: 10 }}
+                type="password"
+                ref={passwordRef}
+                required
+              />
             </Form.Group>
             <button
               className="w-100"
@@ -86,15 +98,18 @@ const LoginPage = () => {
                 backgroundColor: "#D65E2A",
                 color: "white",
                 fontSize: 20,
+                border: "solid",
+                borderColor: "#c4c4c4",
+                borderRadius: 10,
               }}
               type="submit"
               disabled={loading}
             >
-              Log In
+              로그인
             </button>
           </Form>
           <div className="w-100 text-center mt-2">
-            <Link to="/signup">Need an accout?</Link>
+            <Link to="/signup">계정이 필요하신가요?</Link>
           </div>
         </Card.Body>
       </Card>

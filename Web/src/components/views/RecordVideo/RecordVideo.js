@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-const format = (seconds) => {
+const format = seconds => {
   if (isNaN(seconds)) {
     return "00:00";
   }
@@ -52,8 +52,7 @@ export default function RecordVideo() {
   const handlePlayPause = () => {
     setState({ ...state, playing: !state.playing });
   };
-  const { playing, muted, volume, playbackRate, played, seeking, comments } =
-    state;
+  const { playing, muted, volume, playbackRate, played, seeking, comments } = state;
 
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
@@ -66,13 +65,12 @@ export default function RecordVideo() {
   };
   //
   //형찬
-  const delRef = useRef(null);
   const userInfo = UseAuth().userInfo;
-  const lectureId = "Capstone";
-  const round = 2;
+  const lectureId = "이주혁의 수어교실";
+  const round = 6;
   React.useEffect(() => {
     if (userInfo) {
-      getBookmark(lectureId, round, userInfo.id).then((data) => {
+      getBookmark(lectureId, round, userInfo.id).then(data => {
         setBookmarks(data);
       });
     }
@@ -105,7 +103,7 @@ export default function RecordVideo() {
     });
   };
 
-  const handlePlaybackRateChange = (rate) => {
+  const handlePlaybackRateChange = rate => {
     setState({ ...state, playbackRate: rate });
   };
 
@@ -113,7 +111,7 @@ export default function RecordVideo() {
     screenfull.toggle(playerContainerRef.current);
   };
 
-  const handleProgress = (changeState) => {
+  const handleProgress = changeState => {
     if (!state.seeking) {
       setState({ ...state, ...changeState });
     }
@@ -122,7 +120,7 @@ export default function RecordVideo() {
   const handleSeekchange = (e, newValue) => {
     setState({ ...state, played: parseFloat(newValue / 100) });
   };
-  const handleSeekMouseDown = (e) => {
+  const handleSeekMouseDown = e => {
     setState({ ...state, seeking: true });
   };
   const handleSeekMouseUp = (e, newValue) => {
@@ -130,28 +128,20 @@ export default function RecordVideo() {
     playerRef.current.seekTo(newValue / 100);
   };
 
-  const currentTime = playerRef.current
-    ? playerRef.current.getCurrentTime()
-    : "00:00";
-  const duration = playerRef.current
-    ? playerRef.current.getDuration()
-    : "00:00";
+  const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : "00:00";
+  const duration = playerRef.current ? playerRef.current.getDuration() : "00:00";
 
   const elapsedTime =
-    timeDisplayFormat === "normal"
-      ? format(currentTime)
-      : `-${format(duration - currentTime)}`;
+    timeDisplayFormat === "normal" ? format(currentTime) : `-${format(duration - currentTime)}`;
   const totalDuration = format(duration);
 
   const handleChangeDisplayFormat = () => {
-    setTimeDisplayFormat(
-      timeDisplayFormat === "normal" ? "remaining" : "normal"
-    );
+    setTimeDisplayFormat(timeDisplayFormat === "normal" ? "remaining" : "normal");
   };
 
   let messages = "";
   const inputRef = useRef(null);
-  const messagesend = (e) => {
+  const messagesend = e => {
     e.preventDefault();
     const newBookmark = {
       time: playerRef.current.getCurrentTime(),
@@ -161,19 +151,13 @@ export default function RecordVideo() {
     if (inputRef.current) {
       messages = inputRef.current.value;
     }
-    addBookmark(
-      lectureId,
-      round,
-      userInfo.id,
-      newBookmark.time,
-      newBookmark.chat
-    );
+    addBookmark(lectureId, round, userInfo.id, newBookmark.time, newBookmark.chat);
     inputRef.current.value = "";
     messages = "";
   };
-  const onDelBookmark = (e) => {
+  const onDelBookmark = e => {
     const removeTime = Number(e.target.id);
-    const newBookmarks = Bookmarks.filter((bookmark) => {
+    const newBookmarks = Bookmarks.filter(bookmark => {
       if (bookmark.time === removeTime) {
         return false;
       }
@@ -307,7 +291,6 @@ export default function RecordVideo() {
                         marginLeft: 15,
                       }}
                       id={bookmark.time}
-                      ref={delRef}
                       onClick={onDelBookmark}
                     >
                       삭제
@@ -335,7 +318,7 @@ export default function RecordVideo() {
                   />
                   <button
                     type="submit"
-                    onClick={(e) => {
+                    onClick={e => {
                       messagesend(e);
                     }}
                     style={{
