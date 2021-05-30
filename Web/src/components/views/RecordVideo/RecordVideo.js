@@ -199,7 +199,13 @@ export default function RecordVideo() {
             }}
             className="col-md-6"
           >
-            <Card>
+            <Card
+              style={{
+                border: "solid",
+                borderRadius: 10,
+                borderColor: "#c4c4c4",
+              }}
+            >
               <div
                 ref={playerContainerRef}
                 className={classes.playerWrapper}
@@ -263,7 +269,15 @@ export default function RecordVideo() {
             }}
             className="col-md-6"
           >
-            <Card style={{ width: "70%", height: "60vh" }}>
+            <Card
+              style={{
+                width: "70%",
+                height: "60vh",
+                border: "solid",
+                borderRadius: 10,
+                borderColor: "#c4c4c4",
+              }}
+            >
               <h6
                 style={{
                   fontWeight: "bold",
@@ -310,7 +324,15 @@ export default function RecordVideo() {
                     alignItems: "center",
                   }}
                 >
-                  <input ref={inputRef} style={{ width: "580px" }} />
+                  <input
+                    ref={inputRef}
+                    style={{
+                      width: "570px",
+                      border: "solid",
+                      borderRadius: 10,
+                      borderColor: "#807E7E",
+                    }}
+                  />
                   <button
                     type="submit"
                     onClick={(e) => {
@@ -320,6 +342,9 @@ export default function RecordVideo() {
                       backgroundColor: "#D65E2A",
                       color: "white",
                       fontWeight: "bold",
+                      border: "solid",
+                      borderColor: "#807E7E",
+                      borderRadius: 10,
                     }}
                   >
                     입력
