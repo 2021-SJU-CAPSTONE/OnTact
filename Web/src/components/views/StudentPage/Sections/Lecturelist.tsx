@@ -53,7 +53,7 @@ function Lecturelist() {
                 출석확인
               </button>
             </Link>
-            <Link to="/studentpage/recordlecturelist">
+            <Link to={`/studentpage/recordlecturelist/${lecture.Name}`}>
               <button
                 className="btn btn-warning mr-2 font-weight-bold"
                 style={{ fontSize: "1rem" }}

@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
         } else {
           if (!userInfo) {
             setIsLogIn(true);
-            getUserInfo(uid).then(info => {
+            getUserInfo(uid).then((info) => {
               setUserInfo(info);
             });
           }
