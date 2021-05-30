@@ -6,6 +6,14 @@ export type UserInfo = {
   password: string;
   id: string;
   lectureList: string[];
+  infoList: [
+    {
+      Name: string;
+      profName: string;
+      Time: string;
+      Day: string;
+    }
+  ];
 };
 
 export type LectureInfo = {
@@ -16,6 +24,7 @@ export type LectureInfo = {
   AbsentTime: string;
   cnt: number;
   profId: string;
+  profName: string;
 };
 
 export type Bookmark = {

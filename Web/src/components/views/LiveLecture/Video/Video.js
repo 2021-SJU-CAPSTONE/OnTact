@@ -2,6 +2,7 @@ import React from "react";
 import { educatorConnect, educateeConnect } from "./connect";
 import Subtitle from "../Subtitle/Subtitle";
 import "./video.css";
+import { store } from "../../../firebase";
 
 const Video = ({ userInfo, lectureInfo, onExit }) => {
   //video
@@ -9,7 +10,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   //record
   let recordChunk = [];
   let recorder = React.useRef();
-  const handleDataAvailable = event => {
+  const handleDataAvailable = (event) => {
     recordChunk.push(event.data);
     download();
   };
@@ -35,11 +36,22 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   };
   const onExit2 = () => {
     recodeStop();
+    createPath();
     onExit();
+  };
+  const createPath = () => {
+    const lecRef = store
+      .collection(`Lecture/${lectureInfo.Name}/RecordedLecture`)
+      .doc(`${lectureInfo.cnt + 1}회차`);
+    lecRef.set({
+      Video: `gs://capstone-925e4.appspot.com/RecordedLecture/${
+        lectureInfo.Name
+      }/${lectureInfo.cnt + 1}회차`,
+    });
   };
   // share
   const [isShare, setIsShare] = React.useState(false);
-  const changeIsShare = value => {
+  const changeIsShare = (value) => {
     if (value !== undefined) {
       setIsShare(value);
       recodeStop();
@@ -50,35 +62,51 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
     if (userInfo) {
       if (userInfo.isProfessor === "on") {
         if (isShare) {
-          navigator.mediaDevices.getDisplayMedia({ audio: true, video: true }).then(stream => {
-            educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name);
-            recorder.current = new MediaRecorder(stream, {
-              type: "video/mp4",
+          navigator.mediaDevices
+            .getDisplayMedia({ audio: true, video: true })
+            .then((stream) => {
+              educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name);
+              recorder.current = new MediaRecorder(stream, {
+                type: "video/mp4",
+              });
+              recorder.current.ondataavailable = handleDataAvailable;
+              recorder.current.start();
             });
-            recorder.current.ondataavailable = handleDataAvailable;
-            recorder.current.start();
-          });
         } else {
-          navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-            educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name);
-            recorder.current = new MediaRecorder(stream, {
-              type: "video/mp4",
+          navigator.mediaDevices
+            .getUserMedia({ video: true, audio: true })
+            .then((stream) => {
+              educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name);
+              recorder.current = new MediaRecorder(stream, {
+                type: "video/mp4",
+              });
+              recorder.current.ondataavailable = handleDataAvailable;
+              recorder.current.start();
             });
-            recorder.current.ondataavailable = handleDataAvailable;
-            recorder.current.start();
-          });
         }
       } else {
-        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-          educateeConnect(userInfo.id, stream, videoRef, lectureInfo.Name, lectureInfo.profId);
-        });
+        navigator.mediaDevices
+          .getUserMedia({ video: true, audio: true })
+          .then((stream) => {
+            educateeConnect(
+              userInfo.id,
+              stream,
+              videoRef,
+              lectureInfo.Name,
+              lectureInfo.profId
+            );
+          });
       }
     }
   }, [isShare]);
   return (
     <div>
       <video id="video" ref={videoRef} autoPlay playsInline muted></video>
-      <Subtitle changeIsShare={changeIsShare} userInfo={userInfo} onExit={onExit2} />
+      <Subtitle
+        changeIsShare={changeIsShare}
+        userInfo={userInfo}
+        onExit={onExit2}
+      />
     </div>
   );
 };

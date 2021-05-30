@@ -16,16 +16,16 @@ function Lecturelist() {
   };
 
   const ShowList = () => {
-    const lecList = userInfo?.lectureList.map((lecture) => (
+    const lecList = userInfo?.infoList.map((lecture) => (
       <div className="mt-3">
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-row align-items-center">
             {" "}
-            <Link to={`/livelecture/${lecture}`}>
+            <Link to={`/livelecture/${lecture.Name}`}>
               <span
                 className="star"
                 onClick={() => {
-                  checkAttendance(lecture);
+                  checkAttendance(lecture.Name);
                 }}
               >
                 <MDBIcon icon="play" />
@@ -34,15 +34,18 @@ function Lecturelist() {
             </Link>
             <div className="d-flex flex-column">
               {" "}
-              <span>{lecture}</span>
+              <span>{lecture.Name}</span>
               <div className="d-flex flex-row align-items-center time-text">
                 {" "}
-                <span className="dots"></span> <small>여러 교수자</small>{" "}
+                <span className="dots"></span>{" "}
+                <small>
+                  {lecture.Time} [{lecture.Day}] {lecture.profName}
+                </small>{" "}
               </div>
             </div>
           </div>
           <div className="d-flex flex-row">
-            <Link to={`/studentpage/checkattendence/${lecture}`}>
+            <Link to={`/studentpage/checkattendence/${lecture.Name}`}>
               <button
                 className="btn btn-success mr-2 font-weight-bold"
                 style={{ fontSize: "1rem" }}
