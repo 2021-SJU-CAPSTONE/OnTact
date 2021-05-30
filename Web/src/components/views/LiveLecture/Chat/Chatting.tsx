@@ -20,9 +20,9 @@ const Chatting = (prop: Prop) => {
     store
       .collection(`Lecture/${prop.lectureId}/Chatting`)
       .orderBy("timestamp", "asc")
-      .onSnapshot((collection) => {
+      .onSnapshot(collection => {
         setMessages(
-          collection.docs.map((doc) => ({
+          collection.docs.map(doc => ({
             username: doc.data().username,
             message: doc.data().message,
           }))
@@ -39,10 +39,7 @@ const Chatting = (prop: Prop) => {
           username: userInfo.Name,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
-        setMessages([
-          ...messages,
-          { username: userInfo.Name, message: inputRef.current.value },
-        ]);
+        setMessages([...messages, { username: userInfo.Name, message: inputRef.current.value }]);
         inputRef.current.value = "";
       }
     }
@@ -104,7 +101,7 @@ const Chatting = (prop: Prop) => {
             border: "solid",
             borderColor: "black",
           }}
-          onClick={(e) => {
+          onClick={e => {
             sendMessage(e);
           }}
         >
