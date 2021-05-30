@@ -22,3 +22,19 @@ export type Bookmark = {
   time: number;
   chat: string;
 };
+
+export type AttendanceInfo = {
+  Name: string;
+  id: string;
+  Attendance: [
+    {
+      Round: number;
+      Attend: string;
+    }
+  ];
+};
+
+export type StudentInfo = {
+  Name: string;
+  id: string;
+} | null;

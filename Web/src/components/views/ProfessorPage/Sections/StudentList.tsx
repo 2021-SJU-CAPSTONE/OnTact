@@ -10,6 +10,7 @@ import firebase from "firebase/app";
 type Prop = {
   changeOpen: () => void;
   lectureId: string;
+  changeId: (val?: type.StudentInfo) => type.StudentInfo;
 };
 function StudentList(prop: Prop) {
   const [lecInfo, setLecInfo] = React.useState<type.LectureInfo>();
@@ -38,7 +39,9 @@ function StudentList(prop: Prop) {
               </span>
               <div className="d-flex flex-column">
                 {" "}
-                <span>{student.id} </span>
+                <span>
+                  {student.id} {student.data().Name}
+                </span>
               </div>
             </div>{" "}
             <div className="d-flex flex-row">
@@ -46,7 +49,10 @@ function StudentList(prop: Prop) {
               <button
                 className="btn btn-success mr-2 font-weight-bold"
                 style={{ fontSize: "1rem" }}
-                onClick={prop.changeOpen}
+                onClick={() => {
+                  prop.changeOpen();
+                  prop.changeId({ id: student.id, Name: student.data().Name });
+                }}
               >
                 출석확인
               </button>{" "}
