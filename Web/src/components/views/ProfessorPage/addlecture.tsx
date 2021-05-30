@@ -5,9 +5,8 @@ import TextField from "@material-ui/core/TextField";
 import { Link } from "react-router-dom";
 import { Row, Col, Form, Button, Card, Alert } from "react-bootstrap";
 import { store } from "../../firebase";
-import firebase from "firebase";
 import { getUserInfo, getCurrentUserUid } from "../../utils/Auth";
-
+import { UseAuth } from "../../hoc/AuthContext";
 const useStyles = makeStyles(theme => ({
   root: {
     "& > *": {
@@ -30,6 +29,7 @@ type Student = {
 };
 
 const Addlecture = () => {
+  const userInfo = UseAuth().userInfo;
   const lectureNameRef = useRef<HTMLInputElement>(null);
   const startTimeRef = useRef<HTMLInputElement>(null);
   const tardyTimeRef = useRef<HTMLInputElement>(null);
@@ -83,6 +83,7 @@ const Addlecture = () => {
           TardyTime: t,
           AbsentTime: a,
           cnt: "0",
+          profId: userInfo.id,
         },
         { merge: true }
       );
