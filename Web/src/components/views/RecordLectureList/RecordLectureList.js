@@ -34,6 +34,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RecordLectureList() {
+  const showList = () => {
+    // const lecList;
+    // return <div>{lecList}</div>
+  };
+
   // async function name() {
   //   const lecRef = store.collection("Lecture").doc("Capstone");
   //   const collections = await lecRef.listCollections();

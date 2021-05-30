@@ -31,7 +31,7 @@ function App() {
             />
             <Route
               exact
-              path="/studentpage/checkattendence"
+              path="/studentpage/checkattendence/:lecture"
               component={CheckAttendence}
             />
             <Route

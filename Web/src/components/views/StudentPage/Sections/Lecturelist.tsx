@@ -9,15 +9,14 @@ import { UseAuth } from "../../../hoc/AuthContext";
 function Lecturelist() {
   const userInfo = UseAuth().userInfo;
 
-  const checkAttendance = lecture => {
+  const checkAttendance = (lecture) => {
     if (userInfo) {
-      const studentId = userInfo.id;
-      AutoAttendance(lecture, studentId);
+      AutoAttendance(lecture, userInfo.id, userInfo.Name);
     }
   };
 
   const ShowList = () => {
-    const lecList = userInfo?.lectureList.map(lecture => (
+    const lecList = userInfo?.lectureList.map((lecture) => (
       <div className="mt-3">
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-row align-items-center">
@@ -43,7 +42,7 @@ function Lecturelist() {
             </div>
           </div>
           <div className="d-flex flex-row">
-            <Link to="/studentpage/checkattendence">
+            <Link to={`/studentpage/checkattendence/${lecture}`}>
               <button
                 className="btn btn-success mr-2 font-weight-bold"
                 style={{ fontSize: "1rem" }}

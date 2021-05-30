@@ -1,24 +1,24 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import "./Sections/AdminLecture.css";
 import StudentList from "./Sections/StudentList";
 import { Link } from "react-router-dom";
 import AttendBoard from "./Sections/AttendBoard";
 import * as type from "../../type";
-import { getLectureInfo } from "../../utils/Lecture";
 
 //import Lecturelist from './Sections/Lecturelist';
 const AdimnLecture = ({ match }) => {
   const [Open, setOpen] = useState(false);
+  const [id, setId] = useState<type.StudentInfo>(null);
   const changeOpen = () => {
-    setOpen(o => !o);
+    setOpen((o) => !o);
   };
-
-  const [lecInfo, setLecInfo] = React.useState<type.LectureInfo>();
-  getLectureInfo(match.params.lecture).then(info => {
-    setLecInfo(info);
-  });
-
+  const changeId = (val?: type.StudentInfo) => {
+    if (val !== undefined) {
+      setId(val);
+    }
+    return id;
+  };
   return (
     <div className="row" style={{ width: "75%", margin: "6rem auto" }}>
       <div className="col-md-6">
@@ -48,7 +48,11 @@ const AdimnLecture = ({ match }) => {
           {match.params.lecture}
         </span>
         <div>
-          <StudentList changeOpen={changeOpen} lectureId={match.params.lecture} />
+          <StudentList
+            changeOpen={changeOpen}
+            lectureId={match.params.lecture}
+            changeId={changeId}
+          />
         </div>
       </div>
       <div className="col-md-6 ">
@@ -79,7 +83,7 @@ const AdimnLecture = ({ match }) => {
         </span>
         {Open ? (
           <div>
-            <AttendBoard />
+            <AttendBoard lectureId={match.params.lecture} changeId={changeId} />
           </div>
         ) : null}
 

@@ -1,10 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Lecturelist.css";
 import useToggle from "../../../utils/Toggle";
 import Editattand from "./Editattand";
-function AttendBoard() {
+import * as type from "../../../type";
+import { getAttendanceById } from "../../../utils/Lecture";
+type Prop = {
+  lectureId: string;
+  changeId: (val?: type.StudentInfo) => type.StudentInfo;
+};
+function AttendBoard(prop: Prop) {
   const [isOn, toggleIsOn] = useToggle();
+  const [userInfo, setUserId] = React.useState<type.StudentInfo>();
+  if (userInfo === undefined) {
+    setUserId(prop.changeId());
+  }
+  const [stuInfo, setStuInfo] = React.useState<type.AttendanceInfo>();
+  if (stuInfo === undefined) {
+    getAttendanceById(prop.lectureId, userInfo?.id as string).then((doc) => {
+      setStuInfo(doc);
+    });
+  }
 
+  const ShowList = () => {
+    let attendanceList;
+    if (stuInfo !== undefined) {
+      attendanceList = stuInfo.Attendance.map((student) => (
+        <div className="mt-3">
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex flex-row align-items-center">
+              <span style={{ fontWeight: "bold" }}>{student.Round}</span>
+              <Editattand
+                lectureId={prop.lectureId}
+                studentId={stuInfo.id}
+                round={student.Round}
+                Attendance={student.Attend}
+                stuInfo={stuInfo}
+              />
+            </div>
+          </div>
+        </div>
+      ));
+    }
+
+    return <div>{attendanceList}</div>;
+  };
   return (
     <div className="container overflow-auto" style={{ height: "500px" }}>
       <div className="row d-flex mt-4 ">
@@ -18,7 +57,7 @@ function AttendBoard() {
               <span
                 className="badge badge-light"
                 style={{
-                  width: "130px",
+                  width: "140px",
                   height: "30px",
                   display: "block",
                   fontSize: "1rem",
@@ -26,97 +65,10 @@ function AttendBoard() {
                   paddingTop: "8px",
                 }}
               >
-                16012416 장재호
+                {userInfo?.id} {userInfo?.Name}
               </span>
             </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  <span style={{ fontWeight: "bold" }}>1회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span style={{ fontWeight: "bold" }}>2회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span style={{ fontWeight: "bold" }}>3회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span style={{ fontWeight: "bold" }}>4회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span style={{ fontWeight: "bold" }}>5회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span style={{ fontWeight: "bold" }}>6회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span style={{ fontWeight: "bold" }}>7회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span style={{ fontWeight: "bold" }}>8회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  {" "}
-                  <span style={{ fontWeight: "bold" }}>9회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
-            <div className="mt-3">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex flex-row align-items-center">
-                  <span style={{ fontWeight: "bold" }}>10회차</span>
-                  <Editattand />
-                </div>
-              </div>
-            </div>
+            <ShowList />
           </div>
         </div>
       </div>
