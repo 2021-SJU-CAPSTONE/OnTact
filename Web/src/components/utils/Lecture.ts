@@ -76,9 +76,10 @@ export const removeBookmark = async (
     }
   });
 };
-export const getLectureTime = async (lectureId: string) => {
-  const lectureInfo = await getLectureInfo(lectureId);
-  return lectureInfo.StartTime;
+export const getRecordPath = async (lectureId: string) => {
+  const lectureInfo = await store
+    .collection(`Lecture/${lectureId}/RecordedLecture`)
+    .get();
+
+  return lectureInfo;
 };
-export const getLectureDay = () => {};
-export const getLectureProf = () => {};

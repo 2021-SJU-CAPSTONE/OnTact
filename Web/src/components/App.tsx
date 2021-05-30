@@ -35,7 +35,7 @@ function App() {
               component={CheckAttendence}
             />
             <Route
-              path="/studentpage/recordlecturelist"
+              path="/studentpage/recordlecturelist/:lecture"
               component={RecordLectureList}
             />
             <Route
