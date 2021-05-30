@@ -22,7 +22,7 @@ export function AuthProvider({ children }) {
         } else {
           if (!userInfo) {
             setIsLogIn(true);
-            getUserInfo(uid).then((info) => {
+            getUserInfo(uid).then(info => {
               setUserInfo(info);
             });
           }
@@ -33,7 +33,7 @@ export function AuthProvider({ children }) {
   };
   React.useEffect(() => {
     reload();
-  }, [isLogIn, v, userInfo]);
+  }, [isLogIn, v]);
   const signUp = async (email, password, isProfessor, name, id) => {
     const idRes = await auth.createUserWithEmailAndPassword(email, password);
     if (idRes.user) {
@@ -57,7 +57,7 @@ export function AuthProvider({ children }) {
     flag = 1;
   };
   const logOut = async () => {
-    await auth.signOut();
+    auth.signOut().then(console.log("logout"));
     setUserInfo(null);
     setUid("not login");
     flag = 0;

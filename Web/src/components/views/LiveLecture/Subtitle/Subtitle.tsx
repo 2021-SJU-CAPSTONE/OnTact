@@ -135,14 +135,14 @@ const Subtitle = (prop: Prop) => {
     }
     if (translateRef.current) {
       if (firstText !== "") {
-        KotoEn(firstText).then((resultText) => {
+        KotoEn(firstText).then(resultText => {
           //console.log("papago " + resultText);
           if (translateRef.current) {
             translateRef.current.innerHTML = resultText;
           }
         });
       }
-      KotoEn(secondText).then((resultText) => {
+      KotoEn(secondText).then(resultText => {
         //console.log("papago " + resultText);
         if (translateRef.current) {
           translateRef.current.innerHTML += "<br>" + resultText;
@@ -169,7 +169,7 @@ const Subtitle = (prop: Prop) => {
    * 개행 처리
    * @param {string} s
    */
-  const linebreak = (s) => {
+  const linebreak = s => {
     return s.replace(TWO_LINE, "<p></p>").replace(ONE_LINE, "<br>");
   };
 
@@ -267,10 +267,7 @@ const Subtitle = (prop: Prop) => {
                 fontWeight: "bold",
               }}
             >
-              <i
-                className="far fa-closed-captioning"
-                style={{ marginRight: "20px" }}
-              ></i>
+              <i className="far fa-closed-captioning" style={{ marginRight: "20px" }}></i>
               자막 활성화
             </button>
           </div>
@@ -297,10 +294,7 @@ const Subtitle = (prop: Prop) => {
                 backgroundColor: "gray",
               }}
             >
-              <i
-                className="fas fa-sign-language"
-                style={{ marginRight: "20px" }}
-              />
+              <i className="fas fa-sign-language" style={{ marginRight: "20px" }} />
               번역 활성화
             </button>
           </div>
@@ -328,10 +322,7 @@ const Subtitle = (prop: Prop) => {
                 backgroundColor: "gray",
               }}
             >
-              <i
-                className="fas fa-share-square"
-                style={{ marginRight: "20px" }}
-              />
+              <i className="fas fa-share-square" style={{ marginRight: "20px" }} />
               공유
             </button>
           </div>
@@ -388,10 +379,7 @@ const Subtitle = (prop: Prop) => {
                 fontWeight: "bold",
               }}
             >
-              <i
-                className="far fa-closed-captioning"
-                style={{ marginRight: "20px" }}
-              ></i>
+              <i className="far fa-closed-captioning" style={{ marginRight: "20px" }}></i>
               자막 활성화
             </button>
           </div>
@@ -418,10 +406,7 @@ const Subtitle = (prop: Prop) => {
                 backgroundColor: "gray",
               }}
             >
-              <i
-                className="fas fa-sign-language"
-                style={{ marginRight: "20px" }}
-              />
+              <i className="fas fa-sign-language" style={{ marginRight: "20px" }} />
               번역 활성화
             </button>
           </div>

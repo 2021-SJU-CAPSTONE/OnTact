@@ -11,7 +11,7 @@ export default function Logout() {
   async function handleLogout() {
     setError("");
     try {
-      logOut();
+      await logOut();
       history.push("/");
     } catch {
       setError("Failed to log out");
@@ -20,8 +20,11 @@ export default function Logout() {
 
   return (
     <>
-      <button onClick={handleLogout} varient="link" 
-      style={{backgroundColor: "white", color: "black"}}>
+      <button
+        onClick={handleLogout}
+        varient="link"
+        style={{ backgroundColor: "white", color: "black" }}
+      >
         logout
       </button>
     </>

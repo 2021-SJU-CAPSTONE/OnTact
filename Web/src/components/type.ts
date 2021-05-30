@@ -15,6 +15,7 @@ export type LectureInfo = {
   TardyTime: string;
   AbsentTime: string;
   cnt: number;
+  profId: string;
 };
 
 export type Bookmark = {
