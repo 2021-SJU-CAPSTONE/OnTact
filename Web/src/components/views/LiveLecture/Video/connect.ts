@@ -71,7 +71,8 @@ export const educatorConnect = (
   localId: string,
   localStream: MediaStream,
   localVideoRef: React.RefObject<HTMLVideoElement>,
-  lectureName: string
+  lectureName: string,
+  addPeers: (val: string) => void
 ) => {
   getSocket();
   console.log(localId);
@@ -105,9 +106,7 @@ export const educatorConnect = (
     call.on("close", () => {});
     peerList[userId] = call;
     peerIds.push(userId);
+    addPeers(userId);
     console.log(`total connected peer = ${peerIds}`);
   });
-};
-export const disconnect = () => {
-  socket = undefined;
 };

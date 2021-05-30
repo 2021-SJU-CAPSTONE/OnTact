@@ -46,6 +46,7 @@ export function AuthProvider({ children }) {
         password: password,
         id: id,
         lectureList: [],
+        infoList: [],
       });
     }
   };

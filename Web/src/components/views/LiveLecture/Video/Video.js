@@ -1,5 +1,5 @@
 import React from "react";
-import { educatorConnect, educateeConnect, disconnect } from "./connect";
+import { educatorConnect, educateeConnect } from "./connect";
 import Subtitle from "../Subtitle/Subtitle";
 import "./video.css";
 import { store } from "../../../firebase";
@@ -7,6 +7,12 @@ import { store } from "../../../firebase";
 const Video = ({ userInfo, lectureInfo, onExit }) => {
   //video
   const videoRef = React.useRef();
+  const [peers, setPeers] = React.useState(["123"]);
+  const addPeers = newPeer => {
+    setPeers(o => {
+      return [...o, newPeer];
+    });
+  };
   //record
   let recordChunk = [];
   let recorder = React.useRef();
@@ -44,9 +50,9 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
       .collection(`Lecture/${lectureInfo.Name}/RecordedLecture`)
       .doc(`${lectureInfo.cnt + 1}회차`);
     lecRef.set({
-      Video: `gs://capstone-925e4.appspot.com/RecordedLecture/${
-        lectureInfo.Name
-      }/${lectureInfo.cnt + 1}회차`,
+      Video: `gs://capstone-925e4.appspot.com/RecordedLecture/${lectureInfo.Name}/${
+        lectureInfo.cnt + 1
+      }회차`,
     });
   };
   // share
@@ -63,7 +69,8 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
       if (userInfo.isProfessor === "on") {
         if (isShare) {
           navigator.mediaDevices.getDisplayMedia({ audio: true, video: true }).then(stream => {
-            educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name);
+            educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name, addPeers);
+
             recorder.current = new MediaRecorder(stream, {
               type: "video/mp4",
             });
@@ -72,7 +79,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
           });
         } else {
           navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-            educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name);
+            educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name, addPeers);
             recorder.current = new MediaRecorder(stream, {
               type: "video/mp4",
             });
@@ -90,9 +97,18 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
 
   return (
     <div>
-      <video id="video" ref={videoRef} autoPlay playsInline muted></video>
-      <button onClick={disconnect}>disconnect</button>
-      <Subtitle changeIsShare={changeIsShare} userInfo={userInfo} onExit={onExit2} />
+      {peers !== [] ? (
+        <div>
+          현재 접속자 :{" "}
+          {peers.map(peer => {
+            return <span>[{peer}]</span>;
+          })}
+        </div>
+      ) : null}
+      <div>
+        <video id="video" ref={videoRef} autoPlay playsInline muted></video>
+        <Subtitle changeIsShare={changeIsShare} userInfo={userInfo} onExit={onExit2} />
+      </div>
     </div>
   );
 };
