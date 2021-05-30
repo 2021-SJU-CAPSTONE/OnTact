@@ -2,10 +2,13 @@ import "./Sections/Navbar.css";
 import logo from "./Sections/onTact.png";
 import { Link } from "react-router-dom";
 import Logout from "../Logout/Logout";
-
+import { UseAuth } from "../../hoc/AuthContext";
 function NavBar() {
   return (
-    <nav className="menu" style={{ position: "fixed", zIndex: 5, width: "100%", height: "60px" }}>
+    <nav
+      className="menu"
+      style={{ position: "fixed", zIndex: 5, width: "100%", height: "60px" }}
+    >
       <div className="menu__logo">
         <Link to="/">
           <img
@@ -19,9 +22,11 @@ function NavBar() {
           />
         </Link>
       </div>
-      <div style={{ float: "right", marginTop: "12px"}}>
+
+      <div style={{ float: "right", marginTop: "12px" }}>
         <Logout />
       </div>
+
       {/*<div style={{ float: "right", marginTop: "20px" }}>
         {isLogIn ? (
           <h6 style={{ marginRight: "50px", fontWeight: "bold" }}>

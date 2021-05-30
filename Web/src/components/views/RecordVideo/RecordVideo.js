@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-const format = seconds => {
+const format = (seconds) => {
   if (isNaN(seconds)) {
     return "00:00";
   }
@@ -52,7 +52,8 @@ export default function RecordVideo() {
   const handlePlayPause = () => {
     setState({ ...state, playing: !state.playing });
   };
-  const { playing, muted, volume, playbackRate, played, seeking, comments } = state;
+  const { playing, muted, volume, playbackRate, played, seeking, comments } =
+    state;
 
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
@@ -71,7 +72,7 @@ export default function RecordVideo() {
   const round = 2;
   React.useEffect(() => {
     if (userInfo) {
-      getBookmark(lectureId, round, userInfo.id).then(data => {
+      getBookmark(lectureId, round, userInfo.id).then((data) => {
         setBookmarks(data);
       });
     }
@@ -104,7 +105,7 @@ export default function RecordVideo() {
     });
   };
 
-  const handlePlaybackRateChange = rate => {
+  const handlePlaybackRateChange = (rate) => {
     setState({ ...state, playbackRate: rate });
   };
 
@@ -112,7 +113,7 @@ export default function RecordVideo() {
     screenfull.toggle(playerContainerRef.current);
   };
 
-  const handleProgress = changeState => {
+  const handleProgress = (changeState) => {
     if (!state.seeking) {
       setState({ ...state, ...changeState });
     }
@@ -121,7 +122,7 @@ export default function RecordVideo() {
   const handleSeekchange = (e, newValue) => {
     setState({ ...state, played: parseFloat(newValue / 100) });
   };
-  const handleSeekMouseDown = e => {
+  const handleSeekMouseDown = (e) => {
     setState({ ...state, seeking: true });
   };
   const handleSeekMouseUp = (e, newValue) => {
@@ -129,20 +130,28 @@ export default function RecordVideo() {
     playerRef.current.seekTo(newValue / 100);
   };
 
-  const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : "00:00";
-  const duration = playerRef.current ? playerRef.current.getDuration() : "00:00";
+  const currentTime = playerRef.current
+    ? playerRef.current.getCurrentTime()
+    : "00:00";
+  const duration = playerRef.current
+    ? playerRef.current.getDuration()
+    : "00:00";
 
   const elapsedTime =
-    timeDisplayFormat === "normal" ? format(currentTime) : `-${format(duration - currentTime)}`;
+    timeDisplayFormat === "normal"
+      ? format(currentTime)
+      : `-${format(duration - currentTime)}`;
   const totalDuration = format(duration);
 
   const handleChangeDisplayFormat = () => {
-    setTimeDisplayFormat(timeDisplayFormat === "normal" ? "remaining" : "normal");
+    setTimeDisplayFormat(
+      timeDisplayFormat === "normal" ? "remaining" : "normal"
+    );
   };
 
   let messages = "";
   const inputRef = useRef(null);
-  const messagesend = e => {
+  const messagesend = (e) => {
     e.preventDefault();
     const newBookmark = {
       time: playerRef.current.getCurrentTime(),
@@ -152,13 +161,19 @@ export default function RecordVideo() {
     if (inputRef.current) {
       messages = inputRef.current.value;
     }
-    addBookmark(lectureId, round, userInfo.id, newBookmark.time, newBookmark.chat);
+    addBookmark(
+      lectureId,
+      round,
+      userInfo.id,
+      newBookmark.time,
+      newBookmark.chat
+    );
     inputRef.current.value = "";
     messages = "";
   };
-  const onDelBookmark = e => {
+  const onDelBookmark = (e) => {
     const removeTime = Number(e.target.id);
-    const newBookmarks = Bookmarks.filter(bookmark => {
+    const newBookmarks = Bookmarks.filter((bookmark) => {
       if (bookmark.time === removeTime) {
         return false;
       }
@@ -172,6 +187,7 @@ export default function RecordVideo() {
       {userInfo && (
         <div className="row">
           {/* Top control */}
+
           <Container
             maxWidth="md"
             display="flex"
@@ -179,63 +195,66 @@ export default function RecordVideo() {
               flexDirection: "row",
               float: "left",
               marginTop: "40px",
+              marginLeft: 15,
             }}
             className="col-md-6"
           >
-            <div
-              ref={playerContainerRef}
-              className={classes.playerWrapper}
-              style={{ left: "50", marginTop: 50 }}
-            >
-              <ReactPlayer
-                ref={playerRef}
-                width={"100%"}
-                height={"100%"}
-                url="https://www.youtube.com/watch?v=ysz5S6PUM-U"
-                muted={muted}
-                playing={playing}
-                volume={volume}
-                playbackRate={playbackRate}
-                onProgress={handleProgress}
-              />
-              <Playercontrol
-                onPlayPause={handlePlayPause}
-                playing={playing}
-                onRewind={handleRewind}
-                onFastForward={handleFastForward}
-                muted={muted}
-                onMute={handleMute}
-                onVolumeChange={handleVolumeChange}
-                onVolumeSeekUp={handleonVolumeSeekUp}
-                volume={volume}
-                playbackRate={playbackRate}
-                onPlaybackRateChange={handlePlaybackRateChange}
-                onToggleFullScreen={ToggleFullScreen}
-                played={played}
-                onSeek={handleSeekchange}
-                onSeekMouseDown={handleSeekMouseDown}
-                onSeekMouseUp={handleSeekMouseUp}
-                elapsedTime={elapsedTime}
-                totalDuration={totalDuration}
-                onChangeDisplayFormat={handleChangeDisplayFormat}
-              />
-            </div>
-
-            <Link to="/studentpage/recordlecturelist">
-              <span
-                className="badge  mt-4"
-                style={{
-                  width: "150px",
-                  display: "block",
-                  marginBottom: "20px",
-                  fontSize: "1rem",
-                  backgroundColor: "#D65E2A",
-                  color: "white",
-                }}
+            <Card>
+              <div
+                ref={playerContainerRef}
+                className={classes.playerWrapper}
+                style={{ left: "50", marginTop: 50 }}
               >
-                나가기
-              </span>
-            </Link>
+                <ReactPlayer
+                  ref={playerRef}
+                  width={"100%"}
+                  height={"100%"}
+                  url="https://www.youtube.com/watch?v=ysz5S6PUM-U"
+                  muted={muted}
+                  playing={playing}
+                  volume={volume}
+                  playbackRate={playbackRate}
+                  onProgress={handleProgress}
+                />
+                <Playercontrol
+                  onPlayPause={handlePlayPause}
+                  playing={playing}
+                  onRewind={handleRewind}
+                  onFastForward={handleFastForward}
+                  muted={muted}
+                  onMute={handleMute}
+                  onVolumeChange={handleVolumeChange}
+                  onVolumeSeekUp={handleonVolumeSeekUp}
+                  volume={volume}
+                  playbackRate={playbackRate}
+                  onPlaybackRateChange={handlePlaybackRateChange}
+                  onToggleFullScreen={ToggleFullScreen}
+                  played={played}
+                  onSeek={handleSeekchange}
+                  onSeekMouseDown={handleSeekMouseDown}
+                  onSeekMouseUp={handleSeekMouseUp}
+                  elapsedTime={elapsedTime}
+                  totalDuration={totalDuration}
+                  onChangeDisplayFormat={handleChangeDisplayFormat}
+                />
+              </div>
+
+              <Link to="/studentpage/recordlecturelist">
+                <span
+                  className="badge  mt-4"
+                  style={{
+                    width: "150px",
+                    display: "block",
+                    marginBottom: "20px",
+                    fontSize: "1rem",
+                    backgroundColor: "#D65E2A",
+                    color: "white",
+                  }}
+                >
+                  나가기
+                </span>
+              </Link>
+            </Card>
           </Container>
           <div
             style={{
@@ -251,7 +270,7 @@ export default function RecordVideo() {
                   fontSize: 30,
                 }}
               >
-                책갈피
+                BookMark
               </h6>
               <div className="overflow-auto">
                 {Bookmarks.map((bookmark, index) => (
@@ -267,7 +286,16 @@ export default function RecordVideo() {
                     >
                       {format(bookmark.time)} : {bookmark.chat}
                     </span>
-                    <button id={bookmark.time} ref={delRef} onClick={onDelBookmark}>
+                    <button
+                      style={{
+                        backgroundColor: "#D65E2A",
+                        color: "white",
+                        marginLeft: 15,
+                      }}
+                      id={bookmark.time}
+                      ref={delRef}
+                      onClick={onDelBookmark}
+                    >
                       삭제
                     </button>
                   </div>
@@ -285,10 +313,14 @@ export default function RecordVideo() {
                   <input ref={inputRef} style={{ width: "580px" }} />
                   <button
                     type="submit"
-                    onClick={e => {
+                    onClick={(e) => {
                       messagesend(e);
                     }}
-                    style={{ backgroundColor: "#D65E2A", color: "white" }}
+                    style={{
+                      backgroundColor: "#D65E2A",
+                      color: "white",
+                      fontWeight: "bold",
+                    }}
                   >
                     입력
                   </button>

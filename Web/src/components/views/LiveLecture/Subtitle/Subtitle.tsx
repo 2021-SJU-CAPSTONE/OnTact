@@ -351,7 +351,7 @@ const Subtitle = (prop: Prop) => {
                 height: "3vw",
                 fontSize: "25px",
                 borderRadius: 15,
-                backgroundColor: "red",
+                backgroundColor: "#D65E2A",
                 color: "white",
                 fontWeight: "bold",
               }}
@@ -442,7 +442,7 @@ const Subtitle = (prop: Prop) => {
                 height: "3vw",
                 fontSize: "25px",
                 borderRadius: 15,
-                backgroundColor: "red",
+                backgroundColor: "#D65E2A",
                 color: "white",
                 fontWeight: "bold",
               }}

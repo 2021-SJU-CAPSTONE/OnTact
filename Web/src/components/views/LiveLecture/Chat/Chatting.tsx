@@ -20,9 +20,9 @@ const Chatting = (prop: Prop) => {
     store
       .collection(`Lecture/${prop.lectureId}/Chatting`)
       .orderBy("timestamp", "asc")
-      .onSnapshot(collection => {
+      .onSnapshot((collection) => {
         setMessages(
-          collection.docs.map(doc => ({
+          collection.docs.map((doc) => ({
             username: doc.data().username,
             message: doc.data().message,
           }))
@@ -39,7 +39,10 @@ const Chatting = (prop: Prop) => {
           username: userInfo.Name,
           timestamp: firebase.firestore.FieldValue.serverTimestamp(),
         });
-        setMessages([...messages, { username: userInfo.Name, message: inputRef.current.value }]);
+        setMessages([
+          ...messages,
+          { username: userInfo.Name, message: inputRef.current.value },
+        ]);
         inputRef.current.value = "";
       }
     }
@@ -61,7 +64,7 @@ const Chatting = (prop: Prop) => {
       >
         CHAT
       </div>
-      <div style={{ paddingLeft: 50, marginTop: 20 }}>
+      <div className="overflow-auto" style={{ paddingLeft: 50, marginTop: 20 }}>
         {messages.map(({ username, message }) => (
           <Message username={username} message={message} name={userInfo.name} />
         ))}
@@ -85,6 +88,7 @@ const Chatting = (prop: Prop) => {
             borderRadius: 15,
             marginTop: "10px",
             marginBottom: "15px",
+            border: "solid",
           }}
           ref={inputRef}
           placeholder=" 메세지를 입력하세요"
@@ -97,8 +101,9 @@ const Chatting = (prop: Prop) => {
             width: "3vw",
             backgroundColor: "#D65E2A",
             color: "white",
+            border: "solid",
           }}
-          onClick={e => {
+          onClick={(e) => {
             sendMessage(e);
           }}
         >
