@@ -4,11 +4,9 @@ import { Link } from "react-router-dom";
 import Logout from "../Logout/Logout";
 import { UseAuth } from "../../hoc/AuthContext";
 function NavBar() {
+  const userInfo = UseAuth().userInfo;
   return (
-    <nav
-      className="menu"
-      style={{ position: "fixed", zIndex: 5, width: "100%", height: "60px" }}
-    >
+    <nav className="menu" style={{ position: "fixed", zIndex: 5, width: "100%", height: "60px" }}>
       <div className="menu__logo">
         <Link to="/">
           <img
@@ -23,9 +21,7 @@ function NavBar() {
         </Link>
       </div>
 
-      <div style={{ float: "right", marginTop: "12px" }}>
-        <Logout />
-      </div>
+      <div style={{ float: "right", marginTop: "12px" }}>{userInfo && <Logout />}</div>
 
       {/*<div style={{ float: "right", marginTop: "20px" }}>
         {isLogIn ? (
