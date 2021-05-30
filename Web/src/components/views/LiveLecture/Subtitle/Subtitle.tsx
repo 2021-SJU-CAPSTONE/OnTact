@@ -1,11 +1,12 @@
 import React from "react";
 import { KotoEn } from "./papago.js";
 import * as type from "../../../type";
-// import { store } from "../../../firebase";
+import { store } from "../../../firebase";
 type Prop = {
   changeIsShare: (value?: boolean) => boolean;
   userInfo: type.UserInfo;
   onExit: () => void;
+  lectureInfo: type.LectureInfo;
 };
 const Subtitle = (prop: Prop) => {
   const { webkitSpeechRecognition } = window as any;
@@ -37,9 +38,10 @@ const Subtitle = (prop: Prop) => {
       }
     }
   };
-  // const lectureId = "Sample";
 
-  // const Ref = store.collection(`Lecture/${lectureId}/Subtitle`).doc("caption");
+  const Ref = store
+    .collection(`Lecture/${prop.lectureInfo.Name}/Subtitle`)
+    .doc(`${prop.lectureInfo.cnt + 1}회차`);
 
   // const FIRST_CHAR = /\S/;
   const TWO_LINE = /\n\n/g;
@@ -93,7 +95,7 @@ const Subtitle = (prop: Prop) => {
 
     let interimTranscript = "";
     let finalSub = "";
-    // let fireTime = 0;
+    let fireTime = 0;
 
     if (typeof event.results === "undefined") {
       recognition.onend = null;
@@ -108,7 +110,7 @@ const Subtitle = (prop: Prop) => {
         finalTranscript += transcript + "\n";
         secondText = transcript;
         tempText = secondText;
-        // fireTime = curTime;
+        fireTime = curTime;
         curTime = 0;
       } else {
         interimTranscript += transcript;
@@ -123,15 +125,15 @@ const Subtitle = (prop: Prop) => {
     finalSub = linebreak(firstText + "\n" + secondText);
     if (finalRef.current) {
       finalRef.current.innerHTML = finalSub;
-      // if (fireTime !== 0) {
-      //   Ref.set(
-      //     {
-      //       [fireTime]: linebreak(firstText),
-      //     },
-      //     { merge: true }
-      //   );
-      //   fireTime = 0;
-      // }
+      if (fireTime !== 0) {
+        Ref.set(
+          {
+            [fireTime]: linebreak(firstText),
+          },
+          { merge: true }
+        );
+        fireTime = 0;
+      }
     }
     if (translateRef.current) {
       if (firstText !== "") {

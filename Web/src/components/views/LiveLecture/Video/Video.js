@@ -63,7 +63,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
       if (userInfo.isProfessor === "on") {
         if (isShare) {
           navigator.mediaDevices
-            .getDisplayMedia({ audio: true, video: true })
+            .getDisplayMedia({ audio: false, video: false })
             .then((stream) => {
               educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name);
               recorder.current = new MediaRecorder(stream, {
@@ -74,7 +74,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
             });
         } else {
           navigator.mediaDevices
-            .getUserMedia({ video: true, audio: true })
+            .getUserMedia({ video: false, audio: false })
             .then((stream) => {
               educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name);
               recorder.current = new MediaRecorder(stream, {
@@ -86,7 +86,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
         }
       } else {
         navigator.mediaDevices
-          .getUserMedia({ video: true, audio: true })
+          .getUserMedia({ video: false, audio: false })
           .then((stream) => {
             educateeConnect(
               userInfo.id,
@@ -106,6 +106,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
         changeIsShare={changeIsShare}
         userInfo={userInfo}
         onExit={onExit2}
+        lectureInfo={lectureInfo}
       />
     </div>
   );
