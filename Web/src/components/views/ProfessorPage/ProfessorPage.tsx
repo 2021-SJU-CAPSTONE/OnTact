@@ -2,6 +2,7 @@ import React from "react";
 import { UserOutlined } from "@ant-design/icons";
 import Lecturelist from "./Sections/Lecturelist";
 import { UseAuth } from "../../hoc/AuthContext";
+import { MDBIcon } from "mdbreact";
 //import Lecturelist from './Sections/Lecturelist';
 function ProfessorPage() {
   const userInfo = UseAuth().userInfo;
@@ -13,7 +14,10 @@ function ProfessorPage() {
           <div style={{ marginBottom: "50px", textAlign: "center" }}>
             <h2 style={{ fontWeight: "bold" }}>
               {" "}
-              <UserOutlined style={{ verticalAlign: "bottom", marginRight: "10px" }} />{" "}
+              <MDBIcon
+                icon="fas fa-user-graduate"
+                style={{ marginRight: 10 }}
+              />
               {userInfo && userInfo.Name} 님{" "}
             </h2>
           </div>

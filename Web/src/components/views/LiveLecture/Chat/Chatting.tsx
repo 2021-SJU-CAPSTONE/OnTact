@@ -102,6 +102,7 @@ const Chatting = (prop: Prop) => {
             backgroundColor: "#D65E2A",
             color: "white",
             border: "solid",
+            borderColor: "black",
           }}
           onClick={(e) => {
             sendMessage(e);
