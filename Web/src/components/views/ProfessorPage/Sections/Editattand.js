@@ -1,10 +1,48 @@
 import React from "react";
+import { store } from "../../../firebase";
 import useToggle from "../../../utils/Toggle";
 
-export default function Editattand() {
+export default function Editattand({
+  lectureId,
+  studentId,
+  round,
+  Attendance,
+  stuInfo,
+}) {
   const [isOn, toggleIsOn] = useToggle();
   const [lateOn, lateToggleOn] = useToggle();
   const [abOn, abToggleOn] = useToggle();
+  const [isStart, setIsStart] = React.useState(false);
+
+  if (!isStart) {
+    setIsStart(true);
+    if (Attendance === "출석") {
+      toggleIsOn(true);
+    } else if (Attendance === "지각") {
+      lateToggleOn(true);
+    } else {
+      abToggleOn(true);
+    }
+  }
+
+  const changeAttend = async (attend) => {
+    const lecRef = await store
+      .collection(`Lecture/${lectureId}/AttendanceByEducatee`)
+      .doc(studentId);
+
+    let attendList = stuInfo.Attendance;
+
+    attendList.forEach((val) => {
+      if (val.Round === round) {
+        val.Attend = attend;
+      }
+    });
+
+    lecRef.update({
+      Attendance: attendList,
+    });
+  };
+
   return (
     <>
       <div
@@ -17,6 +55,7 @@ export default function Editattand() {
             toggleIsOn(true);
             lateToggleOn(false);
             abToggleOn(false);
+            changeAttend("출석");
           }}
           style={{ fontSize: "1rem" }}
         >
@@ -33,6 +72,7 @@ export default function Editattand() {
             toggleIsOn(false);
             lateToggleOn(true);
             abToggleOn(false);
+            changeAttend("지각");
           }}
           style={{ fontSize: "1rem", fontWeight: "bold" }}
         >
@@ -49,6 +89,7 @@ export default function Editattand() {
             toggleIsOn(false);
             lateToggleOn(false);
             abToggleOn(true);
+            changeAttend("결석");
           }}
           style={{ fontSize: "1rem", fontWeight: "bold" }}
         >
