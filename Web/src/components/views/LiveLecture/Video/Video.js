@@ -2,6 +2,7 @@ import React from "react";
 import { educatorConnect, educateeConnect, disconnect } from "./connect";
 import Subtitle from "../Subtitle/Subtitle";
 import "./video.css";
+import { store } from "../../../firebase";
 
 const Video = ({ userInfo, lectureInfo, onExit }) => {
   //video
@@ -35,7 +36,18 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   };
   const onExit2 = () => {
     recodeStop();
+    createPath();
     onExit();
+  };
+  const createPath = () => {
+    const lecRef = store
+      .collection(`Lecture/${lectureInfo.Name}/RecordedLecture`)
+      .doc(`${lectureInfo.cnt + 1}회차`);
+    lecRef.set({
+      Video: `gs://capstone-925e4.appspot.com/RecordedLecture/${
+        lectureInfo.Name
+      }/${lectureInfo.cnt + 1}회차`,
+    });
   };
   // share
   const [isShare, setIsShare] = React.useState(false);
