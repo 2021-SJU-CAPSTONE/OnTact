@@ -97,7 +97,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
 
   return (
     <div>
-      {peers !== [] ? (
+      {peers !== [] && userInfo.isProfessor === "on" ? (
         <div>
           현재 접속자 :{" "}
           {peers.map(peer => {
