@@ -42,7 +42,7 @@ export const addBookmark = (
   chat: string
 ) => {
   const ref = store.collection(
-    `Lecture/${lectureId}/${round}회차/Bookmark/${uid}`
+    `Lecture/${lectureId}/Bookmark/${round}회차/${uid}`
   );
   ref.add({
     time: time,
@@ -56,7 +56,7 @@ export const getBookmark = async (
   uid: string
 ) => {
   const col = await store
-    .collection(`Lecture/${lectureId}/${round}회차/Bookmark/${uid}`)
+    .collection(`Lecture/${lectureId}/Bookmark/${round}회차/${uid}`)
     .get();
   const data = col.docs.map((doc) => {
     return doc.data();
@@ -71,10 +71,10 @@ export const removeBookmark = async (
   time: number
 ) => {
   const ref = store.collection(
-    `Lecture/${lectureName}/${round}회차/Bookmark/${uid}`
+    `Lecture/${lectureName}/Bookmark/${round}회차/${uid}`
   );
   const col = await store
-    .collection(`Lecture/${lectureName}/${round}회차/Bookmark/${uid}`)
+    .collection(`Lecture/${lectureName}/Bookmark/${round}회차/${uid}`)
     .get();
   col.docs.map((doc) => {
     if (doc.data().time === time) {

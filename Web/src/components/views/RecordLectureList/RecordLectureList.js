@@ -45,7 +45,7 @@ export const RecordLectureList = ({ match }) => {
     let lecList;
     if (lecInfo !== undefined) {
       lecList = lecInfo.map((lecture) => (
-        <Link to="/recordvideo">
+        <Link to={`/recordvideo/${match.params.lecture}/${lecture.id}`}>
           <div
             style={{ paddingLeft: "100px", paddingTop: "50px", width: "60%" }}
           >
