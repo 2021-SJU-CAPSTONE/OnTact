@@ -230,25 +230,32 @@ const Subtitle = (prop: Prop) => {
     start();
   }, []);
   return (
-    <div style={{ textAlign: "center", position: "relative" }}>
-      {visibleSub ? (
-        <div className="result overflow-auto">
-          <span
-            className="final"
-            style={{ color: "white" }}
-            ref={finalRef}
-          ></span>
-          {visibleTrans ? (
-            <div>
-              <span
-                className="translate"
-                style={{ color: "white" }}
-                ref={translateRef}
-              ></span>
-            </div>
-          ) : null}
-        </div>
-      ) : null}
+    <div style={{ textAlign: "center", position: "absolute" }}>
+      <div style={{ position: "absolute", top: -20, width: "62vw" }}>
+        {visibleSub ? (
+          <div className="result overflow-auto" style={{ textAlign: "center" }}>
+            <span
+              className="final"
+              style={{
+                color: "white",
+                fontSize: 30,
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+              ref={finalRef}
+            ></span>
+            {visibleTrans ? (
+              <div style={{ textAlign: "center" }}>
+                <span
+                  className="translate"
+                  style={{ color: "black" }}
+                  ref={translateRef}
+                ></span>
+              </div>
+            ) : null}
+          </div>
+        ) : null}
+      </div>
       <div
         className="content"
         style={{
@@ -265,7 +272,7 @@ const Subtitle = (prop: Prop) => {
       >
         {isProf ? (
           //////////////////////////교수/////////////////////
-          <div style={{ position: "relative", top: "600px" }}>
+          <div style={{ top: "600px" }}>
             <div
               className="subtitle_btn"
               style={{
