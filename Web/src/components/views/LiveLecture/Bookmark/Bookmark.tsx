@@ -8,7 +8,7 @@ type Prop = {
   startTime?: number;
 };
 
-const format = seconds => {
+const format = (seconds) => {
   if (isNaN(seconds)) {
     return "00:00";
   }
@@ -29,10 +29,12 @@ const Bookmark = (prop: Prop) => {
   console.log(prop.lectureInfo);
   React.useEffect(() => {
     if (userInfo) {
-      lecture.getBookmark(prop.lectureInfo.Name, prop.lectureInfo.cnt, userInfo.id).then(data => {
-        setBookmarks(data);
-        console.log("bookmark", data);
-      });
+      lecture
+        .getBookmark(prop.lectureInfo.Name, prop.lectureInfo.cnt, userInfo.id)
+        .then((data) => {
+          setBookmarks(data);
+          console.log("bookmark", data);
+        });
     }
   }, [userInfo]);
 
@@ -55,16 +57,21 @@ const Bookmark = (prop: Prop) => {
       inputRef.current.value = "";
     }
   };
-  const onDelBookmark = e => {
+  const onDelBookmark = (e) => {
     const removeTime = Number(e.target.id);
-    const newBookmarks = bookmarks.filter(bookmark => {
+    const newBookmarks = bookmarks.filter((bookmark) => {
       if (bookmark.time === removeTime) {
         return false;
       }
       return true;
     });
     setBookmarks(newBookmarks);
-    lecture.removeBookmark(prop.lectureInfo.Name, prop.lectureInfo.cnt, userInfo.id, removeTime);
+    lecture.removeBookmark(
+      prop.lectureInfo.Name,
+      prop.lectureInfo.cnt,
+      userInfo.id,
+      removeTime
+    );
   };
   return (
     <Card
@@ -83,7 +90,7 @@ const Bookmark = (prop: Prop) => {
         BOOKMARK
       </div>
       <div className="overflow-auto">
-        {bookmarks.map(bookmark => (
+        {bookmarks.map((bookmark) => (
           <div
             style={{
               marginTop: 10,
@@ -138,10 +145,10 @@ const Bookmark = (prop: Prop) => {
             borderRadius: 15,
             width: "3vw",
             backgroundColor: "#D65E2A",
-            color: "white",
+            color: "black",
             border: "solid",
           }}
-          onClick={e => {
+          onClick={(e) => {
             sendMessage(e);
           }}
         >

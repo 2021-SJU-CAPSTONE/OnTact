@@ -33,7 +33,7 @@ function Lecturelist() {
           <div className="d-flex flex-row align-items-center">
             {" "}
             <span className="star">
-              <MDBIcon icon="rss-square" />
+              <MDBIcon icon="fas fa-stop" />
             </span>
             <div className="d-flex flex-column">
               {" "}
@@ -61,6 +61,7 @@ function Lecturelist() {
                 강의시작
               </button>
             </Link>
+
             <Link to={`/professorpage/adminlecture/${lecture.Name}`}>
               <button
                 className="btn btn-danger mr-2 font-weight-bold"
