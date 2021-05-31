@@ -13,6 +13,8 @@ import { Card } from "react-bootstrap";
 import { getBookmark, addBookmark, removeBookmark } from "../../utils/Lecture";
 import { UseAuth } from "../../hoc/AuthContext";
 import { storage, store } from "../../firebase";
+import firebase from "firebase/app";
+
 const useStyles = makeStyles({
   playerWrapper: {
     width: "100%",
@@ -36,6 +38,31 @@ const format = (seconds) => {
 };
 
 export default function RecordVideo() {
+  const [timeDisplayFormat, setTimeDisplayFormat] = useState("normal");
+  const [Bookmarks, setBookmarks] = useState([]);
+
+  const classes = useStyles();
+  const [state, setState] = useState({
+    playing: true,
+    muted: true,
+    volume: 0.5,
+    playbackRate: 1.0,
+    played: 0,
+    seeking: false,
+    comments: [],
+  });
+  const handlePlayPause = () => {
+    setState({ ...state, playing: !state.playing });
+  };
+  const { playing, muted, volume, playbackRate, played, seeking, comments } =
+    state;
+
+  const playerRef = useRef(null);
+  const playerContainerRef = useRef(null);
+  const signRef = useRef(null);
+  const signContainerRef = useRef(null);
+
+  //경원
   const [video, loadVideo] = useState();
   if (video === undefined) {
     storage
@@ -79,43 +106,70 @@ export default function RecordVideo() {
         console.log(error);
       });
   }
+
+  const subtitle_spanref = React.useRef(null);
+  const translation_spanref = React.useRef(null);
   const btnSubref = React.useRef(null);
   const btnTransref = React.useRef(null);
   const btnSignref = React.useRef(null);
   const [visibleSub, setVisibleSub] = React.useState(false);
   const [visibleTrans, setVisibleTrans] = React.useState(false);
   const [visibleSign, setVisibleSign] = React.useState(false);
-  const classes = useStyles();
-  const [state, setState] = useState({
-    playing: true,
-    muted: true,
-    volume: 0.5,
-    playbackRate: 1.0,
-    played: 0,
-    seeking: false,
-    comments: [],
-  });
+  const lectureIdq = "Sample";
+  const subRef = store
+    .collection(`Lecture/${lectureIdq}/Subtitle`)
+    .doc("caption");
+  const [subData, setSubData] = React.useState();
+  const transRef = store
+    .collection(`Lecture/${lectureIdq}/Translation`)
+    .doc("caption");
+  const [transData, setTransData] = React.useState();
 
-  const [timeDisplayFormat, setTimeDisplayFormat] = useState("normal");
-  const [Bookmarks, setBookmarks] = useState([]);
+  if (subData === undefined) {
+    subRef
+      .get()
+      .then((doc) => {
+        setSubData(doc.data());
+      })
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+  }
 
-  const handlePlayPause = () => {
-    setState({ ...state, playing: !state.playing });
-  };
-  const { playing, muted, volume, playbackRate, played, seeking, comments } =
-    state;
+  if (transData === undefined) {
+    transRef
+      .get()
+      .then((doc) => {
+        setTransData(doc.data());
+      })
+      .catch(function (error) {
+        console.log("Error getting document:", error);
+      });
+  }
 
-  const playerRef = useRef(null);
-  const playerContainerRef = useRef(null);
-  const signRef = useRef(null);
-  const signContainerRef = useRef(null);
-
-  //경원
   const getTime = () => {
     if (playerRef.current) {
       return playerRef.current.getCurrentTime();
     }
   };
+  React.useEffect(() => {
+    let curtime;
+    curtime = Math.round(getTime());
+    if (subData !== undefined) {
+      if (subData[curtime] !== undefined) {
+        if (subtitle_spanref.current) {
+          subtitle_spanref.current.innerHTML = subData[curtime];
+        }
+      }
+    }
+    if (subData !== undefined) {
+      if (subData[curtime] !== undefined) {
+        if (translation_spanref.current) {
+          translation_spanref.current.innerHTML = subData[curtime];
+        }
+      }
+    }
+  }, [Math.round(getTime())]);
   //
   //형찬
   const userInfo = UseAuth().userInfo;
@@ -274,53 +328,9 @@ export default function RecordVideo() {
     }
   };
 
-  const Subtitle = () => {
-    const lectureId = "Sample";
-    const Ref = store
-      .collection(`Lecture/${lectureId}/Subtitle`)
-      .doc("caption");
-    const subtitle_spanref = React.useRef(null);
-    let data;
-
-    if (data === undefined) {
-      Ref.get()
-        .then((doc) => {
-          data = doc.data();
-        })
-        .catch(function (error) {
-          console.log("Error getting document:", error);
-        });
-    }
-
-    React.useEffect(() => {
-      let curtime;
-      let interval = setInterval(() => {
-        curtime = Math.round(getTime());
-        console.log(curtime, data[curtime]);
-        if (data !== undefined) {
-          if (data[curtime] !== undefined) {
-            if (subtitle_spanref.current) {
-              subtitle_spanref.current.innerHTML = data[curtime];
-            }
-          }
-        }
-        // console.log(curtime);
-      }, 1000);
-      return () => {
-        clearInterval(interval);
-      };
-    }, []);
-
-    return (
-      <div>
-        {visibleSub ? (
-          <div className="content">
-            <span className="subtitle" ref={subtitle_spanref}></span>
-          </div>
-        ) : null}
-      </div>
-    );
-  };
+  // const Subtitle = () => {
+  //   return;
+  // };
   return (
     <>
       {userInfo && video && (
@@ -364,6 +374,7 @@ export default function RecordVideo() {
                   volume={volume}
                   playbackRate={playbackRate}
                   onProgress={handleProgress}
+                  pip={true}
                 />
                 <Playercontrol
                   onPlayPause={handlePlayPause}
@@ -402,6 +413,7 @@ export default function RecordVideo() {
                   volume={volume}
                   playbackRate={playbackRate}
                   onProgress={handleProgress}
+                  pip={false}
                 />
                 <Playercontrol
                   onPlayPause={handlePlayPause}
@@ -539,8 +551,20 @@ export default function RecordVideo() {
                   </button>
                 </div>
               </div>
-              <Subtitle />
-              {visibleTrans ? <Subtitle /> : null}
+              {/* 자막 */}
+              <div
+                className="content"
+                style={{ display: visibleSub ? "block" : "none" }}
+              >
+                <span className="subtitle" ref={subtitle_spanref}></span>
+              </div>
+              {/* 수어 */}
+              <div
+                className="content"
+                style={{ display: visibleTrans ? "block" : "none" }}
+              >
+                <span className="subtitle" ref={translation_spanref}></span>
+              </div>
             </Card>
           </Container>
           <div
