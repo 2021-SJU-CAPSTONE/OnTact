@@ -76,7 +76,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
         if (isShare) {
           navigator.mediaDevices.getDisplayMedia({ audio: true, video: true }).then(stream => {
             educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name, addPeers);
-
+            console.log("lecture Start Time", new Date().getTime());
             recorder.current = new MediaRecorder(stream, {
               type: "video/mp4",
             });
@@ -86,6 +86,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
         } else {
           navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name, addPeers);
+            console.log("lecture Start Time", new Date().getTime() / 1000);
             recorder.current = new MediaRecorder(stream, {
               type: "video/mp4",
             });
