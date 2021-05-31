@@ -115,13 +115,12 @@ export default function RecordVideo({ match }) {
   const [visibleSub, setVisibleSub] = React.useState(false);
   const [visibleTrans, setVisibleTrans] = React.useState(false);
   const [visibleSign, setVisibleSign] = React.useState(false);
-  const lectureIdq = "Sample";
   const subRef = store
-    .collection(`Lecture/${lectureIdq}/Subtitle`)
-    .doc("caption");
+    .collection(`Lecture/${match.params.lecture}/Subtitle`)
+    .doc("01회차");
   const [subData, setSubData] = React.useState();
   const transRef = store
-    .collection(`Lecture/${lectureIdq}/Translation`)
+    .collection(`Lecture/${match.params.lecture}/Translation`)
     .doc("caption");
   const [transData, setTransData] = React.useState();
 
@@ -441,6 +440,7 @@ export default function RecordVideo({ match }) {
               <Link
                 to={`/studentpage/recordlecturelist/${match.params.lecture}`}
               ></Link>
+              {/* 자막 */}
               <div
                 className="content"
                 style={{
@@ -553,7 +553,6 @@ export default function RecordVideo({ match }) {
                   </button>
                 </div>
               </div>
-              {/* 자막 */}
             </Card>
             <span
               className="badge  mt-4"
