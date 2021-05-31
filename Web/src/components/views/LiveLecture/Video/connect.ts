@@ -26,7 +26,6 @@ export const educateeConnect = (
 ) => {
   getSocket();
   let peer;
-  console.log(localId);
   try {
     peer = new Peer(localId);
   } catch (e) {
@@ -50,7 +49,7 @@ export const educateeConnect = (
     //steam 수신 peer 연결
     // userid : 상대방 아이디
     console.log("connected with :", userId);
-    const call = peer.call(userId, stream);
+    const call = peer.call(profId, stream);
     // const call = peer.call(profId, stream);
     call.on("stream", remoteStream => {
       if (remoteVideoRef.current) {
@@ -75,7 +74,6 @@ export const educatorConnect = (
   addPeers: (val: string) => void
 ) => {
   getSocket();
-  console.log(localId);
   let peer;
   try {
     peer = new Peer(localId);

@@ -27,22 +27,12 @@ const Check = (st: string, at: string, tt: string) => {
   return "결석";
 };
 
-const AutoAttendance = async (
-  lecture: string,
-  studentId: string,
-  studentName: string
-) => {
+const AutoAttendance = async (lecture: string, studentId: string, studentName: string) => {
   const lecInfo: type.LectureInfo = await getLectureInfo(lecture);
-  const lecRef = store
-    .collection(`Lecture/${lecture}/AttendanceByEducatee`)
-    .doc(studentId);
+  const lecRef = store.collection(`Lecture/${lecture}/AttendanceByEducatee`).doc(studentId);
   const lecDoc = await lecRef.get();
   let lecList: Array<string> = lecDoc.data()?.Attendance;
-  const attend = Check(
-    lecInfo.StartTime,
-    lecInfo.AbsentTime,
-    lecInfo.TardyTime
-  );
+  const attend = Check(lecInfo.StartTime, lecInfo.AbsentTime, lecInfo.TardyTime);
   if (lecList === undefined) {
     lecList = [];
   }
