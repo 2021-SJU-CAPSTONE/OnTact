@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   },
 });
 
-const format = seconds => {
+const format = (seconds) => {
   if (isNaN(seconds)) {
     return "00:00";
   }
@@ -49,7 +49,8 @@ export default function RecordVideo({ match }) {
   const handlePlayPause = () => {
     setState({ ...state, playing: !state.playing });
   };
-  const { playing, muted, volume, playbackRate, played, seeking, comments } = state;
+  const { playing, muted, volume, playbackRate, played, seeking, comments } =
+    state;
 
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
@@ -61,9 +62,9 @@ export default function RecordVideo({ match }) {
   if (video === undefined) {
     storage
       .ref()
-      .child(`SignLanguage.mp4`)
+      .child(`testtest.mp4`)
       .getDownloadURL()
-      .then(url => {
+      .then((url) => {
         var xhr = new XMLHttpRequest();
         xhr.responseType = "blob";
         xhr.onload = function (event) {
@@ -73,7 +74,7 @@ export default function RecordVideo({ match }) {
         xhr.send();
         loadVideo(url);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -82,9 +83,9 @@ export default function RecordVideo({ match }) {
   if (signVideo === undefined) {
     storage
       .ref()
-      .child(`SignLanguage.mp4`)
+      .child(`testtest.mp4`)
       .getDownloadURL()
-      .then(url => {
+      .then((url) => {
         var xhr = new XMLHttpRequest();
         xhr.responseType = "blob";
         xhr.onload = function (event) {
@@ -94,7 +95,7 @@ export default function RecordVideo({ match }) {
         xhr.send();
         loadSignVideo(url);
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -107,15 +108,20 @@ export default function RecordVideo({ match }) {
   const [visibleSub, setVisibleSub] = React.useState(false);
   const [visibleTrans, setVisibleTrans] = React.useState(false);
   const [visibleSign, setVisibleSign] = React.useState(false);
-  const subRef = store.collection(`Lecture/${match.params.lecture}/Subtitle`).doc("01회차");
+  const subRef = store
+    .collection(`Lecture/${match.params.lecture}/Subtitle`)
+    .doc("11회차");
   const [subData, setSubData] = React.useState();
-  const transRef = store.collection(`Lecture/${match.params.lecture}/Translation`).doc("caption");
+  const transRef = store
+    .collection(`Lecture/${match.params.lecture}/Translation`)
+    .doc("caption");
   const [transData, setTransData] = React.useState();
+  const [preload, setPreload] = React.useState(false);
 
   if (subData === undefined) {
     subRef
       .get()
-      .then(doc => {
+      .then((doc) => {
         setSubData(doc.data());
       })
       .catch(function (error) {
@@ -126,7 +132,7 @@ export default function RecordVideo({ match }) {
   if (transData === undefined) {
     transRef
       .get()
-      .then(doc => {
+      .then((doc) => {
         setTransData(doc.data());
       })
       .catch(function (error) {
@@ -156,7 +162,13 @@ export default function RecordVideo({ match }) {
         }
       }
     }
-  }, [Math.round(getTime())]);
+    if (!preload) {
+      if (playerRef.current) {
+        seekToEnd();
+        setPreload(true);
+      }
+    }
+  }, [Math.round(getTime()), playerRef.current]);
   //
   //형찬
   const userInfo = UseAuth().userInfo;
@@ -164,7 +176,7 @@ export default function RecordVideo({ match }) {
   const round = match.params.round;
   React.useEffect(() => {
     if (userInfo) {
-      getBookmark(lectureId, round, userInfo.id).then(data => {
+      getBookmark(lectureId, round, userInfo.id).then((data) => {
         setBookmarks(data);
       });
     }
@@ -199,7 +211,7 @@ export default function RecordVideo({ match }) {
     });
   };
 
-  const handlePlaybackRateChange = rate => {
+  const handlePlaybackRateChange = (rate) => {
     setState({ ...state, playbackRate: rate });
   };
 
@@ -207,7 +219,7 @@ export default function RecordVideo({ match }) {
     screenfull.toggle(playerContainerRef.current);
   };
 
-  const handleProgress = changeState => {
+  const handleProgress = (changeState) => {
     if (!state.seeking) {
       setState({ ...state, ...changeState });
     }
@@ -216,7 +228,7 @@ export default function RecordVideo({ match }) {
   const handleSeekchange = (e, newValue) => {
     setState({ ...state, played: parseFloat(newValue / 100) });
   };
-  const handleSeekMouseDown = e => {
+  const handleSeekMouseDown = (e) => {
     setState({ ...state, seeking: true });
   };
   const handleSeekMouseUp = (e, newValue) => {
@@ -225,20 +237,28 @@ export default function RecordVideo({ match }) {
     signRef.current.seekTo(newValue / 100);
   };
 
-  const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : "00:00";
-  const duration = playerRef.current ? playerRef.current.getDuration() : "00:00";
+  const currentTime = playerRef.current
+    ? playerRef.current.getCurrentTime()
+    : "00:00";
+  const duration = playerRef.current
+    ? playerRef.current.getDuration()
+    : "00:00";
 
   const elapsedTime =
-    timeDisplayFormat === "normal" ? format(currentTime) : `-${format(duration - currentTime)}`;
+    timeDisplayFormat === "normal"
+      ? format(currentTime)
+      : `-${format(duration - currentTime)}`;
   const totalDuration = format(duration);
 
   const handleChangeDisplayFormat = () => {
-    setTimeDisplayFormat(timeDisplayFormat === "normal" ? "remaining" : "normal");
+    setTimeDisplayFormat(
+      timeDisplayFormat === "normal" ? "remaining" : "normal"
+    );
   };
 
   let messages = "";
   const inputRef = useRef(null);
-  const messagesend = e => {
+  const messagesend = (e) => {
     e.preventDefault();
     const newBookmark = {
       time: playerRef.current.getCurrentTime(),
@@ -248,13 +268,19 @@ export default function RecordVideo({ match }) {
     if (inputRef.current) {
       messages = inputRef.current.value;
     }
-    addBookmark(lectureId, round, userInfo.id, newBookmark.time, newBookmark.chat);
+    addBookmark(
+      lectureId,
+      round,
+      userInfo.id,
+      newBookmark.time,
+      newBookmark.chat
+    );
     inputRef.current.value = "";
     messages = "";
   };
-  const onDelBookmark = e => {
+  const onDelBookmark = (e) => {
     const removeTime = Number(e.target.id);
-    const newBookmarks = Bookmarks.filter(bookmark => {
+    const newBookmarks = Bookmarks.filter((bookmark) => {
       if (bookmark.time === removeTime) {
         return false;
       }
@@ -299,6 +325,18 @@ export default function RecordVideo({ match }) {
         signRef.current.seekTo(playerRef.current.getCurrentTime());
       }
     }
+  };
+
+  const seekToEnd = () => {
+    handleFastForward();
+    handleFastForward();
+    handleFastForward();
+    handleFastForward();
+    handleFastForward();
+    handleFastForward();
+    handleFastForward();
+    handlePlayPause();
+    setTimeout(() => playerRef.current.seekTo(0), 1500);
   };
 
   // const Subtitle = () => {
@@ -347,7 +385,6 @@ export default function RecordVideo({ match }) {
                   volume={volume}
                   playbackRate={playbackRate}
                   onProgress={handleProgress}
-                  pip={true}
                 />
                 <Playercontrol
                   onPlayPause={handlePlayPause}
@@ -391,7 +428,6 @@ export default function RecordVideo({ match }) {
                   volume={volume}
                   playbackRate={playbackRate}
                   onProgress={handleProgress}
-                  pip={false}
                 />
                 <Playercontrol
                   onPlayPause={handlePlayPause}
@@ -435,7 +471,10 @@ export default function RecordVideo({ match }) {
                 <span className="subtitle" ref={subtitle_spanref}></span>
               </div>
               {/* 수어 */}
-              <div className="content" style={{ display: visibleTrans ? "block" : "none" }}>
+              <div
+                className="content"
+                style={{ display: visibleTrans ? "block" : "none" }}
+              >
                 <span className="subtitle" ref={translation_spanref}></span>
               </div>
               <div>
@@ -464,7 +503,10 @@ export default function RecordVideo({ match }) {
                       borderColor: "black",
                     }}
                   >
-                    <i className="far fa-closed-captioning" style={{ marginRight: "20px" }}></i>
+                    <i
+                      className="far fa-closed-captioning"
+                      style={{ marginRight: "20px" }}
+                    ></i>
                     자막 활성화
                   </button>
                 </div>
@@ -492,7 +534,10 @@ export default function RecordVideo({ match }) {
                       borderColor: "black",
                     }}
                   >
-                    <i className="fas fa-sign-language" style={{ marginRight: "20px" }} />
+                    <i
+                      className="fas fa-sign-language"
+                      style={{ marginRight: "20px" }}
+                    />
                     번역 활성화
                   </button>
                 </div>
@@ -520,7 +565,10 @@ export default function RecordVideo({ match }) {
                       borderColor: "black",
                     }}
                   >
-                    <i className="fas fa-sign-language" style={{ marginRight: "20px" }} />
+                    <i
+                      className="fas fa-sign-language"
+                      style={{ marginRight: "20px" }}
+                    />
                     수어 활성화
                   </button>
                 </div>
@@ -617,7 +665,7 @@ export default function RecordVideo({ match }) {
                   />
                   <button
                     type="submit"
-                    onClick={e => {
+                    onClick={(e) => {
                       messagesend(e);
                     }}
                     style={{
