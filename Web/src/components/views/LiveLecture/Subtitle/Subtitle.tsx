@@ -299,66 +299,6 @@ const Subtitle = (prop: Prop) => {
           //////////////////////////교수/////////////////////
           <div style={{ top: "600px" }}>
             <div
-              className="subtitle_btn"
-              style={{
-                marginLeft: "20px",
-                float: "left",
-                width: "22%",
-                marginTop: "28px",
-              }}
-            >
-              <button
-                className="btnSub "
-                ref={btnSubref}
-                onClick={useSub}
-                style={{
-                  width: "12vw",
-                  height: "3vw",
-                  backgroundColor: "gray",
-                  boxShadow: "3px",
-                  fontSize: "25px",
-                  color: "white",
-                  borderRadius: 15,
-                  fontWeight: "bold",
-                  border: "solid",
-                  borderColor: "black",
-                }}
-              >
-                <i className="far fa-closed-captioning" style={{ marginRight: "20px" }}></i>
-                자막 활성화
-              </button>
-            </div>
-            <div
-              className="translate_btn"
-              style={{
-                marginLeft: "20px",
-                float: "left",
-                width: "22%",
-                marginTop: "28px",
-              }}
-            >
-              <button
-                className="btnTrans "
-                ref={btnTransref}
-                onClick={useTrans}
-                style={{
-                  width: "12vw",
-                  height: "3vw",
-                  fontSize: "25px",
-                  borderRadius: 15,
-                  color: "white",
-                  fontWeight: "bold",
-                  backgroundColor: "gray",
-                  border: "solid",
-                  borderColor: "black",
-                }}
-              >
-                <i className="fas fa-sign-language" style={{ marginRight: "20px" }} />
-                번역 활성화
-              </button>
-            </div>
-
-            <div
               className="share_btn"
               style={{
                 marginLeft: "20px",
