@@ -305,7 +305,6 @@ const Subtitle = (prop: Prop) => {
         className="content"
         style={{
           textAlign: "center",
-          marginTop: 20,
           backgroundColor: "#eeeee4",
           height: "120px",
           paddingTop: "0px",
@@ -317,13 +316,13 @@ const Subtitle = (prop: Prop) => {
       >
         {isProf ? (
           //////////////////////////교수/////////////////////
-          <div style={{ top: "600px" }}>
+          <div>
             <div
               className="share_btn"
               style={{
                 marginLeft: "20px",
                 float: "left",
-                width: "22%",
+                width: "56%",
                 marginTop: "28px",
               }}
             >

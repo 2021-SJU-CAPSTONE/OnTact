@@ -180,6 +180,7 @@ export default function RecordVideo({ match }) {
   const userInfo = UseAuth().userInfo;
   const lectureId = match.params.lecture;
   const round = match.params.round;
+
   React.useEffect(() => {
     if (userInfo) {
       getBookmark(lectureId, round, userInfo.id).then((data) => {
@@ -187,18 +188,19 @@ export default function RecordVideo({ match }) {
       });
     }
   }, [userInfo]);
+
   //
   const handleRewind = () => {
     subtitle_spanref.current.innerHTML = "";
     translation_spanref.current.innerHTML = "";
     playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
-    signRef.current.seekTo(signRef.current.getCurrentTime() - 10);
+    signRef.current.currentTime = signRef.current.currentTime - 10;
   };
   const handleFastForward = () => {
     subtitle_spanref.current.innerHTML = "";
     translation_spanref.current.innerHTML = "";
     playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
-    signRef.current.seekTo(signRef.current.getCurrentTime() + 10);
+    signRef.current.currentTime = signRef.current.currentTime + 10;
   };
 
   const handleMute = () => {
@@ -245,8 +247,8 @@ export default function RecordVideo({ match }) {
     subtitle_spanref.current.innerHTML = "";
     translation_spanref.current.innerHTML = "";
     setState({ ...state, seeking: false });
-    playerRef.current.seekTo(newValue / 100);
-    signRef.current.seekTo(newValue / 100);
+    playerRef.current.seekTo(Number(newValue / 100));
+    signRef.current.currentTime = Number(newValue / 100);
   };
 
   const currentTime = playerRef.current
@@ -331,9 +333,13 @@ export default function RecordVideo({ match }) {
       if (visibleSign) {
         btnSignref.current.innerHTML = "수어 활성화";
         setVisibleSign(false);
+        document.exitPictureInPicture();
       } else {
         btnSignref.current.innerHTML = "수어 비활성화";
         setVisibleSign(true);
+        // signRef.current.seekTo(playerRef.current.getCurrentTime());
+        signRef.current.currentTime = playerRef.current.getCurrentTime();
+        signRef.current.requestPictureInPicture();
       }
     }
   };
@@ -424,50 +430,10 @@ export default function RecordVideo({ match }) {
                   left: "50",
                   marginTop: 50,
                   backgroundColor: "black",
-                  display: visibleSign ? "block" : "none",
+                  display: "none",
                 }}
               >
-                <ReactPlayer
-                  ref={signRef}
-                  width={"100%"}
-                  height={"100%"}
-                  url={signVideo}
-                  muted={muted}
-                  playing={playing}
-                  volume={volume}
-                  playbackRate={playbackRate}
-                  onProgress={handleProgress}
-                />
-                <Playercontrol
-                  onPlayPause={handlePlayPause}
-                  playing={playing}
-                  onRewind={handleRewind}
-                  onFastForward={handleFastForward}
-                  muted={muted}
-                  onMute={handleMute}
-                  onVolumeChange={handleVolumeChange}
-                  onVolumeSeekUp={handleonVolumeSeekUp}
-                  volume={volume}
-                  playbackRate={playbackRate}
-                  onPlaybackRateChange={handlePlaybackRateChange}
-                  onToggleFullScreen={ToggleFullScreen}
-                  played={played}
-                  onSeek={handleSeekchange}
-                  onSeekMouseDown={handleSeekMouseDown}
-                  onSeekMouseUp={handleSeekMouseUp}
-                  elapsedTime={elapsedTime}
-                  totalDuration={totalDuration}
-                  onChangeDisplayFormat={handleChangeDisplayFormat}
-                />
-                {/*isPictureInPictureAvailable && (
-                  <button
-                    onClick={() => {
-                      togglePictureInPicture(!isPictureInPictureActive);
-                    }}
-                  >
-                    button
-                  </button>
-                  )*/}
+                <video src={signVideo} ref={signRef} autoPlay muted></video>
               </div>
               {/* 자막 */}
               <div
@@ -636,7 +602,7 @@ export default function RecordVideo({ match }) {
                         subtitle_spanref.current.innerHTML = "";
                         translation_spanref.current.innerHTML = "";
                         playerRef.current.seekTo(bookmark.time);
-                        signRef.current.seekTo(bookmark.time);
+                        signRef.current.currentTime = bookmark.time;
                       }}
                       style={{ fontWeight: "bold" }}
                     >

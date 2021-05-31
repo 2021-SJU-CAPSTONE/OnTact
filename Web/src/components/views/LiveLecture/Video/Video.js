@@ -7,7 +7,12 @@ import { store } from "../../../firebase";
 const Video = ({ userInfo, lectureInfo, onExit }) => {
   //video
   const videoRef = React.useRef();
-  const [peers, setPeers] = React.useState(["123"]);
+  const [peers, setPeers] = React.useState([
+    "16012416",
+    "17012415",
+    "18012555",
+    "19011123",
+  ]);
   const addPeers = (newPeer) => {
     setPeers((o) => {
       return [...o, newPeer];
@@ -126,10 +131,10 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   return (
     <div>
       {peers !== [] && userInfo.isProfessor === "on" ? (
-        <div>
-          현재 접속자 :{" "}
+        <div style={{ backgroundColor: "#c4c4c4", fontWeight: "bold" }}>
+          &nbsp; &nbsp; 현재 접속자 &nbsp;: &nbsp;{" "}
           {peers.map((peer) => {
-            return <span>[{peer}]</span>;
+            return <span>{peer} &nbsp;|&nbsp;</span>;
           })}
         </div>
       ) : null}
