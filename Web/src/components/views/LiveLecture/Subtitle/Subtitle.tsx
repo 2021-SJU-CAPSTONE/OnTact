@@ -230,254 +230,266 @@ const Subtitle = (prop: Prop) => {
     start();
   }, []);
   return (
-    <div
-      className="content"
-      style={{
-        textAlign: "center",
-        marginTop: "7px",
-        backgroundColor: "#eeeee4",
-        height: "120px",
-        paddingTop: "0px",
-        marginLeft: -4,
-        width: "61vw",
-      }}
-    >
-      {isProf ? (
-        //////////////////////////교수/////////////////////
-        <div>
-          <div
-            className="subtitle_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "22%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              className="btnSub "
-              ref={btnSubref}
-              onClick={useSub}
-              style={{
-                width: "12vw",
-                height: "3vw",
-                backgroundColor: "gray",
-                boxShadow: "3px",
-                fontSize: "25px",
-                color: "white",
-                borderRadius: 15,
-                fontWeight: "bold",
-                border: "solid",
-                borderColor: "black",
-              }}
-            >
-              <i
-                className="far fa-closed-captioning"
-                style={{ marginRight: "20px" }}
-              ></i>
-              자막 활성화
-            </button>
-          </div>
-          <div
-            className="translate_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "22%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              className="btnTrans "
-              ref={btnTransref}
-              onClick={useTrans}
-              style={{
-                width: "12vw",
-                height: "3vw",
-                fontSize: "25px",
-                borderRadius: 15,
-                color: "white",
-                fontWeight: "bold",
-                backgroundColor: "gray",
-                border: "solid",
-                borderColor: "black",
-              }}
-            >
-              <i
-                className="fas fa-sign-language"
-                style={{ marginRight: "20px" }}
-              />
-              번역 활성화
-            </button>
-          </div>
-
-          <div
-            className="share_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "22%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              className="btnShare "
-              ref={btnShareRef}
-              onClick={btnShareClick}
-              style={{
-                width: "12vw",
-                height: "3vw",
-                fontSize: "25px",
-                borderRadius: 15,
-                color: "white",
-                fontWeight: "bold",
-                backgroundColor: "gray",
-                border: "solid",
-                borderColor: "black",
-              }}
-            >
-              <i
-                className="fas fa-share-square"
-                style={{ marginRight: "20px" }}
-              />
-              공유
-            </button>
-          </div>
-          <div
-            className="exit_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "22%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              onClick={prop.onExit}
-              style={{
-                width: "12vw",
-                height: "3vw",
-                fontSize: "25px",
-                borderRadius: 15,
-                backgroundColor: "#D65E2A",
-                color: "white",
-                fontWeight: "bold",
-                border: "solid",
-                borderColor: "black",
-              }}
-            >
-              나가기
-            </button>
-          </div>
-        </div>
-      ) : (
-        ///////////////////////////////////학생////////////////////////////////////
-        ///////////////////////////////////학생////////////////////////////////////
-        <div>
-          <div
-            className="subtitle_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "33%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              className="btnSub "
-              ref={btnSubref}
-              onClick={useSub}
-              style={{
-                width: "12vw",
-                height: "3vw",
-                backgroundColor: "gray",
-                boxShadow: "3px",
-                fontSize: "25px",
-                color: "white",
-                borderRadius: 15,
-                fontWeight: "bold",
-                border: "solid",
-                borderColor: "black",
-              }}
-            >
-              <i
-                className="far fa-closed-captioning"
-                style={{ marginRight: "20px" }}
-              ></i>
-              자막 활성화
-            </button>
-          </div>
-          <div
-            className="translate_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "22%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              className="btnTrans "
-              ref={btnTransref}
-              onClick={useTrans}
-              style={{
-                width: "12vw",
-                height: "3vw",
-                fontSize: "25px",
-                borderRadius: 15,
-                color: "white",
-                fontWeight: "bold",
-                backgroundColor: "gray",
-                border: "solid",
-                borderColor: "black",
-              }}
-            >
-              <i
-                className="fas fa-sign-language"
-                style={{ marginRight: "20px" }}
-              />
-              번역 활성화
-            </button>
-          </div>
-
-          <div
-            className="exit_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "33%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              onClick={prop.onExit}
-              style={{
-                width: "12vw",
-                height: "3vw",
-                fontSize: "25px",
-                borderRadius: 15,
-                backgroundColor: "#D65E2A",
-                color: "white",
-                fontWeight: "bold",
-                border: "solid",
-                borderColor: "black",
-              }}
-            >
-              나가기
-            </button>
-          </div>
-        </div>
-      )}
+    <div style={{ textAlign: "center", position: "relative" }}>
       {visibleSub ? (
-        <div className="result">
-          <span className="final" ref={finalRef}></span>
+        <div className="result overflow-auto">
+          <span
+            className="final"
+            style={{ color: "white" }}
+            ref={finalRef}
+          ></span>
           {visibleTrans ? (
             <div>
-              <span className="translate" ref={translateRef}></span>
+              <span
+                className="translate"
+                style={{ color: "white" }}
+                ref={translateRef}
+              ></span>
             </div>
           ) : null}
         </div>
       ) : null}
+      <div
+        className="content"
+        style={{
+          textAlign: "center",
+          marginTop: 20,
+          backgroundColor: "#eeeee4",
+          height: "120px",
+          paddingTop: "0px",
+          marginLeft: -4,
+          width: "61vw",
+          position: "absolute",
+          top: 0,
+        }}
+      >
+        {isProf ? (
+          //////////////////////////교수/////////////////////
+          <div style={{ position: "relative", top: "600px" }}>
+            <div
+              className="subtitle_btn"
+              style={{
+                marginLeft: "20px",
+                float: "left",
+                width: "22%",
+                marginTop: "28px",
+              }}
+            >
+              <button
+                className="btnSub "
+                ref={btnSubref}
+                onClick={useSub}
+                style={{
+                  width: "12vw",
+                  height: "3vw",
+                  backgroundColor: "gray",
+                  boxShadow: "3px",
+                  fontSize: "25px",
+                  color: "white",
+                  borderRadius: 15,
+                  fontWeight: "bold",
+                  border: "solid",
+                  borderColor: "black",
+                }}
+              >
+                <i
+                  className="far fa-closed-captioning"
+                  style={{ marginRight: "20px" }}
+                ></i>
+                자막 활성화
+              </button>
+            </div>
+            <div
+              className="translate_btn"
+              style={{
+                marginLeft: "20px",
+                float: "left",
+                width: "22%",
+                marginTop: "28px",
+              }}
+            >
+              <button
+                className="btnTrans "
+                ref={btnTransref}
+                onClick={useTrans}
+                style={{
+                  width: "12vw",
+                  height: "3vw",
+                  fontSize: "25px",
+                  borderRadius: 15,
+                  color: "white",
+                  fontWeight: "bold",
+                  backgroundColor: "gray",
+                  border: "solid",
+                  borderColor: "black",
+                }}
+              >
+                <i
+                  className="fas fa-sign-language"
+                  style={{ marginRight: "20px" }}
+                />
+                번역 활성화
+              </button>
+            </div>
+
+            <div
+              className="share_btn"
+              style={{
+                marginLeft: "20px",
+                float: "left",
+                width: "22%",
+                marginTop: "28px",
+              }}
+            >
+              <button
+                className="btnShare "
+                ref={btnShareRef}
+                onClick={btnShareClick}
+                style={{
+                  width: "12vw",
+                  height: "3vw",
+                  fontSize: "25px",
+                  borderRadius: 15,
+                  color: "white",
+                  fontWeight: "bold",
+                  backgroundColor: "gray",
+                  border: "solid",
+                  borderColor: "black",
+                }}
+              >
+                <i
+                  className="fas fa-share-square"
+                  style={{ marginRight: "20px" }}
+                />
+                공유
+              </button>
+            </div>
+            <div
+              className="exit_btn"
+              style={{
+                marginLeft: "20px",
+                float: "left",
+                width: "22%",
+                marginTop: "28px",
+              }}
+            >
+              <button
+                onClick={prop.onExit}
+                style={{
+                  width: "12vw",
+                  height: "3vw",
+                  fontSize: "25px",
+                  borderRadius: 15,
+                  backgroundColor: "#D65E2A",
+                  color: "white",
+                  fontWeight: "bold",
+                  border: "solid",
+                  borderColor: "black",
+                }}
+              >
+                나가기
+              </button>
+            </div>
+          </div>
+        ) : (
+          ///////////////////////////////////학생////////////////////////////////////
+          ///////////////////////////////////학생////////////////////////////////////
+          <div style={{ position: "relative", top: "0px" }}>
+            <div
+              className="subtitle_btn"
+              style={{
+                marginLeft: "20px",
+                float: "left",
+                width: "33%",
+                marginTop: "28px",
+              }}
+            >
+              <button
+                className="btnSub "
+                ref={btnSubref}
+                onClick={useSub}
+                style={{
+                  width: "12vw",
+                  height: "3vw",
+                  backgroundColor: "gray",
+                  boxShadow: "3px",
+                  fontSize: "25px",
+                  color: "white",
+                  borderRadius: 15,
+                  fontWeight: "bold",
+                  border: "solid",
+                  borderColor: "black",
+                }}
+              >
+                <i
+                  className="far fa-closed-captioning"
+                  style={{ marginRight: "20px" }}
+                ></i>
+                자막 활성화
+              </button>
+            </div>
+            <div
+              className="translate_btn"
+              style={{
+                marginLeft: "20px",
+                float: "left",
+                width: "22%",
+                marginTop: "28px",
+              }}
+            >
+              <button
+                className="btnTrans "
+                ref={btnTransref}
+                onClick={useTrans}
+                style={{
+                  width: "12vw",
+                  height: "3vw",
+                  fontSize: "25px",
+                  borderRadius: 15,
+                  color: "white",
+                  fontWeight: "bold",
+                  backgroundColor: "gray",
+                  border: "solid",
+                  borderColor: "black",
+                }}
+              >
+                <i
+                  className="fas fa-sign-language"
+                  style={{ marginRight: "20px" }}
+                />
+                번역 활성화
+              </button>
+            </div>
+
+            <div
+              className="exit_btn"
+              style={{
+                marginLeft: "20px",
+                float: "left",
+                width: "33%",
+                marginTop: "28px",
+              }}
+            >
+              <button
+                onClick={prop.onExit}
+                style={{
+                  width: "12vw",
+                  height: "3vw",
+                  fontSize: "25px",
+                  borderRadius: 15,
+                  backgroundColor: "#D65E2A",
+                  color: "white",
+                  fontWeight: "bold",
+                  border: "solid",
+                  borderColor: "black",
+                }}
+              >
+                나가기
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

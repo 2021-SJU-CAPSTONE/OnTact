@@ -17,7 +17,7 @@ const LiveLecture = ({ match }) => {
   React.useEffect(() => {
     startTime.current = new Date().getTime();
     if (lectureInfo === undefined) {
-      getLectureInfo(lectureId).then(info => {
+      getLectureInfo(lectureId).then((info) => {
         setLectureInfo(info);
       });
     }
@@ -46,23 +46,35 @@ const LiveLecture = ({ match }) => {
               }}
             >
               {userInfo ? (
-                <Video userInfo={userInfo} lectureInfo={lectureInfo} onExit={onExit} />
+                <Video
+                  userInfo={userInfo}
+                  lectureInfo={lectureInfo}
+                  onExit={onExit}
+                />
               ) : null}
             </div>
 
-            <div>
+            <div style={{ marginTop: -40 }}>
               <button
-                onClick={E => {
+                onClick={(E) => {
                   E.preventDefault();
                   setIsChat(!isChat);
                 }}
+                style={{
+                  marginLeft: 30,
+                  fontWeight: "bold",
+                  border: "solid",
+                }}
               >
-                CHANGE
+                모드 변경
               </button>
               {isChat ? (
                 <Chatting lectureId={lectureInfo.Name} />
               ) : (
-                <Bookmark lectureInfo={lectureInfo} startTime={startTime.current} />
+                <Bookmark
+                  lectureInfo={lectureInfo}
+                  startTime={startTime.current}
+                />
               )}
             </div>
           </div>
