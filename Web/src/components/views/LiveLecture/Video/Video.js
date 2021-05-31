@@ -7,16 +7,21 @@ import { store } from "../../../firebase";
 const Video = ({ userInfo, lectureInfo, onExit }) => {
   //video
   const videoRef = React.useRef();
-  const [peers, setPeers] = React.useState(["123"]);
-  const addPeers = newPeer => {
-    setPeers(o => {
+  const [peers, setPeers] = React.useState([
+    "16012416",
+    "17012415",
+    "18012555",
+    "19011123",
+  ]);
+  const addPeers = (newPeer) => {
+    setPeers((o) => {
       return [...o, newPeer];
     });
   };
   //record
   let recordChunk = [];
   let recorder = React.useRef();
-  const handleDataAvailable = event => {
+  const handleDataAvailable = (event) => {
     recordChunk.push(event.data);
     download();
   };
@@ -60,7 +65,7 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
    위에 false 값을 true로 수정하면 강의 시작시 디폴트 송출 영상이 공유 화면
    false일 경우 상의 시작시 디폴트 송출 영상이 캡 화면
   */
-  const changeIsShare = value => {
+  const changeIsShare = (value) => {
     if (value !== undefined) {
       setIsShare(value);
       recodeStop();
@@ -71,30 +76,54 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
     if (userInfo) {
       if (userInfo.isProfessor === "on") {
         if (isShare) {
-          navigator.mediaDevices.getDisplayMedia({ audio: true, video: true }).then(stream => {
-            educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name, addPeers);
-            console.log("lecture Start Time", new Date().getTime());
-            recorder.current = new MediaRecorder(stream, {
-              type: "video/mp4",
+          navigator.mediaDevices
+            .getDisplayMedia({ audio: true, video: true })
+            .then((stream) => {
+              educatorConnect(
+                userInfo.id,
+                stream,
+                videoRef,
+                lectureInfo.Name,
+                addPeers
+              );
+              console.log("lecture Start Time", new Date().getTime());
+              recorder.current = new MediaRecorder(stream, {
+                type: "video/mp4",
+              });
+              recorder.current.ondataavailable = handleDataAvailable;
+              recorder.current.start();
             });
-            recorder.current.ondataavailable = handleDataAvailable;
-            recorder.current.start();
-          });
         } else {
-          navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
-            educatorConnect(userInfo.id, stream, videoRef, lectureInfo.Name, addPeers);
-            console.log("lecture Start Time", new Date().getTime() / 1000);
-            recorder.current = new MediaRecorder(stream, {
-              type: "video/mp4",
+          navigator.mediaDevices
+            .getUserMedia({ video: true, audio: true })
+            .then((stream) => {
+              educatorConnect(
+                userInfo.id,
+                stream,
+                videoRef,
+                lectureInfo.Name,
+                addPeers
+              );
+              console.log("lecture Start Time", new Date().getTime() / 1000);
+              recorder.current = new MediaRecorder(stream, {
+                type: "video/mp4",
+              });
+              recorder.current.ondataavailable = handleDataAvailable;
+              recorder.current.start();
             });
-            recorder.current.ondataavailable = handleDataAvailable;
-            recorder.current.start();
-          });
         }
       } else {
-        navigator.mediaDevices.getUserMedia({ video: false, audio: true }).then(stream => {
-          educateeConnect(userInfo.id, stream, videoRef, lectureInfo.Name, lectureInfo.profId);
-        });
+        navigator.mediaDevices
+          .getUserMedia({ video: false, audio: true })
+          .then((stream) => {
+            educateeConnect(
+              userInfo.id,
+              stream,
+              videoRef,
+              lectureInfo.Name,
+              lectureInfo.profId
+            );
+          });
       }
     }
   }, [isShare]);
@@ -102,10 +131,10 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   return (
     <div>
       {peers !== [] && userInfo.isProfessor === "on" ? (
-        <div>
-          현재 접속자 :{" "}
-          {peers.map(peer => {
-            return <span>[{peer}]</span>;
+        <div style={{ backgroundColor: "#c4c4c4", fontWeight: "bold" }}>
+          &nbsp; &nbsp; 현재 접속자 &nbsp;: &nbsp;{" "}
+          {peers.map((peer) => {
+            return <span>{peer} &nbsp;|&nbsp;</span>;
           })}
         </div>
       ) : null}
