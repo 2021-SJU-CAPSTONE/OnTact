@@ -6,14 +6,21 @@ import { UseAuth } from "../../hoc/AuthContext";
 function NavBar() {
   const userInfo = UseAuth().userInfo;
   return (
-    <nav className="menu" style={{ position: "fixed", zIndex: 5, width: "100%", height: "60px" }}>
+    <nav
+      className="menu"
+      style={{
+        position: "fixed",
+        zIndex: 5,
+        width: "100%",
+        height: "80px",
+        justifyContent: "center",
+      }}
+    >
       <div className="menu__logo">
         <Link to="/">
           <img
             src={logo}
             style={{
-              marginTop: "-10px",
-              marginLeft: "50px",
               width: "100px",
               height: "30px",
             }}
@@ -21,7 +28,9 @@ function NavBar() {
         </Link>
       </div>
 
-      <div style={{ float: "right", marginTop: "12px" }}>{userInfo && <Logout />}</div>
+      <div style={{ float: "right", marginTop: "20px" }}>
+        {userInfo && <Logout />}
+      </div>
 
       {/*<div style={{ float: "right", marginTop: "20px" }}>
         {isLogIn ? (
