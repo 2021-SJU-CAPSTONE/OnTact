@@ -16,7 +16,6 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   //record
   let recordChunk = [];
   let recorder = React.useRef();
-  let recordCnt = 0;
   const handleDataAvailable = event => {
     recordChunk.push(event.data);
     download();
@@ -49,11 +48,9 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   const createPath = () => {
     const lecRef = store
       .collection(`Lecture/${lectureInfo.Name}/RecordedLecture`)
-      .doc(`${lectureInfo.cnt + 1}회차`);
+      .doc(`${lectureInfo.cnt}회차`);
     lecRef.set({
-      Video: `gs://capstone-925e4.appspot.com/RecordedLecture/${lectureInfo.Name}/${
-        lectureInfo.cnt + 1
-      }회차`,
+      Video: `gs://capstone-925e4.appspot.com/RecordedLecture/${lectureInfo.Name}/${lectureInfo.cnt}회차`,
     });
   };
   // share

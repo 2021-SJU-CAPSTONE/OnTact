@@ -132,7 +132,7 @@ const Subtitle = (prop: Prop) => {
       console.log(firstText, fireTime);
       lecture.stackSubtitle(
         prop.lectureInfo.Name,
-        prop.lectureInfo.cnt + 1,
+        prop.lectureInfo.cnt,
         fireTime,
         linebreak(firstText)
       );
@@ -141,7 +141,7 @@ const Subtitle = (prop: Prop) => {
       // KotoEn(firstText).then(resultText => {
       //   lecture.stackTranslation(
       //     prop.lectureInfo.Name,
-      //     prop.lectureInfo.cnt + 1,
+      //     prop.lectureInfo.cnt,
       //     sfireTime,
       //     resultText
       //   );
@@ -158,7 +158,7 @@ const Subtitle = (prop: Prop) => {
   recognition.onerror = function (event) {
     console.log("onerror", event);
 
-    if (event.error.match(/no-speech|audio-capture|not-allowed|network/)) {
+    if (event.error.match(/no-speech|audio-capture|not-allowed/)) {
       ignoreEndProcess = true;
     }
   };
