@@ -121,10 +121,7 @@ const Subtitle = (prop: Prop) => {
     finalSub = linebreak(firstText + "\n" + secondText);
     ///save in tempSub
     console.log(finalSub);
-    store
-      .collection("Lecture")
-      .doc(prop.lectureInfo.Name)
-      .update({ tempSub: finalSub });
+    store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempSub: finalSub });
     // 번역기능
     // KotoEn(finalSub).then(resultText => {
     //   //save in tempTrans
@@ -170,7 +167,7 @@ const Subtitle = (prop: Prop) => {
    * 개행 처리
    * @param {string} s
    */
-  const linebreak = (s) => {
+  const linebreak = s => {
     return s.replace(TWO_LINE, "<p></p>").replace(ONE_LINE, "<br>");
   };
 
@@ -224,7 +221,7 @@ const Subtitle = (prop: Prop) => {
       store
         .collection("Lecture")
         .doc(prop.lectureInfo.Name)
-        .onSnapshot((snap) => {
+        .onSnapshot(snap => {
           const data = snap.data();
           if (data !== undefined) {
             if (finalRef.current) {
@@ -328,10 +325,7 @@ const Subtitle = (prop: Prop) => {
                   borderColor: "black",
                 }}
               >
-                <i
-                  className="far fa-closed-captioning"
-                  style={{ marginRight: "20px" }}
-                ></i>
+                <i className="far fa-closed-captioning" style={{ marginRight: "20px" }}></i>
                 자막 활성화
               </button>
             </div>
@@ -360,10 +354,7 @@ const Subtitle = (prop: Prop) => {
                   borderColor: "black",
                 }}
               >
-                <i
-                  className="fas fa-sign-language"
-                  style={{ marginRight: "20px" }}
-                />
+                <i className="fas fa-sign-language" style={{ marginRight: "20px" }} />
                 번역 활성화
               </button>
             </div>
@@ -393,10 +384,7 @@ const Subtitle = (prop: Prop) => {
                   borderColor: "black",
                 }}
               >
-                <i
-                  className="fas fa-share-square"
-                  style={{ marginRight: "20px" }}
-                />
+                <i className="fas fa-share-square" style={{ marginRight: "20px" }} />
                 공유
               </button>
             </div>
@@ -457,10 +445,7 @@ const Subtitle = (prop: Prop) => {
                   borderColor: "black",
                 }}
               >
-                <i
-                  className="far fa-closed-captioning"
-                  style={{ marginRight: "20px" }}
-                ></i>
+                <i className="far fa-closed-captioning" style={{ marginRight: "20px" }}></i>
                 자막 활성화
               </button>
             </div>
@@ -489,10 +474,7 @@ const Subtitle = (prop: Prop) => {
                   borderColor: "black",
                 }}
               >
-                <i
-                  className="fas fa-sign-language"
-                  style={{ marginRight: "20px" }}
-                />
+                <i className="fas fa-sign-language" style={{ marginRight: "20px" }} />
                 번역 활성화
               </button>
             </div>
