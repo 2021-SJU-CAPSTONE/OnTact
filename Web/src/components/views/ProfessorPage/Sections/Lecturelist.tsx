@@ -27,7 +27,11 @@ function Lecturelist() {
   };
 
   const ShowList = () => {
+<<<<<<< HEAD
     const lecList = userInfo?.lectureList.map((lecture) => (
+=======
+    const lecList = userInfo?.infoList.map((lecture) => (
+>>>>>>> 2e07d3389b7494ec4dcae5500bee546ce714c1ce
       <div className="mt-3">
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-row align-items-center">
@@ -37,18 +41,21 @@ function Lecturelist() {
             </span>
             <div className="d-flex flex-column">
               {" "}
-              <span>{lecture}</span>
+              <span>{lecture.Name}</span>
               <div className="d-flex flex-row align-items-center time-text">
                 {" "}
-                <span className="dots"></span> <small>13:30~19:00 [fri]</small>{" "}
+                <span className="dots"></span>{" "}
+                <small>
+                  {lecture.Time} [{lecture.Day}]
+                </small>{" "}
               </div>
             </div>
           </div>
           <div className="d-flex flex-row">
             <Link
-              to={`/livelecture/${lecture}`}
+              to={`/livelecture/${lecture.Name}`}
               onClick={() => {
-                lecStart(lecture);
+                lecStart(lecture.Name);
               }}
             >
               <button
@@ -58,7 +65,11 @@ function Lecturelist() {
                 강의시작
               </button>
             </Link>
+<<<<<<< HEAD
             <Link to={`/professorpage/adminlecture/${lecture}`}>
+=======
+            <Link to={`/professorpage/adminlecture/${lecture.Name}`}>
+>>>>>>> 2e07d3389b7494ec4dcae5500bee546ce714c1ce
               <button
                 className="btn btn-danger mr-2 font-weight-bold"
                 style={{ fontSize: "1rem" }}

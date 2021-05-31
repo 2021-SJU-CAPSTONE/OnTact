@@ -6,6 +6,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
+import { getRecordPath } from "../../utils/Lecture";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,10 +34,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RecordLectureList() {
-  const showList = () => {
-    // const lecList;
-    // return <div>{lecList}</div>
+export const RecordLectureList = ({ match }) => {
+  const [lecInfo, setLecInfo] = React.useState();
+  if (lecInfo === undefined) {
+    getRecordPath(match.params.lecture).then((doc) => {
+      setLecInfo(doc.docs);
+    });
+  }
+  const ShowList = () => {
+    let lecList;
+    if (lecInfo !== undefined) {
+      lecList = lecInfo.map((lecture) => (
+        <Link to="/recordvideo">
+          <div
+            style={{ paddingLeft: "100px", paddingTop: "50px", width: "60%" }}
+          >
+            <Card className={classes.root}>
+              <div className={classes.details}>
+                <CardContent className={classes.content}>
+                  <Typography component="h5" variant="h5">
+                    {match.params.lecture}
+                  </Typography>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    {lecture.id}
+                  </Typography>
+                </CardContent>
+                <div className={classes.controls}></div>
+              </div>
+            </Card>
+          </div>
+        </Link>
+      ));
+    }
+    return <div>{lecList}</div>;
   };
 
   // async function name() {
@@ -78,117 +108,12 @@ export default function RecordLectureList() {
             color: "white",
           }}
         >
-          Capstone Design(001)
+          {match.params.lecture}
         </span>
       </div>
-      <Link to="/recordvideo">
-        <div style={{ paddingLeft: "100px", paddingTop: "50px", width: "60%" }}>
-          <Card className={classes.root}>
-            <div className={classes.details}>
-              <CardContent className={classes.content}>
-                <Typography component="h5" variant="h5">
-                  캡스톤 디자인
-                </Typography>
-                <Typography variant="subtitle1" color="textSecondary">
-                  1회차
-                </Typography>
-              </CardContent>
-              <div className={classes.controls}></div>
-            </div>
-          </Card>
-        </div>
-      </Link>
-
-      <div style={{ paddingLeft: "100px", paddingTop: "50px", width: "60%" }}>
-        <Card className={classes.root}>
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
-                캡스톤 디자인
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                2회차
-              </Typography>
-            </CardContent>
-            <div className={classes.controls}></div>
-          </div>
-        </Card>
-      </div>
-      <div style={{ paddingLeft: "100px", paddingTop: "50px", width: "60%" }}>
-        <Card className={classes.root}>
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
-                캡스톤 디자인
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                3회차
-              </Typography>
-            </CardContent>
-            <div className={classes.controls}></div>
-          </div>
-        </Card>
-      </div>
-      <div style={{ paddingLeft: "100px", paddingTop: "50px", width: "60%" }}>
-        <Card className={classes.root}>
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
-                캡스톤 디자인
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                4회차
-              </Typography>
-            </CardContent>
-            <div className={classes.controls}></div>
-          </div>
-        </Card>
-      </div>
-      <div style={{ paddingLeft: "100px", paddingTop: "50px", width: "60%" }}>
-        <Card className={classes.root}>
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
-                캡스톤 디자인
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                5회차
-              </Typography>
-            </CardContent>
-            <div className={classes.controls}></div>
-          </div>
-        </Card>
-      </div>
-      <div style={{ paddingLeft: "100px", paddingTop: "50px", width: "60%" }}>
-        <Card className={classes.root}>
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
-                캡스톤 디자인
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                6회차
-              </Typography>
-            </CardContent>
-            <div className={classes.controls}></div>
-          </div>
-        </Card>
-      </div>
-      <div style={{ paddingLeft: "100px", paddingTop: "50px", width: "60%" }}>
-        <Card className={classes.root}>
-          <div className={classes.details}>
-            <CardContent className={classes.content}>
-              <Typography component="h5" variant="h5">
-                캡스톤 디자인
-              </Typography>
-              <Typography variant="subtitle1" color="textSecondary">
-                7회차
-              </Typography>
-            </CardContent>
-            <div className={classes.controls}></div>
-          </div>
-        </Card>
-      </div>
+      <ShowList />
     </div>
   );
-}
+};
+
+export default RecordLectureList;

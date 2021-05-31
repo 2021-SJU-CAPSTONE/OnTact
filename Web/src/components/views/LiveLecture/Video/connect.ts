@@ -7,7 +7,6 @@ type PeerList = {
 const serverURL = "https://capstone-ontact.herokuapp.com";
 let peerList: PeerList = {};
 let peerIds: string[] = [];
-// const socket = io("http://localhost:5001", { transports: ["polling"] });
 let socket;
 export const getSocket = () => {
   if (socket === undefined) {
@@ -27,18 +26,15 @@ export const educateeConnect = (
 ) => {
   getSocket();
   let peer;
+  console.log(localId);
   try {
-    // peer = new Peer(localId, {
-    //   host: "ontact-socket.herokuapp.com",
-    //   port: 8000,
-    //   path: "/",
-    // });
     peer = new Peer(localId);
   } catch (e) {
     console.log(e);
   }
   peer.on("open", id => {
     // id : localid
+    console.log("[open]", id);
     socket.emit("join-room", lectureName, id);
   });
   peer.on("call", call => {
@@ -54,7 +50,8 @@ export const educateeConnect = (
     //steam 수신 peer 연결
     // userid : 상대방 아이디
     console.log("connected with :", userId);
-    const call = peer.call(profId, stream);
+    const call = peer.call(userId, stream);
+    // const call = peer.call(profId, stream);
     call.on("stream", remoteStream => {
       if (remoteVideoRef.current) {
         remoteVideoRef.current.srcObject = remoteStream;
@@ -74,16 +71,13 @@ export const educatorConnect = (
   localId: string,
   localStream: MediaStream,
   localVideoRef: React.RefObject<HTMLVideoElement>,
-  lectureName: string
+  lectureName: string,
+  addPeers: (val: string) => void
 ) => {
   getSocket();
+  console.log(localId);
   let peer;
   try {
-    // peer = new Peer(localId, {
-    //   host: "ontact-socket.herokuapp.com",
-    //   port: 8000,
-    //   path: "/",
-    // });
     peer = new Peer(localId);
   } catch (e) {
     console.log(e);
@@ -93,6 +87,7 @@ export const educatorConnect = (
   }
   peer.on("open", id => {
     // id : localid
+    console.log("[open]", id);
     socket.emit("join-room", lectureName, id);
   });
   peer.on("call", call => {
@@ -111,6 +106,7 @@ export const educatorConnect = (
     call.on("close", () => {});
     peerList[userId] = call;
     peerIds.push(userId);
+    addPeers(userId);
     console.log(`total connected peer = ${peerIds}`);
   });
 };

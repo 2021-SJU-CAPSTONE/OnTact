@@ -1,9 +1,9 @@
 import React, { useState, useRef } from "react";
-import ReactPlayer from "react-player/youtube";
+// import ReactPlayer from "react-player/youtube";
+import ReactPlayer from "react-player/lazy";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Playercontrol from "./Playcontrol/Playcontrol";
-import Subtitle from "./Subtitle";
 import screenfull from "screenfull";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { Card } from "react-bootstrap";
 import { getBookmark, addBookmark, removeBookmark } from "../../utils/Lecture";
 import { UseAuth } from "../../hoc/AuthContext";
+import { storage, store } from "../../firebase";
 const useStyles = makeStyles({
   playerWrapper: {
     width: "100%",
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 
-const format = seconds => {
+const format = (seconds) => {
   if (isNaN(seconds)) {
     return "00:00";
   }
@@ -35,6 +36,55 @@ const format = seconds => {
 };
 
 export default function RecordVideo() {
+  const [video, loadVideo] = useState();
+  if (video === undefined) {
+    storage
+      .ref()
+      .child(`SignLanguage.mp4`)
+      .getDownloadURL()
+      .then((url) => {
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = "blob";
+        xhr.onload = function (event) {
+          var blob = xhr.response;
+        };
+        xhr.open("GET", url);
+        xhr.send();
+        loadVideo(url);
+        console.log(url);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  const [signVideo, loadSignVideo] = useState();
+  if (signVideo === undefined) {
+    storage
+      .ref()
+      .child(`SignLanguage.mp4`)
+      .getDownloadURL()
+      .then((url) => {
+        var xhr = new XMLHttpRequest();
+        xhr.responseType = "blob";
+        xhr.onload = function (event) {
+          var blob = xhr.response;
+        };
+        xhr.open("GET", url);
+        xhr.send();
+        loadSignVideo(url);
+        console.log(url);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  const btnSubref = React.useRef(null);
+  const btnTransref = React.useRef(null);
+  const btnSignref = React.useRef(null);
+  const [visibleSub, setVisibleSub] = React.useState(false);
+  const [visibleTrans, setVisibleTrans] = React.useState(false);
+  const [visibleSign, setVisibleSign] = React.useState(false);
   const classes = useStyles();
   const [state, setState] = useState({
     playing: true,
@@ -52,10 +102,13 @@ export default function RecordVideo() {
   const handlePlayPause = () => {
     setState({ ...state, playing: !state.playing });
   };
-  const { playing, muted, volume, playbackRate, played, seeking, comments } = state;
+  const { playing, muted, volume, playbackRate, played, seeking, comments } =
+    state;
 
   const playerRef = useRef(null);
   const playerContainerRef = useRef(null);
+  const signRef = useRef(null);
+  const signContainerRef = useRef(null);
 
   //경원
   const getTime = () => {
@@ -70,7 +123,7 @@ export default function RecordVideo() {
   const round = 6;
   React.useEffect(() => {
     if (userInfo) {
-      getBookmark(lectureId, round, userInfo.id).then(data => {
+      getBookmark(lectureId, round, userInfo.id).then((data) => {
         setBookmarks(data);
       });
     }
@@ -78,9 +131,11 @@ export default function RecordVideo() {
   //
   const handleRewind = () => {
     playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
+    signRef.current.seekTo(signRef.current.getCurrentTime() - 10);
   };
   const handleFastForward = () => {
     playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
+    signRef.current.seekTo(signRef.current.getCurrentTime() + 10);
   };
 
   const handleMute = () => {
@@ -103,7 +158,7 @@ export default function RecordVideo() {
     });
   };
 
-  const handlePlaybackRateChange = rate => {
+  const handlePlaybackRateChange = (rate) => {
     setState({ ...state, playbackRate: rate });
   };
 
@@ -111,7 +166,7 @@ export default function RecordVideo() {
     screenfull.toggle(playerContainerRef.current);
   };
 
-  const handleProgress = changeState => {
+  const handleProgress = (changeState) => {
     if (!state.seeking) {
       setState({ ...state, ...changeState });
     }
@@ -120,28 +175,37 @@ export default function RecordVideo() {
   const handleSeekchange = (e, newValue) => {
     setState({ ...state, played: parseFloat(newValue / 100) });
   };
-  const handleSeekMouseDown = e => {
+  const handleSeekMouseDown = (e) => {
     setState({ ...state, seeking: true });
   };
   const handleSeekMouseUp = (e, newValue) => {
     setState({ ...state, seeking: false });
     playerRef.current.seekTo(newValue / 100);
+    signRef.current.seekTo(newValue / 100);
   };
 
-  const currentTime = playerRef.current ? playerRef.current.getCurrentTime() : "00:00";
-  const duration = playerRef.current ? playerRef.current.getDuration() : "00:00";
+  const currentTime = playerRef.current
+    ? playerRef.current.getCurrentTime()
+    : "00:00";
+  const duration = playerRef.current
+    ? playerRef.current.getDuration()
+    : "00:00";
 
   const elapsedTime =
-    timeDisplayFormat === "normal" ? format(currentTime) : `-${format(duration - currentTime)}`;
+    timeDisplayFormat === "normal"
+      ? format(currentTime)
+      : `-${format(duration - currentTime)}`;
   const totalDuration = format(duration);
 
   const handleChangeDisplayFormat = () => {
-    setTimeDisplayFormat(timeDisplayFormat === "normal" ? "remaining" : "normal");
+    setTimeDisplayFormat(
+      timeDisplayFormat === "normal" ? "remaining" : "normal"
+    );
   };
 
   let messages = "";
   const inputRef = useRef(null);
-  const messagesend = e => {
+  const messagesend = (e) => {
     e.preventDefault();
     const newBookmark = {
       time: playerRef.current.getCurrentTime(),
@@ -151,13 +215,19 @@ export default function RecordVideo() {
     if (inputRef.current) {
       messages = inputRef.current.value;
     }
-    addBookmark(lectureId, round, userInfo.id, newBookmark.time, newBookmark.chat);
+    addBookmark(
+      lectureId,
+      round,
+      userInfo.id,
+      newBookmark.time,
+      newBookmark.chat
+    );
     inputRef.current.value = "";
     messages = "";
   };
-  const onDelBookmark = e => {
+  const onDelBookmark = (e) => {
     const removeTime = Number(e.target.id);
-    const newBookmarks = Bookmarks.filter(bookmark => {
+    const newBookmarks = Bookmarks.filter((bookmark) => {
       if (bookmark.time === removeTime) {
         return false;
       }
@@ -166,9 +236,94 @@ export default function RecordVideo() {
     setBookmarks(newBookmarks);
     removeBookmark(lectureId, round, userInfo.id, removeTime);
   };
+
+  const useSub = () => {
+    if (btnSubref.current) {
+      if (visibleSub) {
+        btnSubref.current.innerHTML = "자막 활성화";
+        setVisibleSub(false);
+      } else {
+        btnSubref.current.innerHTML = "자막 비활성화";
+        setVisibleSub(true);
+      }
+    }
+  };
+
+  const useTrans = () => {
+    if (btnTransref.current) {
+      if (visibleTrans) {
+        btnTransref.current.innerHTML = "번역 활성화";
+        setVisibleTrans(false);
+      } else {
+        btnTransref.current.innerHTML = "번역 비활성화";
+        setVisibleTrans(true);
+      }
+    }
+  };
+
+  const useSign = () => {
+    if (btnSignref.current) {
+      if (visibleSign) {
+        btnSignref.current.innerHTML = "수어 활성화";
+        setVisibleSign(false);
+      } else {
+        btnSignref.current.innerHTML = "수어 비활성화";
+        setVisibleSign(true);
+        signRef.current.seekTo(playerRef.current.getCurrentTime());
+      }
+    }
+  };
+
+  const Subtitle = () => {
+    const lectureId = "Sample";
+    const Ref = store
+      .collection(`Lecture/${lectureId}/Subtitle`)
+      .doc("caption");
+    const subtitle_spanref = React.useRef(null);
+    let data;
+
+    if (data === undefined) {
+      Ref.get()
+        .then((doc) => {
+          data = doc.data();
+        })
+        .catch(function (error) {
+          console.log("Error getting document:", error);
+        });
+    }
+
+    React.useEffect(() => {
+      let curtime;
+      let interval = setInterval(() => {
+        curtime = Math.round(getTime());
+        console.log(curtime, data[curtime]);
+        if (data !== undefined) {
+          if (data[curtime] !== undefined) {
+            if (subtitle_spanref.current) {
+              subtitle_spanref.current.innerHTML = data[curtime];
+            }
+          }
+        }
+        // console.log(curtime);
+      }, 1000);
+      return () => {
+        clearInterval(interval);
+      };
+    }, []);
+
+    return (
+      <div>
+        {visibleSub ? (
+          <div className="content">
+            <span className="subtitle" ref={subtitle_spanref}></span>
+          </div>
+        ) : null}
+      </div>
+    );
+  };
   return (
     <>
-      {userInfo && (
+      {userInfo && video && (
         <div className="row">
           {/* Top control */}
 
@@ -193,13 +348,17 @@ export default function RecordVideo() {
               <div
                 ref={playerContainerRef}
                 className={classes.playerWrapper}
-                style={{ left: "50", marginTop: 50 }}
+                style={{
+                  left: "50",
+                  marginTop: 50,
+                  display: visibleSign ? "block" : "none",
+                }}
               >
                 <ReactPlayer
                   ref={playerRef}
                   width={"100%"}
                   height={"100%"}
-                  url="https://www.youtube.com/watch?v=ysz5S6PUM-U"
+                  url={video}
                   muted={muted}
                   playing={playing}
                   volume={volume}
@@ -228,7 +387,44 @@ export default function RecordVideo() {
                   onChangeDisplayFormat={handleChangeDisplayFormat}
                 />
               </div>
-
+              <div
+                ref={signContainerRef}
+                className={classes.playerWrapper}
+                style={{ left: "50", marginTop: 50 }}
+              >
+                <ReactPlayer
+                  ref={signRef}
+                  width={"100%"}
+                  height={"100%"}
+                  url={signVideo}
+                  muted={muted}
+                  playing={playing}
+                  volume={volume}
+                  playbackRate={playbackRate}
+                  onProgress={handleProgress}
+                />
+                <Playercontrol
+                  onPlayPause={handlePlayPause}
+                  playing={playing}
+                  onRewind={handleRewind}
+                  onFastForward={handleFastForward}
+                  muted={muted}
+                  onMute={handleMute}
+                  onVolumeChange={handleVolumeChange}
+                  onVolumeSeekUp={handleonVolumeSeekUp}
+                  volume={volume}
+                  playbackRate={playbackRate}
+                  onPlaybackRateChange={handlePlaybackRateChange}
+                  onToggleFullScreen={ToggleFullScreen}
+                  played={played}
+                  onSeek={handleSeekchange}
+                  onSeekMouseDown={handleSeekMouseDown}
+                  onSeekMouseUp={handleSeekMouseUp}
+                  elapsedTime={elapsedTime}
+                  totalDuration={totalDuration}
+                  onChangeDisplayFormat={handleChangeDisplayFormat}
+                />
+              </div>
               <Link to="/studentpage/recordlecturelist">
                 <span
                   className="badge  mt-4"
@@ -244,6 +440,107 @@ export default function RecordVideo() {
                   나가기
                 </span>
               </Link>
+              <div>
+                <div
+                  className="subtitle_btn"
+                  style={{
+                    marginLeft: "20px",
+                    float: "left",
+                    width: "22%",
+                    marginTop: "28px",
+                  }}
+                >
+                  <button
+                    className="btnSub "
+                    ref={btnSubref}
+                    onClick={useSub}
+                    style={{
+                      width: "12vw",
+                      height: "3vw",
+                      backgroundColor: "gray",
+                      boxShadow: "3px",
+                      fontSize: "25px",
+                      color: "white",
+                      borderRadius: 15,
+                      fontWeight: "bold",
+                      border: "solid",
+                      borderColor: "black",
+                    }}
+                  >
+                    <i
+                      className="far fa-closed-captioning"
+                      style={{ marginRight: "20px" }}
+                    ></i>
+                    자막 활성화
+                  </button>
+                </div>
+                <div
+                  className="translate_btn"
+                  style={{
+                    marginLeft: "20px",
+                    float: "left",
+                    width: "22%",
+                    marginTop: "28px",
+                  }}
+                >
+                  <button
+                    className="btnTrans "
+                    ref={btnTransref}
+                    onClick={useTrans}
+                    style={{
+                      width: "12vw",
+                      height: "3vw",
+                      fontSize: "25px",
+                      borderRadius: 15,
+                      color: "white",
+                      fontWeight: "bold",
+                      backgroundColor: "gray",
+                      border: "solid",
+                      borderColor: "black",
+                    }}
+                  >
+                    <i
+                      className="fas fa-sign-language"
+                      style={{ marginRight: "20px" }}
+                    />
+                    번역 활성화
+                  </button>
+                </div>
+                <div
+                  className="translate_btn"
+                  style={{
+                    marginLeft: "20px",
+                    float: "left",
+                    width: "22%",
+                    marginTop: "28px",
+                  }}
+                >
+                  <button
+                    className="btnTrans "
+                    ref={btnSignref}
+                    onClick={useSign}
+                    style={{
+                      width: "12vw",
+                      height: "3vw",
+                      fontSize: "25px",
+                      borderRadius: 15,
+                      color: "white",
+                      fontWeight: "bold",
+                      backgroundColor: "gray",
+                      border: "solid",
+                      borderColor: "black",
+                    }}
+                  >
+                    <i
+                      className="fas fa-sign-language"
+                      style={{ marginRight: "20px" }}
+                    />
+                    수어 활성화
+                  </button>
+                </div>
+              </div>
+              <Subtitle />
+              {visibleTrans ? <Subtitle /> : null}
             </Card>
           </Container>
           <div
@@ -279,7 +576,10 @@ export default function RecordVideo() {
                     }}
                   >
                     <span
-                      onClick={() => playerRef.current.seekTo(bookmark.time)}
+                      onClick={() => {
+                        playerRef.current.seekTo(bookmark.time);
+                        signRef.current.seekTo(bookmark.time);
+                      }}
                       style={{ fontWeight: "bold" }}
                     >
                       {format(bookmark.time)} : {bookmark.chat}
@@ -318,7 +618,7 @@ export default function RecordVideo() {
                   />
                   <button
                     type="submit"
-                    onClick={e => {
+                    onClick={(e) => {
                       messagesend(e);
                     }}
                     style={{
