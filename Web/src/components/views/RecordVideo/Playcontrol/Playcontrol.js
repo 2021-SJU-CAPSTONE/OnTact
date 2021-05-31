@@ -223,7 +223,7 @@ export default function Playcontrol({
             <Slider
               min={0}
               max={100}
-              Value={volume * 10}
+              Value={volume * 100}
               className={classes.volumeSlider}
               onChange={onVolumeChange}
               onChangeCommitted={onVolumeSeekUp}
