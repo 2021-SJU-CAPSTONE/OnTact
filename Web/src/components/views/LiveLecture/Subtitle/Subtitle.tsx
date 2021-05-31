@@ -243,7 +243,26 @@ const Subtitle = (prop: Prop) => {
     };
   }, []);
   return (
-<<<<<<< HEAD
+    // {visibleSub ? (
+    //   <div className="result">
+    //     <span className="final" ref={finalRef}></span>
+    //   </div>
+    // ) : null}
+    // {visibleTrans ? (
+    //   <div className="result">
+    //     <span className="translate" ref={finalRef}></span>
+    //   </div>
+    // ) : null}
+    // {/* 재호형!! 밑에 있는 게 진짜 번역 데이터 인데요 papago
+    // 사용량 때문에 지금은 막아 둘께요
+    // 위에 있는거랑 같은 형태로 출력되면 되니까
+    // className='final' 이 translate라고 생각하고 하면 될 거같아요*/}
+    // {/* {visibleTrans ? (
+    //   <div>
+    //     <span className="translate" ref={translateRef}></span>
+    //   </div>
+    // ) : null} */}
+
     <div style={{ textAlign: "center", position: "absolute" }}>
       <div style={{ position: "absolute", top: -20, width: "62vw" }}>
         {visibleSub ? (
@@ -259,12 +278,8 @@ const Subtitle = (prop: Prop) => {
               ref={finalRef}
             ></span>
             {visibleTrans ? (
-              <div style={{ textAlign: "center" }}>
-                <span
-                  className="translate"
-                  style={{ color: "black" }}
-                  ref={translateRef}
-                ></span>
+              <div className="result">
+                <span className="translate" ref={finalRef}></span>
               </div>
             ) : null}
           </div>
@@ -355,36 +370,6 @@ const Subtitle = (prop: Prop) => {
 
             <div
               className="share_btn"
-=======
-    <div
-      className="content"
-      style={{
-        textAlign: "center",
-        marginTop: "7px",
-        backgroundColor: "#eeeee4",
-        height: "120px",
-        paddingTop: "0px",
-        marginLeft: -4,
-        width: "61vw",
-      }}
-    >
-      {isProf ? (
-        //////////////////////////교수/////////////////////
-        <div>
-          <div
-            className="share_btn"
-            style={{
-              marginLeft: "20px",
-              float: "left",
-              width: "22%",
-              marginTop: "28px",
-            }}
-          >
-            <button
-              className="btnShare "
-              ref={btnShareRef}
-              onClick={btnShareClick}
->>>>>>> 2e07d3389b7494ec4dcae5500bee546ce714c1ce
               style={{
                 marginLeft: "20px",
                 float: "left",
@@ -521,7 +506,6 @@ const Subtitle = (prop: Prop) => {
                 marginTop: "28px",
               }}
             >
-<<<<<<< HEAD
               <button
                 onClick={prop.onExit}
                 style={{
@@ -542,32 +526,6 @@ const Subtitle = (prop: Prop) => {
           </div>
         )}
       </div>
-=======
-              나가기
-            </button>
-          </div>
-        </div>
-      )}
-      {visibleSub ? (
-        <div className="result">
-          <span className="final" ref={finalRef}></span>
-        </div>
-      ) : null}
-      {visibleTrans ? (
-        <div className="result">
-          <span className="translate" ref={finalRef}></span>
-        </div>
-      ) : null}
-      {/* 재호형!! 밑에 있는 게 진짜 번역 데이터 인데요 papago 
-      사용량 때문에 지금은 막아 둘께요 
-      위에 있는거랑 같은 형태로 출력되면 되니까 
-      className='final' 이 translate라고 생각하고 하면 될 거같아요*/}
-      {/* {visibleTrans ? (
-        <div>
-          <span className="translate" ref={translateRef}></span>
-        </div>
-      ) : null} */}
->>>>>>> 2e07d3389b7494ec4dcae5500bee546ce714c1ce
     </div>
   );
 };

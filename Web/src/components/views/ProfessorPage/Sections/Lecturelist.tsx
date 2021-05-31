@@ -27,11 +27,7 @@ function Lecturelist() {
   };
 
   const ShowList = () => {
-<<<<<<< HEAD
-    const lecList = userInfo?.lectureList.map((lecture) => (
-=======
     const lecList = userInfo?.infoList.map((lecture) => (
->>>>>>> 2e07d3389b7494ec4dcae5500bee546ce714c1ce
       <div className="mt-3">
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex flex-row align-items-center">
@@ -65,11 +61,8 @@ function Lecturelist() {
                 강의시작
               </button>
             </Link>
-<<<<<<< HEAD
-            <Link to={`/professorpage/adminlecture/${lecture}`}>
-=======
+
             <Link to={`/professorpage/adminlecture/${lecture.Name}`}>
->>>>>>> 2e07d3389b7494ec4dcae5500bee546ce714c1ce
               <button
                 className="btn btn-danger mr-2 font-weight-bold"
                 style={{ fontSize: "1rem" }}
