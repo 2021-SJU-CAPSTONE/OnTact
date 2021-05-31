@@ -120,7 +120,6 @@ const Subtitle = (prop: Prop) => {
 
     finalSub = linebreak(firstText + "\n" + secondText);
     ///save in tempSub
-    console.log(finalSub);
     store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempSub: finalSub });
     // 번역기능
     // KotoEn(finalSub).then(resultText => {
@@ -130,6 +129,7 @@ const Subtitle = (prop: Prop) => {
     // });
     /// save in subTitle and Translate for record lecture
     if (fireTime !== 0 && firstText !== "") {
+      console.log(firstText, fireTime);
       lecture.stackSubtitle(
         prop.lectureInfo.Name,
         prop.lectureInfo.cnt + 1,
@@ -158,7 +158,7 @@ const Subtitle = (prop: Prop) => {
   recognition.onerror = function (event) {
     console.log("onerror", event);
 
-    if (event.error.match(/no-speech|audio-capture|not-allowed/)) {
+    if (event.error.match(/no-speech|audio-capture|not-allowed|network/)) {
       ignoreEndProcess = true;
     }
   };
@@ -216,6 +216,7 @@ const Subtitle = (prop: Prop) => {
   };
   React.useEffect(() => {
     if (prop.userInfo.isProfessor === "on") {
+      console.log("stt start Time", new Date().getTime() / 1000);
       start();
     } else {
       store
