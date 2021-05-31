@@ -35,10 +35,11 @@ const format = (seconds) => {
 export default function RecordVideo({ match }) {
   const [timeDisplayFormat, setTimeDisplayFormat] = useState("normal");
   const [Bookmarks, setBookmarks] = useState([]);
+  const [firstPlay, setFirstPlay] = useState(true);
 
   const classes = useStyles();
   const [state, setState] = useState({
-    playing: true,
+    playing: false,
     muted: true,
     volume: 0.5,
     playbackRate: 1.0,
@@ -47,6 +48,11 @@ export default function RecordVideo({ match }) {
     comments: [],
   });
   const handlePlayPause = () => {
+    if (firstPlay) {
+      playerRef.current.seekTo(0);
+      signRef.current.seekTo(0);
+      setFirstPlay(false);
+    }
     setState({ ...state, playing: !state.playing });
   };
   const { playing, muted, volume, playbackRate, played, seeking, comments } =
@@ -110,11 +116,11 @@ export default function RecordVideo({ match }) {
   const [visibleSign, setVisibleSign] = React.useState(false);
   const subRef = store
     .collection(`Lecture/${match.params.lecture}/Subtitle`)
-    .doc("11회차");
+    .doc(match.params.round);
   const [subData, setSubData] = React.useState();
   const transRef = store
     .collection(`Lecture/${match.params.lecture}/Translation`)
-    .doc("caption");
+    .doc(match.params.round);
   const [transData, setTransData] = React.useState();
   const [preload, setPreload] = React.useState(false);
 
@@ -183,10 +189,14 @@ export default function RecordVideo({ match }) {
   }, [userInfo]);
   //
   const handleRewind = () => {
+    subtitle_spanref.current.innerHTML = "";
+    translation_spanref.current.innerHTML = "";
     playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
     signRef.current.seekTo(signRef.current.getCurrentTime() - 10);
   };
   const handleFastForward = () => {
+    subtitle_spanref.current.innerHTML = "";
+    translation_spanref.current.innerHTML = "";
     playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
     signRef.current.seekTo(signRef.current.getCurrentTime() + 10);
   };
@@ -232,6 +242,8 @@ export default function RecordVideo({ match }) {
     setState({ ...state, seeking: true });
   };
   const handleSeekMouseUp = (e, newValue) => {
+    subtitle_spanref.current.innerHTML = "";
+    translation_spanref.current.innerHTML = "";
     setState({ ...state, seeking: false });
     playerRef.current.seekTo(newValue / 100);
     signRef.current.seekTo(newValue / 100);
@@ -322,7 +334,6 @@ export default function RecordVideo({ match }) {
       } else {
         btnSignref.current.innerHTML = "수어 비활성화";
         setVisibleSign(true);
-        signRef.current.seekTo(playerRef.current.getCurrentTime());
       }
     }
   };
@@ -335,8 +346,6 @@ export default function RecordVideo({ match }) {
     handleFastForward();
     handleFastForward();
     handleFastForward();
-    handlePlayPause();
-    setTimeout(() => playerRef.current.seekTo(0), 1500);
   };
 
   // const Subtitle = () => {
@@ -624,6 +633,8 @@ export default function RecordVideo({ match }) {
                   >
                     <span
                       onClick={() => {
+                        subtitle_spanref.current.innerHTML = "";
+                        translation_spanref.current.innerHTML = "";
                         playerRef.current.seekTo(bookmark.time);
                         signRef.current.seekTo(bookmark.time);
                       }}
