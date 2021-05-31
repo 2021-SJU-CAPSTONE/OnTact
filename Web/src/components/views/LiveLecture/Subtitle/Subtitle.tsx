@@ -50,6 +50,7 @@ const Subtitle = (prop: Prop) => {
   let firstText = "";
   let secondText = "";
   let tempText = "";
+  let fireTime = 0;
 
   let startTime = 0;
   let curTime = 0;
@@ -61,9 +62,8 @@ const Subtitle = (prop: Prop) => {
    * 음성 인식 시작 처리
    */
   recognition.onstart = function () {
+    startTime = new Date().getTime();
     isRecognizing = true;
-
-    startTime = arguments[0].timeStamp;
   };
 
   /**
@@ -91,7 +91,6 @@ const Subtitle = (prop: Prop) => {
 
     let interimTranscript = "";
     let finalSub = "";
-    let fireTime = 0;
 
     if (typeof event.results === "undefined") {
       recognition.onend = null;
@@ -108,13 +107,15 @@ const Subtitle = (prop: Prop) => {
         tempText = secondText;
         fireTime = curTime;
         curTime = 0;
+        console.log("fireTime", fireTime);
       } else {
         interimTranscript += transcript;
         firstText = tempText;
         secondText = interimTranscript;
         if (curTime === 0) {
-          curTime = Math.round((event.timeStamp - startTime) / 1000);
+          curTime = Math.round((new Date().getTime() - startTime) / 1000);
         }
+        console.log(fireTime, curTime, firstText);
       }
     }
 
@@ -132,7 +133,12 @@ const Subtitle = (prop: Prop) => {
     // });
     /// save in subTitle and Translate for record lecture
     if (fireTime !== 0 && firstText !== "") {
-      console.log(firstText, fireTime);
+      console.log(
+        "finalTranscript",
+        fireTime,
+        Math.round((new Date().getTime() - startTime) / 1000),
+        firstText
+      );
       lecture.stackSubtitle(
         prop.lectureInfo.Name,
         prop.lectureInfo.cnt,
@@ -153,6 +159,7 @@ const Subtitle = (prop: Prop) => {
     }
 
     // console.log("finalTranscript", finalTranscript);
+    console.log("interimTranscript", interimTranscript);
   };
 
   /**
@@ -219,7 +226,6 @@ const Subtitle = (prop: Prop) => {
   };
   React.useEffect(() => {
     if (prop.userInfo.isProfessor === "on") {
-      console.log("stt start Time", new Date().getTime() / 1000);
       start();
     } else {
       store
@@ -266,22 +272,28 @@ const Subtitle = (prop: Prop) => {
 
     <div style={{ textAlign: "center", position: "absolute" }}>
       <div style={{ position: "absolute", top: -20, width: "62vw" }}>
-        <div className="result overflow-auto" style={{ textAlign: "center" }}>
-          <div style={{ display: visibleSub ? "block" : "none" }}>
-            <span
-              className="final"
-              style={{
-                color: "white",
-                fontSize: 30,
-                fontWeight: "bold",
-                textAlign: "center",
-              }}
-              ref={finalRef}
-            ></span>
-          </div>
-          <div style={{ display: visibleTrans ? "block" : "none" }}>
+        <div
+          className="result overflow-auto"
+          style={{
+            textAlign: "center",
+            display: visibleSub ? "block" : "none",
+          }}
+        >
+          {/* <div style={{ display: visibleSub ? "block" : "none" }}> */}
+          <span
+            className="final"
+            style={{
+              color: "white",
+              fontSize: 30,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+            ref={finalRef}
+          ></span>
+          {/* </div> */}
+          {/* <div style={{ display: visibleTrans ? "block" : "none" }}>
             <span className="translate" ref={finalRef}></span>
-          </div>
+          </div> */}
         </div>
       </div>
       <div
