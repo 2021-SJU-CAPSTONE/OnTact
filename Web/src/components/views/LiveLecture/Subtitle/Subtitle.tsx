@@ -262,8 +262,8 @@ const Subtitle = (prop: Prop) => {
 
     <div style={{ textAlign: "center", position: "absolute" }}>
       <div style={{ position: "absolute", top: -20, width: "62vw" }}>
-        {visibleSub ? (
-          <div className="result overflow-auto" style={{ textAlign: "center" }}>
+        <div className="result overflow-auto" style={{ textAlign: "center" }}>
+          <div style={{ display: visibleSub ? "block" : "none" }}>
             <span
               className="final"
               style={{
@@ -274,13 +274,11 @@ const Subtitle = (prop: Prop) => {
               }}
               ref={finalRef}
             ></span>
-            {visibleTrans ? (
-              <div className="result">
-                <span className="translate" ref={finalRef}></span>
-              </div>
-            ) : null}
           </div>
-        ) : null}
+          <div style={{ display: visibleTrans ? "block" : "none" }}>
+            <span className="translate" ref={finalRef}></span>
+          </div>
+        </div>
       </div>
       <div
         className="content"
