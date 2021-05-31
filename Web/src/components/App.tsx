@@ -44,7 +44,10 @@ function App() {
               component={addlecture}
             />
             <Route exact path="/livelecture/:lecture" component={LiveLecture} />
-            <Route path="/recordvideo" component={RecordVideo} />
+            <Route
+              path="/recordvideo/:lecture/:round"
+              component={RecordVideo}
+            />
           </Switch>
         </div>
       </AuthProvider>
