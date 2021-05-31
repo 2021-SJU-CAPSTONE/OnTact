@@ -50,7 +50,7 @@ export default function RecordVideo({ match }) {
   const handlePlayPause = () => {
     if (firstPlay) {
       playerRef.current.seekTo(0);
-      signRef.current.seekTo(0);
+      signRef.current.currentTime = 0;
       setFirstPlay(false);
     }
     setState({ ...state, playing: !state.playing });
@@ -345,18 +345,9 @@ export default function RecordVideo({ match }) {
   };
 
   const seekToEnd = () => {
-    handleFastForward();
-    handleFastForward();
-    handleFastForward();
-    handleFastForward();
-    handleFastForward();
-    handleFastForward();
-    handleFastForward();
+    playerRef.current.seekTo(3600);
   };
 
-  // const Subtitle = () => {
-  //   return;
-  // };
   return (
     <>
       {userInfo && video && (
