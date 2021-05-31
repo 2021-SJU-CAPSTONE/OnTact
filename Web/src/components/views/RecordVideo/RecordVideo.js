@@ -37,7 +37,7 @@ const format = (seconds) => {
   return `${mm}:${ss}`;
 };
 
-export default function RecordVideo() {
+export default function RecordVideo({ match }) {
   const [timeDisplayFormat, setTimeDisplayFormat] = useState("normal");
   const [Bookmarks, setBookmarks] = useState([]);
 
@@ -437,7 +437,9 @@ export default function RecordVideo() {
                   onChangeDisplayFormat={handleChangeDisplayFormat}
                 />
               </div>
-              <Link to="/studentpage/recordlecturelist">
+              <Link
+                to={`/studentpage/recordlecturelist/${match.params.lecture}`}
+              >
                 <span
                   className="badge  mt-4"
                   style={{
