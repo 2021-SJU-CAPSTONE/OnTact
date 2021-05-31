@@ -232,7 +232,7 @@ export default function Playcontrol({
             <Button
               onClick={onChangeDisplayFormat}
               variant="text"
-              style={{ color: "#fff", marginLeft: 16 }}
+              style={{ color: "#c4c4c4", marginLeft: 16 }}
             >
               {elapsedTime} / {totalDuration}
             </Button>

@@ -168,7 +168,7 @@ const Subtitle = (prop: Prop) => {
   recognition.onerror = function (event) {
     console.log("onerror", event);
 
-    if (event.error.match(/no-speech|audio-capture|not-allowed|network/)) {
+    if (event.error.match(/no-speech|audio-capture|not-allowed/)) {
       ignoreEndProcess = true;
     }
   };
@@ -314,6 +314,7 @@ const Subtitle = (prop: Prop) => {
           //////////////////////////교수/////////////////////
           <div style={{ top: "600px" }}>
             <div
+<<<<<<< HEAD
               className="subtitle_btn"
               style={{
                 marginLeft: "20px",
@@ -380,6 +381,8 @@ const Subtitle = (prop: Prop) => {
             </div>
 
             <div
+=======
+>>>>>>> 2535f1b379bfa2613a8ec70ccb2d0502046d9ec4
               className="share_btn"
               style={{
                 marginLeft: "20px",

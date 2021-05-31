@@ -401,7 +401,7 @@ export default function RecordVideo({ match }) {
               <div
                 ref={signContainerRef}
                 className={classes.playerWrapper}
-                style={{ left: "50", marginTop: 50 }}
+                style={{ left: "50", marginTop: 50, backgroundColor: "black" }}
               >
                 <ReactPlayer
                   ref={signRef}
@@ -439,29 +439,32 @@ export default function RecordVideo({ match }) {
               </div>
               <Link
                 to={`/studentpage/recordlecturelist/${match.params.lecture}`}
+              ></Link>
+              {/* 자막 */}
+              <div
+                className="content"
+                style={{
+                  textAlign: "center",
+                  display: visibleSub ? "block" : "none",
+                }}
               >
-                <span
-                  className="badge  mt-4"
-                  style={{
-                    width: "150px",
-                    display: "block",
-                    marginBottom: "20px",
-                    fontSize: "1rem",
-                    backgroundColor: "#D65E2A",
-                    color: "white",
-                  }}
-                >
-                  나가기
-                </span>
-              </Link>
+                <span className="subtitle" ref={subtitle_spanref}></span>
+              </div>
+              {/* 수어 */}
+              <div
+                className="content"
+                style={{ display: visibleTrans ? "block" : "none" }}
+              >
+                <span className="subtitle" ref={translation_spanref}></span>
+              </div>
               <div>
                 <div
                   className="subtitle_btn"
                   style={{
-                    marginLeft: "20px",
+                    marginLeft: "3vw",
                     float: "left",
-                    width: "22%",
-                    marginTop: "28px",
+                    width: "29%",
+                    marginTop: "29px",
                   }}
                 >
                   <button
@@ -469,7 +472,6 @@ export default function RecordVideo({ match }) {
                     ref={btnSubref}
                     onClick={useSub}
                     style={{
-                      width: "12vw",
                       height: "3vw",
                       backgroundColor: "gray",
                       boxShadow: "3px",
@@ -493,8 +495,8 @@ export default function RecordVideo({ match }) {
                   style={{
                     marginLeft: "20px",
                     float: "left",
-                    width: "22%",
-                    marginTop: "28px",
+                    width: "29%",
+                    marginTop: "29px",
                   }}
                 >
                   <button
@@ -502,7 +504,6 @@ export default function RecordVideo({ match }) {
                     ref={btnTransref}
                     onClick={useTrans}
                     style={{
-                      width: "12vw",
                       height: "3vw",
                       fontSize: "25px",
                       borderRadius: 15,
@@ -525,8 +526,8 @@ export default function RecordVideo({ match }) {
                   style={{
                     marginLeft: "20px",
                     float: "left",
-                    width: "22%",
-                    marginTop: "28px",
+                    width: "29%",
+                    marginTop: "29px",
                   }}
                 >
                   <button
@@ -534,7 +535,6 @@ export default function RecordVideo({ match }) {
                     ref={btnSignref}
                     onClick={useSign}
                     style={{
-                      width: "12vw",
                       height: "3vw",
                       fontSize: "25px",
                       borderRadius: 15,
@@ -553,21 +553,20 @@ export default function RecordVideo({ match }) {
                   </button>
                 </div>
               </div>
-              {/* 자막 */}
-              <div
-                className="content"
-                style={{ display: visibleSub ? "block" : "none" }}
-              >
-                <span className="subtitle" ref={subtitle_spanref}></span>
-              </div>
-              {/* 수어 */}
-              <div
-                className="content"
-                style={{ display: visibleTrans ? "block" : "none" }}
-              >
-                <span className="subtitle" ref={translation_spanref}></span>
-              </div>
             </Card>
+            <span
+              className="badge  mt-4"
+              style={{
+                width: "150px",
+                display: "block",
+                marginBottom: "20px",
+                fontSize: "1rem",
+                backgroundColor: "#D65E2A",
+                color: "white",
+              }}
+            >
+              나가기
+            </span>
           </Container>
           <div
             style={{
@@ -578,12 +577,12 @@ export default function RecordVideo({ match }) {
           >
             <Card
               style={{
-                width: "70%",
-                height: "60vh",
+                height: "62vh",
                 border: "solid",
                 borderRadius: 10,
                 borderColor: "#c4c4c4",
               }}
+              className="col-md-8"
             >
               <h6
                 style={{
@@ -636,7 +635,7 @@ export default function RecordVideo({ match }) {
                   <input
                     ref={inputRef}
                     style={{
-                      width: "570px",
+                      width: "28vw",
                       border: "solid",
                       borderRadius: 10,
                       borderColor: "#807E7E",

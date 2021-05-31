@@ -30,7 +30,7 @@ const Bookmark = (prop: Prop) => {
   React.useEffect(() => {
     if (userInfo) {
       lecture
-        .getBookmark(prop.lectureInfo.Name, `${prop.lectureInfo.cnt + 1}회차`, userInfo.id)
+        .getBookmark(prop.lectureInfo.Name, `${prop.lectureInfo.cnt}회차`, userInfo.id)
         .then(data => {
           setBookmarks(data);
           console.log("bookmark", data);
@@ -49,7 +49,7 @@ const Bookmark = (prop: Prop) => {
       setBookmarks([...bookmarks, newBookmark]);
       lecture.addBookmark(
         prop.lectureInfo.Name,
-        `${prop.lectureInfo.cnt + 1}회차`,
+        `${prop.lectureInfo.cnt}회차`,
         userInfo.id,
         newBookmark.time,
         newBookmark.chat
@@ -68,7 +68,7 @@ const Bookmark = (prop: Prop) => {
     setBookmarks(newBookmarks);
     lecture.removeBookmark(
       prop.lectureInfo.Name,
-      `${prop.lectureInfo.cnt + 1}회차`,
+      `${prop.lectureInfo.cnt}회차`,
       userInfo.id,
       removeTime
     );

@@ -16,8 +16,12 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   //record
   let recordChunk = [];
   let recorder = React.useRef();
+<<<<<<< HEAD
   let recordCnt = 0;
   const handleDataAvailable = (event) => {
+=======
+  const handleDataAvailable = event => {
+>>>>>>> 2535f1b379bfa2613a8ec70ccb2d0502046d9ec4
     recordChunk.push(event.data);
     download();
   };
@@ -49,11 +53,15 @@ const Video = ({ userInfo, lectureInfo, onExit }) => {
   const createPath = () => {
     const lecRef = store
       .collection(`Lecture/${lectureInfo.Name}/RecordedLecture`)
-      .doc(`${lectureInfo.cnt + 1}회차`);
+      .doc(`${lectureInfo.cnt}회차`);
     lecRef.set({
+<<<<<<< HEAD
       Video: `gs://capstone-925e4.appspot.com/RecordedLecture/${
         lectureInfo.Name
       }/${lectureInfo.cnt + 1}회차`,
+=======
+      Video: `gs://capstone-925e4.appspot.com/RecordedLecture/${lectureInfo.Name}/${lectureInfo.cnt}회차`,
+>>>>>>> 2535f1b379bfa2613a8ec70ccb2d0502046d9ec4
     });
   };
   // share
