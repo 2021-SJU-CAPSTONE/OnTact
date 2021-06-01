@@ -8,7 +8,7 @@ type Prop = {
   startTime?: number;
 };
 
-const format = seconds => {
+const format = (seconds) => {
   if (isNaN(seconds)) {
     return "00:00";
   }
@@ -30,8 +30,12 @@ const Bookmark = (prop: Prop) => {
   React.useEffect(() => {
     if (userInfo) {
       lecture
-        .getBookmark(prop.lectureInfo.Name, `${prop.lectureInfo.cnt}회차`, userInfo.id)
-        .then(data => {
+        .getBookmark(
+          prop.lectureInfo.Name,
+          `${prop.lectureInfo.cnt}회차`,
+          userInfo.id
+        )
+        .then((data) => {
           setBookmarks(data);
           console.log("bookmark", data);
         });
@@ -57,9 +61,9 @@ const Bookmark = (prop: Prop) => {
       inputRef.current.value = "";
     }
   };
-  const onDelBookmark = e => {
+  const onDelBookmark = (e) => {
     const removeTime = Number(e.target.id);
-    const newBookmarks = bookmarks.filter(bookmark => {
+    const newBookmarks = bookmarks.filter((bookmark) => {
       if (bookmark.time === removeTime) {
         return false;
       }
@@ -90,7 +94,7 @@ const Bookmark = (prop: Prop) => {
         BOOKMARK
       </div>
       <div className="overflow-auto">
-        {bookmarks.map(bookmark => (
+        {bookmarks.map((bookmark) => (
           <div
             style={{
               marginTop: 10,
@@ -112,6 +116,20 @@ const Bookmark = (prop: Prop) => {
               삭제
             </button>
           </div>
+          //    <span style={{ paddingTop: 10 }}>
+          //    <MDBIcon
+          //      icon="fas fa-minus-circle"
+          //      id={bookmark.time}
+          //      onClick={onDelBookmark}
+          //      style={{
+          //        marginLeft: 15,
+          //        fontSize: 13,
+          //        fontWeight: "bold",
+          //        color: "#D65E2A",
+          //        fontSize: 20,
+          //      }}
+          //    />
+          //  </span>
         ))}
       </div>
       <form
@@ -148,7 +166,7 @@ const Bookmark = (prop: Prop) => {
             color: "black",
             border: "solid",
           }}
-          onClick={e => {
+          onClick={(e) => {
             sendMessage(e);
           }}
         >
