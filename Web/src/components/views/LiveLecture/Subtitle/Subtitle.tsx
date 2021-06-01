@@ -123,10 +123,11 @@ const Subtitle = (prop: Prop) => {
     finalSub = linebreak(firstText + "\n" + secondText);
     ///save in tempSub
     store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempSub: finalSub });
-    // 번역기능
+    // 번역기능 오프
+    store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempTrans: finalSub });
+    // 번역기능 온
     // KotoEn(finalSub).then(resultText => {
     //   //save in tempTrans
-    //   console.log(resultText);
     //   store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempTrans: resultText });
     // });
     /// save in subTitle and Translate for record lecture
@@ -140,9 +141,10 @@ const Subtitle = (prop: Prop) => {
         fireTime,
         linebreak(firstText)
       );
-      // 번역기능
       let sfireTime = fireTime;
+      // 번역 기능 오프
       lecture.stackTranslation(prop.lectureInfo.Name, prop.lectureInfo.cnt, sfireTime, firstText);
+      // 번역 기능 온
       // KotoEn(firstText).then(resultText => {
       //   lecture.stackTranslation(
       //     prop.lectureInfo.Name,
@@ -235,8 +237,7 @@ const Subtitle = (prop: Prop) => {
               finalRef.current.innerHTML = data.tempSub;
             }
             if (translateRef.current) {
-              // translateRef.current.innerHTML = data.tempTrans;
-              translateRef.current.innerHTML = data.tempSub;
+              translateRef.current.innerHTML = data.tempTrans;
             }
           }
         });
