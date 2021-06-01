@@ -163,10 +163,10 @@ export default function RecordVideo({ match }) {
         }
       }
     }
-    if (subData !== undefined) {
-      if (subData[curtime] !== undefined) {
+    if (transData !== undefined) {
+      if (transData[curtime] !== undefined) {
         if (translation_spanref.current) {
-          translation_spanref.current.innerHTML = subData[curtime];
+          translation_spanref.current.innerHTML = transData[curtime];
         }
       }
     }
