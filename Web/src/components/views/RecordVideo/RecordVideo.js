@@ -9,7 +9,6 @@ import { Card } from "react-bootstrap";
 import { getBookmark, addBookmark, removeBookmark } from "../../utils/Lecture";
 import { UseAuth } from "../../hoc/AuthContext";
 import { storage, store } from "../../firebase";
-import usePictureInPicture from "react-use-pip";
 const useStyles = makeStyles({
   playerWrapper: {
     width: "100%",
