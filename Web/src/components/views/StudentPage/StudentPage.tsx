@@ -14,7 +14,9 @@ function StudentPage() {
           <div style={{ marginBottom: "50px", textAlign: "center" }}>
             <h2 style={{ fontWeight: "bold" }}>
               {" "}
-              <UserOutlined style={{ verticalAlign: "bottom", marginRight: "10px" }} />{" "}
+              <UserOutlined
+                style={{ verticalAlign: "bottom", marginRight: "10px" }}
+              />{" "}
               {userInfo && userInfo.Name} 님{" "}
             </h2>
           </div>
