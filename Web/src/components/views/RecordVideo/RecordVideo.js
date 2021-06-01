@@ -10,6 +10,8 @@ import { getBookmark, addBookmark, removeBookmark } from "../../utils/Lecture";
 import { UseAuth } from "../../hoc/AuthContext";
 import { storage, store } from "../../firebase";
 import usePictureInPicture from "react-use-pip";
+import { MDBIcon } from "mdbreact";
+
 const useStyles = makeStyles({
   playerWrapper: {
     width: "100%",
@@ -35,10 +37,11 @@ const format = (seconds) => {
 export default function RecordVideo({ match }) {
   const [timeDisplayFormat, setTimeDisplayFormat] = useState("normal");
   const [Bookmarks, setBookmarks] = useState([]);
+  const [firstPlay, setFirstPlay] = useState(true);
 
   const classes = useStyles();
   const [state, setState] = useState({
-    playing: true,
+    playing: false,
     muted: true,
     volume: 0.5,
     playbackRate: 1.0,
@@ -47,6 +50,11 @@ export default function RecordVideo({ match }) {
     comments: [],
   });
   const handlePlayPause = () => {
+    if (firstPlay) {
+      playerRef.current.seekTo(0);
+      signRef.current.currentTime = 0;
+      setFirstPlay(false);
+    }
     setState({ ...state, playing: !state.playing });
   };
   const { playing, muted, volume, playbackRate, played, seeking, comments } =
@@ -62,7 +70,7 @@ export default function RecordVideo({ match }) {
   if (video === undefined) {
     storage
       .ref()
-      .child(`SignLanguage.mp4`)
+      .child(`testtest.mp4`)
       .getDownloadURL()
       .then((url) => {
         var xhr = new XMLHttpRequest();
@@ -83,7 +91,7 @@ export default function RecordVideo({ match }) {
   if (signVideo === undefined) {
     storage
       .ref()
-      .child(`SignLanguage.mp4`)
+      .child(`testtest.mp4`)
       .getDownloadURL()
       .then((url) => {
         var xhr = new XMLHttpRequest();
@@ -110,12 +118,15 @@ export default function RecordVideo({ match }) {
   const [visibleSign, setVisibleSign] = React.useState(false);
   const subRef = store
     .collection(`Lecture/${match.params.lecture}/Subtitle`)
-    .doc("01회차");
+
+    .doc(match.params.round);
   const [subData, setSubData] = React.useState();
   const transRef = store
     .collection(`Lecture/${match.params.lecture}/Translation`)
-    .doc("caption");
+    .doc(match.params.round);
+
   const [transData, setTransData] = React.useState();
+  const [preload, setPreload] = React.useState(false);
 
   if (subData === undefined) {
     subRef
@@ -161,7 +172,13 @@ export default function RecordVideo({ match }) {
         }
       }
     }
-  }, [Math.round(getTime())]);
+    if (!preload) {
+      if (playerRef.current) {
+        seekToEnd();
+        setPreload(true);
+      }
+    }
+  }, [Math.round(getTime()), playerRef.current]);
   //
   //형찬
   const userInfo = UseAuth().userInfo;
@@ -178,10 +195,14 @@ export default function RecordVideo({ match }) {
 
   //
   const handleRewind = () => {
+    subtitle_spanref.current.innerHTML = "";
+    translation_spanref.current.innerHTML = "";
     playerRef.current.seekTo(playerRef.current.getCurrentTime() - 10);
     signRef.current.currentTime = signRef.current.currentTime - 10;
   };
   const handleFastForward = () => {
+    subtitle_spanref.current.innerHTML = "";
+    translation_spanref.current.innerHTML = "";
     playerRef.current.seekTo(playerRef.current.getCurrentTime() + 10);
     signRef.current.currentTime = signRef.current.currentTime + 10;
   };
@@ -227,6 +248,8 @@ export default function RecordVideo({ match }) {
     setState({ ...state, seeking: true });
   };
   const handleSeekMouseUp = (e, newValue) => {
+    subtitle_spanref.current.innerHTML = "";
+    translation_spanref.current.innerHTML = "";
     setState({ ...state, seeking: false });
     playerRef.current.seekTo(Number(newValue / 100));
     signRef.current.currentTime = Number(newValue / 100);
@@ -325,6 +348,10 @@ export default function RecordVideo({ match }) {
     }
   };
 
+  const seekToEnd = () => {
+    playerRef.current.seekTo(3600);
+  };
+
   return (
     <>
       {userInfo && video && (
@@ -368,7 +395,6 @@ export default function RecordVideo({ match }) {
                   volume={volume}
                   playbackRate={playbackRate}
                   onProgress={handleProgress}
-                  pip={true}
                 />
                 <Playercontrol
                   onPlayPause={handlePlayPause}
@@ -412,17 +438,16 @@ export default function RecordVideo({ match }) {
                   display: visibleSub ? "block" : "none",
                 }}
               >
-                <span className="subtitle" ref={subtitle_spanref}></span>
+                <span
+                  className="subtitle"
+                  style={{ color: "red" }}
+                  ref={subtitle_spanref}
+                ></span>
               </div>
               {/* 수어 */}
               <div
                 className="content"
-                style={{
-                  position: "absolute",
-                  top: "30px",
-                  left: "30px",
-                  display: visibleTrans ? "block" : "none",
-                }}
+                style={{ display: visibleTrans ? "block" : "none" }}
               >
                 <span className="subtitle" ref={translation_spanref}></span>
               </div>
@@ -573,6 +598,8 @@ export default function RecordVideo({ match }) {
                   >
                     <span
                       onClick={() => {
+                        subtitle_spanref.current.innerHTML = "";
+                        translation_spanref.current.innerHTML = "";
                         playerRef.current.seekTo(bookmark.time);
                         signRef.current.currentTime = bookmark.time;
                       }}
@@ -580,17 +607,20 @@ export default function RecordVideo({ match }) {
                     >
                       {format(bookmark.time)} : {bookmark.chat}
                     </span>
-                    <button
-                      style={{
-                        backgroundColor: "#D65E2A",
-                        color: "white",
-                        marginLeft: 15,
-                      }}
-                      id={bookmark.time}
-                      onClick={onDelBookmark}
-                    >
-                      삭제
-                    </button>
+                    <span style={{ paddingTop: 10 }}>
+                      <MDBIcon
+                        icon="fas fa-minus-circle"
+                        id={bookmark.time}
+                        onClick={onDelBookmark}
+                        style={{
+                          marginLeft: 15,
+                          fontSize: 13,
+                          fontWeight: "bold",
+                          color: "#D65E2A",
+                          fontSize: 20,
+                        }}
+                      />
+                    </span>
                   </div>
                 ))}
               </div>

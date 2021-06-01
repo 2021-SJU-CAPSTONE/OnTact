@@ -50,7 +50,8 @@ const Subtitle = (prop: Prop) => {
   let firstText = "";
   let secondText = "";
   let tempText = "";
-  let fireTime = 0;
+  let fireTime;
+  let changeFirst;
 
   let startTime = 0;
   let curTime = 0;
@@ -107,15 +108,15 @@ const Subtitle = (prop: Prop) => {
         tempText = secondText;
         fireTime = curTime;
         curTime = 0;
-        console.log("fireTime", fireTime);
+        changeFirst = false;
       } else {
         interimTranscript += transcript;
         firstText = tempText;
+        changeFirst = true;
         secondText = interimTranscript;
         if (curTime === 0) {
           curTime = Math.round((new Date().getTime() - startTime) / 1000);
         }
-        console.log(fireTime, curTime, firstText);
       }
     }
 
@@ -132,13 +133,15 @@ const Subtitle = (prop: Prop) => {
     //   store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempTrans: resultText });
     // });
     /// save in subTitle and Translate for record lecture
-    if (fireTime !== 0 && firstText !== "") {
-      console.log(
-        "finalTranscript",
-        fireTime,
-        Math.round((new Date().getTime() - startTime) / 1000),
-        firstText
-      );
+    if (
+      fireTime !== 0 &&
+      fireTime !== undefined &&
+      firstText !== "" &&
+      changeFirst
+    ) {
+      if (fireTime !== 0) {
+        fireTime = fireTime - 1;
+      }
       lecture.stackSubtitle(
         prop.lectureInfo.Name,
         prop.lectureInfo.cnt,
@@ -156,10 +159,11 @@ const Subtitle = (prop: Prop) => {
       //   );
       // });
       fireTime = 0;
+      changeFirst = false;
     }
 
     // console.log("finalTranscript", finalTranscript);
-    console.log("interimTranscript", interimTranscript);
+    // console.log("interimTranscript", interimTranscript);
   };
 
   /**
@@ -226,6 +230,7 @@ const Subtitle = (prop: Prop) => {
   };
   React.useEffect(() => {
     if (prop.userInfo.isProfessor === "on") {
+      console.log("rerererererere");
       start();
     } else {
       store
@@ -271,7 +276,7 @@ const Subtitle = (prop: Prop) => {
     // ) : null} */}
 
     <div style={{ textAlign: "center", position: "absolute" }}>
-      <div style={{ position: "absolute", top: -20, width: "62vw" }}>
+      <div style={{ position: "absolute", top: -40, width: "62vw" }}>
         <div
           className="result overflow-auto"
           style={{
