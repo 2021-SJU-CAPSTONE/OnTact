@@ -122,23 +122,16 @@ const Subtitle = (prop: Prop) => {
 
     finalSub = linebreak(firstText + "\n" + secondText);
     ///save in tempSub
-    store
-      .collection("Lecture")
-      .doc(prop.lectureInfo.Name)
-      .update({ tempSub: finalSub });
-    // 번역기능
+    store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempSub: finalSub });
+    // 번역기능 오프
+    store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempTrans: finalSub });
+    // 번역기능 온
     // KotoEn(finalSub).then(resultText => {
     //   //save in tempTrans
-    //   console.log(resultText);
     //   store.collection("Lecture").doc(prop.lectureInfo.Name).update({ tempTrans: resultText });
     // });
     /// save in subTitle and Translate for record lecture
-    if (
-      fireTime !== 0 &&
-      fireTime !== undefined &&
-      firstText !== "" &&
-      changeFirst
-    ) {
+    if (fireTime !== 0 && fireTime !== undefined && firstText !== "" && changeFirst) {
       if (fireTime !== 0) {
         fireTime = fireTime - 1;
       }
@@ -148,8 +141,10 @@ const Subtitle = (prop: Prop) => {
         fireTime,
         linebreak(firstText)
       );
-      // 번역기능
-      // let sfireTime = fireTime;
+      let sfireTime = fireTime;
+      // 번역 기능 오프
+      lecture.stackTranslation(prop.lectureInfo.Name, prop.lectureInfo.cnt, sfireTime, firstText);
+      // 번역 기능 온
       // KotoEn(firstText).then(resultText => {
       //   lecture.stackTranslation(
       //     prop.lectureInfo.Name,
@@ -181,7 +176,7 @@ const Subtitle = (prop: Prop) => {
    * 개행 처리
    * @param {string} s
    */
-  const linebreak = (s) => {
+  const linebreak = s => {
     return s.replace(TWO_LINE, "<p></p>").replace(ONE_LINE, "<br>");
   };
 
@@ -230,13 +225,12 @@ const Subtitle = (prop: Prop) => {
   };
   React.useEffect(() => {
     if (prop.userInfo.isProfessor === "on") {
-      console.log("rerererererere");
       start();
     } else {
       store
         .collection("Lecture")
         .doc(prop.lectureInfo.Name)
-        .onSnapshot((snap) => {
+        .onSnapshot(snap => {
           const data = snap.data();
           if (data !== undefined) {
             if (finalRef.current) {
@@ -255,26 +249,6 @@ const Subtitle = (prop: Prop) => {
     };
   }, []);
   return (
-    // {visibleSub ? (
-    //   <div className="result">
-    //     <span className="final" ref={finalRef}></span>
-    //   </div>
-    // ) : null}
-    // {visibleTrans ? (
-    //   <div className="result">
-    //     <span className="translate" ref={finalRef}></span>
-    //   </div>
-    // ) : null}
-    // {/* 재호형!! 밑에 있는 게 진짜 번역 데이터 인데요 papago
-    // 사용량 때문에 지금은 막아 둘께요
-    // 위에 있는거랑 같은 형태로 출력되면 되니까
-    // className='final' 이 translate라고 생각하고 하면 될 거같아요*/}
-    // {/* {visibleTrans ? (
-    //   <div>
-    //     <span className="translate" ref={translateRef}></span>
-    //   </div>
-    // ) : null} */}
-
     <div style={{ textAlign: "center", position: "absolute" }}>
       <div style={{ position: "absolute", top: -40, width: "62vw" }}>
         <div
@@ -284,7 +258,6 @@ const Subtitle = (prop: Prop) => {
             display: visibleSub ? "block" : "none",
           }}
         >
-          {/* <div style={{ display: visibleSub ? "block" : "none" }}> */}
           <span
             className="final"
             style={{
@@ -295,10 +268,21 @@ const Subtitle = (prop: Prop) => {
             }}
             ref={finalRef}
           ></span>
-          {/* </div> */}
-          {/* <div style={{ display: visibleTrans ? "block" : "none" }}>
-            <span className="translate" ref={finalRef}></span>
-          </div> */}
+        </div>
+        <div
+          className="result overflow-auto"
+          style={{ textAlign: "center", display: visibleTrans ? "block" : "none" }}
+        >
+          <span
+            className="translate"
+            style={{
+              color: "white",
+              fontSize: 30,
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+            ref={translateRef}
+          ></span>
         </div>
       </div>
       <div
@@ -342,10 +326,7 @@ const Subtitle = (prop: Prop) => {
                   borderColor: "black",
                 }}
               >
-                <i
-                  className="fas fa-share-square"
-                  style={{ marginRight: "20px" }}
-                />
+                <i className="fas fa-share-square" style={{ marginRight: "20px" }} />
                 공유
               </button>
             </div>
@@ -406,10 +387,7 @@ const Subtitle = (prop: Prop) => {
                   borderColor: "black",
                 }}
               >
-                <i
-                  className="far fa-closed-captioning"
-                  style={{ marginRight: "20px" }}
-                ></i>
+                <i className="far fa-closed-captioning" style={{ marginRight: "20px" }}></i>
                 자막 활성화
               </button>
             </div>
@@ -438,10 +416,7 @@ const Subtitle = (prop: Prop) => {
                   borderColor: "black",
                 }}
               >
-                <i
-                  className="fas fa-sign-language"
-                  style={{ marginRight: "20px" }}
-                />
+                <i className="fas fa-sign-language" style={{ marginRight: "20px" }} />
                 번역 활성화
               </button>
             </div>
