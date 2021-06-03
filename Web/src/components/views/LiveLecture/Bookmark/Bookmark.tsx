@@ -30,20 +30,16 @@ const Bookmark = (prop: Prop) => {
   React.useEffect(() => {
     if (userInfo) {
       // 북마크 회차 별 저장
-      // lecture
-      //   .getBookmark(
-      //     prop.lectureInfo.Name,
-      //     `${prop.lectureInfo.cnt}회차`,
-      //     userInfo.id
-      //   )
-      //   .then((data) => {
-      //     setBookmarks(data);
-      //     console.log("bookmark", data);
-      //   });
+      lecture
+        .getBookmark(prop.lectureInfo.Name, `${prop.lectureInfo.cnt}회차`, userInfo.id)
+        .then(data => {
+          setBookmarks(data);
+          console.log("bookmark", data);
+        });
       // 북마크 1회차만 저장
-      lecture.getBookmark(prop.lectureInfo.Name, `1회차`, userInfo.id).then(data => {
-        setBookmarks(data);
-      });
+      // lecture.getBookmark(prop.lectureInfo.Name, `1회차`, userInfo.id).then(data => {
+      //   setBookmarks(data);
+      // });
     }
   }, [userInfo]);
 
@@ -57,21 +53,21 @@ const Bookmark = (prop: Prop) => {
 
       setBookmarks([...bookmarks, newBookmark]);
       //북마크 회차 별 저장
-      // lecture.addBookmark(
-      //   prop.lectureInfo.Name,
-      //   `${prop.lectureInfo.cnt}회차`,
-      //   userInfo.id,
-      //   newBookmark.time,
-      //   newBookmark.chat
-      // );
-      //북마크 1회차만 저장
       lecture.addBookmark(
         prop.lectureInfo.Name,
-        `1회차`,
+        `${prop.lectureInfo.cnt}회차`,
         userInfo.id,
         newBookmark.time,
         newBookmark.chat
       );
+      //북마크 1회차만 저장
+      // lecture.addBookmark(
+      //   prop.lectureInfo.Name,
+      //   `1회차`,
+      //   userInfo.id,
+      //   newBookmark.time,
+      //   newBookmark.chat
+      // );
       inputRef.current.value = "";
     }
   };
@@ -85,14 +81,14 @@ const Bookmark = (prop: Prop) => {
     });
     setBookmarks(newBookmarks);
     //북마크 회차 별 저장
-    // lecture.removeBookmark(
-    //   prop.lectureInfo.Name,
-    //   `${prop.lectureInfo.cnt}회차`,
-    //   userInfo.id,
-    //   removeTime
-    // );
+    lecture.removeBookmark(
+      prop.lectureInfo.Name,
+      `${prop.lectureInfo.cnt}회차`,
+      userInfo.id,
+      removeTime
+    );
     //북마크 1회차만 저장
-    lecture.removeBookmark(prop.lectureInfo.Name, `1회차`, userInfo.id, removeTime);
+    // lecture.removeBookmark(prop.lectureInfo.Name, `1회차`, userInfo.id, removeTime);
   };
   return (
     <Card
