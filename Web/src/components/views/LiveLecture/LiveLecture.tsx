@@ -17,7 +17,7 @@ const LiveLecture = ({ match }) => {
   React.useEffect(() => {
     startTime.current = new Date().getTime();
     if (lectureInfo === undefined) {
-      getLectureInfo(lectureId).then((info) => {
+      getLectureInfo(lectureId).then(info => {
         setLectureInfo(info);
         console.log("[lectureInfo in livelecture]", info);
       });
@@ -26,7 +26,8 @@ const LiveLecture = ({ match }) => {
   const onExit = () => {
     if (userInfo?.isProfessor === "on") {
       history.push("/professorpage");
-      clearChat(lectureId);
+      // 채팅 초기화
+      // clearChat(lectureId);
     } else {
       history.push("/studentpage");
     }
@@ -47,17 +48,13 @@ const LiveLecture = ({ match }) => {
               }}
             >
               {userInfo ? (
-                <Video
-                  userInfo={userInfo}
-                  lectureInfo={lectureInfo}
-                  onExit={onExit}
-                />
+                <Video userInfo={userInfo} lectureInfo={lectureInfo} onExit={onExit} />
               ) : null}
             </div>
 
             <div style={{ marginTop: -30 }}>
               <button
-                onClick={(E) => {
+                onClick={E => {
                   E.preventDefault();
                   setIsChat(!isChat);
                 }}
@@ -72,10 +69,7 @@ const LiveLecture = ({ match }) => {
               {isChat ? (
                 <Chatting lectureId={lectureInfo.Name} />
               ) : (
-                <Bookmark
-                  lectureInfo={lectureInfo}
-                  startTime={startTime.current}
-                />
+                <Bookmark lectureInfo={lectureInfo} startTime={startTime.current} />
               )}
             </div>
           </div>

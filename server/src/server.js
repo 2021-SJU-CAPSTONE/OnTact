@@ -43,8 +43,8 @@ app.post("/stt", async (req, res) => {
         text: req.body.text,
       },
       headers: {
-        "X-Naver-Client-Id": "e2O6A9FbaJKz056vHYsy",
-        "X-Naver-Client-Secret": "4pC9nipoqx",
+        "X-Naver-Client-Id": "Mo_d0dmRjBOaHTb6qMqc",
+        "X-Naver-Client-Secret": "xsRNSeVZUN",
         Accept: "application/json",
       },
     });
@@ -66,7 +66,7 @@ const io = require("socket.io")(server, {
     methods: ["GET", "POST"],
   },
 });
-io.on("connection", (socket) => {
+io.on("connection", socket => {
   console.log("[connected from]", socket.id, new Date());
   socket.on("join-room", (roomId, userId) => {
     console.log(roomId, userId);

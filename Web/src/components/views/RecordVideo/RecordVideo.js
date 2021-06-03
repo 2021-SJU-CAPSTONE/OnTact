@@ -68,7 +68,7 @@ export default function RecordVideo({ match }) {
   if (video === undefined) {
     storage
       .ref()
-      .child(`testtest.mp4`)
+      .child(`testtest2.mp4`)
       .getDownloadURL()
       .then(url => {
         var xhr = new XMLHttpRequest();
@@ -89,7 +89,7 @@ export default function RecordVideo({ match }) {
   if (signVideo === undefined) {
     storage
       .ref()
-      .child(`testtest.mp4`)
+      .child(`testtest2.mp4`)
       .getDownloadURL()
       .then(url => {
         var xhr = new XMLHttpRequest();
@@ -420,13 +420,29 @@ export default function RecordVideo({ match }) {
                 style={{
                   textAlign: "center",
                   display: visibleSub ? "block" : "none",
+                  background: "black",
                 }}
               >
-                <span className="subtitle" style={{ color: "red" }} ref={subtitle_spanref}></span>
+                <span
+                  className="subtitle"
+                  style={{ color: "white", fontSize: 20, fontWeight: "bold", textAlign: "center" }}
+                  ref={subtitle_spanref}
+                ></span>
               </div>
               {/* 수어 */}
-              <div className="content" style={{ display: visibleTrans ? "block" : "none" }}>
-                <span className="subtitle" ref={translation_spanref}></span>
+              <div
+                className="content"
+                style={{
+                  textAlign: "center",
+                  background: "black",
+                  display: visibleTrans ? "block" : "none",
+                }}
+              >
+                <span
+                  className="subtitle"
+                  style={{ color: "white", fontSize: 20, fontWeight: "bold", textAlign: "center" }}
+                  ref={translation_spanref}
+                ></span>
               </div>
               <div>
                 <div
