@@ -27,7 +27,7 @@ const LiveLecture = ({ match }) => {
     if (userInfo?.isProfessor === "on") {
       history.push("/professorpage");
       // 채팅 초기화
-      // clearChat(lectureId);
+      clearChat(lectureId);
     } else {
       history.push("/studentpage");
     }
